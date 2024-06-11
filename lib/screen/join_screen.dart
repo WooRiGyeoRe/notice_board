@@ -28,6 +28,7 @@ class JoinScreen extends StatelessWidget {
           elevation: 3, // 그림자 깊이
           shadowColor: Colors.black), // 앱바 그림자
       backgroundColor: Colors.white, // 전체 화면 배경색
+      resizeToAvoidBottomInset: false, // 키보드 오버플로우 해결
       body: const Column(
         children: [JoinForm()],
       ),
@@ -44,6 +45,26 @@ class JoinForm extends StatefulWidget {
 }
 
 class _JoinFormState extends State<JoinForm> {
+  // 아이디 초기화 변수
+  final TextEditingController _idResetController = TextEditingController();
+
+  // 아이디 초기화 변수
+  final TextEditingController _nickResetController = TextEditingController();
+
+  // 비밀번호 보기 여부를 관리할 변수
+  bool _passwordVisible = false;
+
+  // 비번 초기화 변수
+  final TextEditingController _passwordResetController =
+      TextEditingController();
+
+  // 비밀번호 확인란 보기 여부를 관리할 변수
+  bool _passwordCheckVisible = false;
+
+  // 비밀번호 확인란 초기화 변수
+  final TextEditingController _passwordCheckController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -52,74 +73,148 @@ class _JoinFormState extends State<JoinForm> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 50),
-          const TextField(
+          TextField(
             keyboardType: TextInputType.text,
+            controller: _idResetController,
             decoration: InputDecoration(
               labelText: '아이디',
-              labelStyle: TextStyle(
+              labelStyle: const TextStyle(
                 fontFamily: "jeongianjeon-Regular",
                 color: Color.fromARGB(255, 95, 95, 95),
                 fontSize: 20,
               ),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Color.fromARGB(255, 196, 208, 223),
                   width: 2,
                 ),
               ),
+              suffixIcon: IconButton(
+                onPressed: () {
+                  _idResetController.clear(); // 텍스트 필드 내용 초기화
+                },
+                icon: const Icon(Icons.clear,
+                    color: Color.fromARGB(255, 158, 158, 158)),
+              ),
             ),
           ),
           const SizedBox(height: 20),
-          const TextField(
+          TextField(
             keyboardType: TextInputType.text,
+            controller: _nickResetController,
             decoration: InputDecoration(
               labelText: '닉네임',
-              labelStyle: TextStyle(
+              labelStyle: const TextStyle(
                 fontFamily: "jeongianjeon-Regular",
                 color: Color.fromARGB(255, 95, 95, 95),
                 fontSize: 20,
               ),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Color.fromARGB(255, 196, 208, 223),
                   width: 2,
                 ),
               ),
+              suffixIcon: IconButton(
+                onPressed: () {
+                  _nickResetController.clear(); // 텍스트 필드 내용 초기화
+                },
+                icon: const Icon(Icons.clear,
+                    color: Color.fromARGB(255, 158, 158, 158)),
+              ),
             ),
           ),
           const SizedBox(height: 20),
-          const TextField(
+          TextField(
             keyboardType: TextInputType.text,
+            controller: _passwordResetController,
+            obscureText: !_passwordVisible,
             decoration: InputDecoration(
               labelText: '비밀번호',
-              labelStyle: TextStyle(
+              labelStyle: const TextStyle(
                 fontFamily: "jeongianjeon-Regular",
                 color: Color.fromARGB(255, 95, 95, 95),
                 fontSize: 20,
               ),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Color.fromARGB(255, 196, 208, 223),
                   width: 2,
                 ),
+              ),
+              suffixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _passwordVisible = !_passwordVisible;
+                      });
+                    },
+                    icon: Icon(
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        // color: Theme.of(context).primaryColorDark,
+                        color: _passwordVisible
+                            ? const Color.fromARGB(255, 158, 158, 158)
+                            : const Color.fromARGB(255, 158, 158, 158)),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      _passwordResetController.clear(); // 텍스트 필드 내용 초기화
+                    },
+                    icon: const Icon(Icons.clear,
+                        color: Color.fromARGB(255, 158, 158, 158)),
+                  )
+                ],
               ),
             ),
           ),
           const SizedBox(height: 20),
-          const TextField(
+          TextField(
             keyboardType: TextInputType.text,
+            controller: _passwordCheckController,
+            obscureText: !_passwordCheckVisible,
             decoration: InputDecoration(
               labelText: '비밀번호 확인',
-              labelStyle: TextStyle(
+              labelStyle: const TextStyle(
                 fontFamily: "jeongianjeon-Regular",
                 color: Color.fromARGB(255, 95, 95, 95),
                 fontSize: 20,
               ),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Color.fromARGB(255, 196, 208, 223),
                   width: 2,
                 ),
+              ),
+              suffixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _passwordCheckVisible = !_passwordCheckVisible;
+                      });
+                    },
+                    icon: Icon(
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        // color: Theme.of(context).primaryColorDark,
+                        color: _passwordVisible
+                            ? const Color.fromARGB(255, 158, 158, 158)
+                            : const Color.fromARGB(255, 158, 158, 158)),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      _passwordCheckController.clear(); // 텍스트 필드 내용 초기화
+                    },
+                    icon: const Icon(Icons.clear,
+                        color: Color.fromARGB(255, 158, 158, 158)),
+                  )
+                ],
               ),
             ),
           ),
