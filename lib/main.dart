@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:test_1/screen/home_screen.dart';
 import 'screen/bottom_navi_bar.dart'; // BottomNaviBar를 불러옵니다.
+import 'screen/board_screen.dart';
 import 'screen/join_screen.dart';
 import 'screen/login_screen.dart'; // LoginScreen
 
@@ -19,8 +20,9 @@ void main() {
     const MaterialApp(
       home:
           // HomeScreen(), // 홈 화면을 시작 화면으로 설정
-          LoginScreen(),
-      // JoinScreen(),
+          // LoginScreen(),
+          // JoinScreen(),
+          freeBoardScreen(),
     ),
   );
 }
