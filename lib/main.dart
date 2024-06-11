@@ -19,8 +19,8 @@ void main() {
     const MaterialApp(
       home:
           // HomeScreen(), // 홈 화면을 시작 화면으로 설정
-          // LoginScreen(),
-          JoinScreen(),
+          LoginScreen(),
+      // JoinScreen(),
     ),
   );
 }
