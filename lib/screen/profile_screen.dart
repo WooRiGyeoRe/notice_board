@@ -135,16 +135,23 @@ class _MyBoardState extends State<MyBoard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center, // 수직으로 가운데 정렬
         children: [
+          // 자유게시판
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 50),
-            width: 372,
-            height: 97,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                  color: const Color.fromARGB(255, 224, 235, 247), width: 2),
-            ),
-          ),
+              //margin: const EdgeInsets.symmetric(vertical: 50),
+              width: 372,
+              height: 146,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                    color: const Color.fromARGB(255, 224, 235, 247), width: 2),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    child: const Text('자유 게시판'),
+                  ),
+                ],
+              )),
         ],
       ),
     );
