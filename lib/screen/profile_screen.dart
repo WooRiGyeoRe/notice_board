@@ -66,45 +66,46 @@ class _MyInformationState extends State<MyInformation> {
               ),
             ),
             alignment: Alignment.centerLeft, // 아이콘 왼쪽 정렬
-            padding: const EdgeInsets.only(left: 25), // 왼쪽 여백 추가
+            padding:
+                const EdgeInsets.only(left: 25, right: 25), // 왼쪽과 오른쪽에 여백 추가
             child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(
-                  Icons.account_circle,
-                  size: 60, //imageSize,
-                  color: Color.fromARGB(255, 158, 158, 158),
-                  //color: Color.fromARGB(255, 198, 213, 228),
-                ),
-                SizedBox(width: 15),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Row(
                   children: [
-                    Text(
-                      '닉네임',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 95, 95, 95),
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
+                    Icon(
+                      Icons.account_circle,
+                      size: 60, //imageSize,
+                      color: Color.fromARGB(255, 158, 158, 158),
+                      //color: Color.fromARGB(255, 198, 213, 228),
                     ),
-                    SizedBox(width: 17),
-                    Text(
-                      'myidddd',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 95, 95, 95),
-                        fontSize: 14,
-                      ),
-                    )
+                    SizedBox(width: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '닉네임',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 95, 95, 95),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(width: 17),
+                        Text(
+                          'myidddd',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 95, 95, 95),
+                            fontSize: 14,
+                          ),
+                        )
+                      ],
+                    ),
                   ],
                 ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                  ),
-                ),
                 Icon(
-                  Icons.account_circle,
-                  size: 60, //imageSize,
+                  Icons.mode_edit,
+                  size: 25, //imageSize,
                   color: Color.fromARGB(255, 134, 174, 190),
                 ),
               ],
