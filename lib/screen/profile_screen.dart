@@ -31,7 +31,10 @@ class ProfileScreen extends StatelessWidget {
           shadowColor: Colors.black), // 앱바 그림자
       backgroundColor: Colors.white, // 전체 화면 배경색
       body: const Column(
-        children: [MyInformation()], // FreeBoardBox(), QuestionBoardBox()
+        children: [
+          MyInformation(),
+          MyBoard()
+        ], // FreeBoardBox(), QuestionBoardBox()
       ),
       bottomNavigationBar: const BottomBar(),
     );
@@ -114,5 +117,53 @@ class _MyInformationState extends State<MyInformation> {
         ],
       ),
     );
+  }
+}
+
+// 내가 작성한 게시판 글 및 댓글
+class MyBoard extends StatefulWidget {
+  const MyBoard({super.key});
+
+  @override
+  _MyBoardState createState() => _MyBoardState();
+}
+
+class _MyBoardState extends State<MyBoard> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center, // 수직으로 가운데 정렬
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 50),
+            width: 372,
+            height: 97,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                  color: const Color.fromARGB(255, 224, 235, 247), width: 2),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// 질문게시판
+
+// 로그아웃, 탈퇴하기
+class LogOutBotton extends StatefulWidget {
+  const LogOutBotton({super.key});
+
+  @override
+  _LogOutBottonState createState() => _LogOutBottonState();
+}
+
+class _LogOutBottonState extends State<LogOutBotton> {
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(padding: EdgeInsetsDirectional.all(20));
   }
 }
