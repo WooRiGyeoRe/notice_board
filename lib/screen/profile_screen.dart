@@ -91,7 +91,7 @@ class _MyInformationState extends State<MyInformation> {
                           '닉네임',
                           style: TextStyle(
                               color: Color.fromARGB(255, 95, 95, 95),
-                              fontSize: 15,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold),
                         ),
                         SizedBox(width: 17),
@@ -99,7 +99,7 @@ class _MyInformationState extends State<MyInformation> {
                           'myidddd',
                           style: TextStyle(
                             color: Color.fromARGB(255, 95, 95, 95),
-                            fontSize: 14,
+                            fontSize: 13,
                           ),
                         )
                       ],
@@ -136,22 +136,62 @@ class _MyBoardState extends State<MyBoard> {
         crossAxisAlignment: CrossAxisAlignment.center, // 수직으로 가운데 정렬
         children: [
           // 자유게시판
+          //const SizedBox(width: 25),
           Container(
-              //margin: const EdgeInsets.symmetric(vertical: 50),
-              width: 372,
-              height: 146,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                    color: const Color.fromARGB(255, 224, 235, 247), width: 2),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    child: const Text('자유 게시판'),
+            width: 372,
+            height: 146,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                  color: const Color.fromARGB(255, 224, 235, 247), width: 2),
+            ),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 15),
+                Padding(
+                  padding: EdgeInsets.only(left: 25),
+                  child: Text(
+                    '자유 게시판',
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: Color.fromARGB(255, 95, 95, 95),
+                    ),
                   ),
-                ],
-              )),
+                ),
+                SizedBox(height: 7),
+                Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 25),
+                      child: Text(
+                        '게시글',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Color.fromARGB(255, 170, 170, 170),
+                        ),
+                      ),
+                    ),
+                    VerticalDivider(
+                      // 왜 안되는겨~
+                      thickness: 1,
+                      color: Colors.grey,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 50),
+                      child: Text(
+                        '댓글',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Color.fromARGB(255, 170, 170, 170),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
