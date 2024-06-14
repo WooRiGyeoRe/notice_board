@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
 import 'bottom_navi_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -160,34 +159,34 @@ class _MyBoardState extends State<MyBoard> {
                   ),
                 ),
                 SizedBox(height: 7),
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 25),
-                      child: Text(
-                        '게시글',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Color.fromARGB(255, 170, 170, 170),
+                IntrinsicHeight(
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 25),
+                        child: Text(
+                          '게시글',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Color.fromARGB(255, 170, 170, 170),
+                          ),
                         ),
                       ),
-                    ),
-                    VerticalDivider(
-                      // 왜 안되는겨~
-                      thickness: 1,
-                      color: Colors.grey,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 50),
-                      child: Text(
+                      VerticalDivider(
+                        width: 20,
+                        thickness: 2,
+                        color: Color.fromARGB(255, 197, 74, 74),
+                      ),
+                      // 간격 추가
+                      Text(
                         '댓글',
                         style: TextStyle(
                           fontSize: 20,
                           color: Color.fromARGB(255, 170, 170, 170),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
