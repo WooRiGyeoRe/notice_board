@@ -24,9 +24,26 @@ class freeBoardScreen extends StatelessWidget {
                     fontSize: 35,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(width: 15),
-              Icon(Icons.chat_bubble,
-                  color: Color.fromARGB(255, 158, 158, 158), size: 17),
+              // Expanded -> 오른쪽에 위치한 아이콘 정렬,
+              // 남은 공간을 최대한 활용하여 자식 위젯들을 배치
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.mode_edit,
+                            color: Color.fromARGB(255, 158, 158, 158),
+                            size: 20),
+                        SizedBox(width: 10),
+                        Icon(Icons.delete,
+                            color: Color.fromARGB(255, 158, 158, 158),
+                            size: 20),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
           backgroundColor: const Color.fromARGB(255, 185, 215, 224), // 앱바 배경색
