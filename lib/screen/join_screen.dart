@@ -48,7 +48,7 @@ class _JoinFormState extends State<JoinForm> {
   // 아이디 초기화 변수
   final TextEditingController _idResetController = TextEditingController();
 
-  // 아이디 초기화 변수
+  // 닉네임 초기화 변수
   final TextEditingController _nickResetController = TextEditingController();
 
   // 비밀번호 보기 여부를 관리할 변수
