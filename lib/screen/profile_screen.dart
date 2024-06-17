@@ -37,7 +37,7 @@ class ProfileScreen extends StatelessWidget {
           MyBoard1(), // 자유게시판 글, 댓글
           SizedBox(height: 25),
           MyBoard2(), // 질문게시판 글, 댓글
-          SizedBox(height: 100),
+          SizedBox(height: 80),
           LogOutButton(),
         ],
       ),
