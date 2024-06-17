@@ -5,7 +5,8 @@ import 'screen/bottom_navi_bar.dart'; // BottomNaviBar를 불러옵니다.
 import 'screen/board_screen.dart';
 import 'screen/join_screen.dart';
 import 'screen/login_screen.dart';
-import 'screen/profile_screen.dart'; // LoginScreen
+import 'screen/profile_screen.dart';
+import 'screen/write_screen.dart'; // LoginScreen
 
 void main() {
   // 시스템 UI 오버레이 스타일 설정
@@ -19,11 +20,12 @@ void main() {
 
   runApp(
     MaterialApp(
-        home: //HomeScreen(), // 홈 화면을 시작 화면으로 설정
-            // const LoginScreen(),
-            // const JoinScreen(),
-            // const freeBoardScreen(),
-            const ProfileScreen(),
+        home: const HomeScreen(), // 홈 화면을 시작 화면으로 설정
+        // const LoginScreen(),
+        // const JoinScreen(),
+        // const BoardScreen(),
+        // const ProfileScreen(),
+        // const WriteScreen(),
         theme: ThemeData(fontFamily: "jeongianjeon-Regular"),
         themeMode: ThemeMode.system),
   );

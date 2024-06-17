@@ -1,11 +1,10 @@
 // ignore_for_file: camel_case_types
-
 import 'package:flutter/material.dart';
-
 import 'bottom_navi_bar.dart';
 
-class freeBoardScreen extends StatelessWidget {
-  const freeBoardScreen({super.key});
+// 자유&질문 게시판
+class BoardScreen extends StatelessWidget {
+  const BoardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +16,7 @@ class freeBoardScreen extends StatelessWidget {
               Icon(Icons.chat_bubble, color: Colors.white, size: 30),
               SizedBox(width: 15), // 아이콘과 텍스트 사이의 간격 조절
               Text(
-                '자유 게시판',
+                '게시판',
                 style: TextStyle(
                     fontFamily: "jeongianjeon-Regular",
                     color: Colors.white,

@@ -65,7 +65,7 @@ class _FreeBoardBoxState extends State<FreeBoardBox> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 50), // 위아래 간격 추가
+          margin: const EdgeInsets.symmetric(vertical: 30), // 위아래 간격 추가
           height: 247,
           width: 372,
           decoration: BoxDecoration(
@@ -97,7 +97,7 @@ class _FreeBoardBoxState extends State<FreeBoardBox> {
                           // 더보기 버튼을 눌렀을 때의 동작 추가
                         },
                         child: Container(
-                          margin: const EdgeInsets.only(right: 20), // 오른쪽 여백 추가
+                          margin: const EdgeInsets.only(right: 50), // 오른쪽 여백 추가
                           child: const Text(
                             '더보기',
                             style: TextStyle(
