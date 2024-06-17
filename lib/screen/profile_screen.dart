@@ -31,8 +31,12 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: Colors.white, // 전체 화면 배경색
       body: const Column(
         children: [
+          SizedBox(height: 50),
           MyInformation(),
-          MyBoard()
+          SizedBox(height: 25),
+          MyBoard1(),
+          SizedBox(height: 25),
+          MyBoard2(),
         ], // FreeBoardBox(), QuestionBoardBox()
       ),
       bottomNavigationBar: const BottomBar(),
@@ -56,7 +60,7 @@ class _MyInformationState extends State<MyInformation> {
         mainAxisAlignment: MainAxisAlignment.center, // 수평으로 가운데 정렬
         children: [
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 50),
+            // margin: const EdgeInsets.symmetric(vertical: 50),
             width: 372,
             height: 97,
             decoration: BoxDecoration(
@@ -70,8 +74,9 @@ class _MyInformationState extends State<MyInformation> {
             alignment: Alignment.centerLeft, // 아이콘 왼쪽 정렬
             padding:
                 const EdgeInsets.only(left: 25, right: 25), // 왼쪽과 오른쪽에 여백 추가
+
             child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween, // 위젯의 children 사이의 간격을 조정
               children: [
                 Row(
                   children: [
@@ -119,23 +124,21 @@ class _MyInformationState extends State<MyInformation> {
   }
 }
 
-// 내가 작성한 게시판 글 및 댓글
-class MyBoard extends StatefulWidget {
-  const MyBoard({super.key});
+// 자유게시판
+class MyBoard1 extends StatefulWidget {
+  const MyBoard1({super.key});
 
   @override
-  _MyBoardState createState() => _MyBoardState();
+  _MyBoardState1 createState() => _MyBoardState1();
 }
 
-class _MyBoardState extends State<MyBoard> {
+class _MyBoardState1 extends State<MyBoard1> {
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center, // 수직으로 가운데 정렬
         children: [
-          // 자유게시판
-          //const SizedBox(width: 25),
           Container(
             width: 372,
             height: 146,
@@ -164,26 +167,48 @@ class _MyBoardState extends State<MyBoard> {
                     children: [
                       Padding(
                         padding: EdgeInsets.only(left: 25),
-                        child: Text(
-                          '게시글',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Color.fromARGB(255, 170, 170, 170),
-                          ),
+                        child: Column(
+                          children: [
+                            Text(
+                              '게시글',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 170, 170, 170),
+                              ),
+                            ),
+                            SizedBox(height: 3),
+                            Text(
+                              '10',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 95, 95, 95),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       VerticalDivider(
-                        width: 20,
-                        thickness: 2,
-                        color: Color.fromARGB(255, 197, 74, 74),
+                        width: 50,
+                        thickness: 1.5,
+                        color: Color.fromARGB(255, 219, 219, 219),
                       ),
-                      // 간격 추가
-                      Text(
-                        '댓글',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Color.fromARGB(255, 170, 170, 170),
-                        ),
+                      Column(
+                        children: [
+                          Text(
+                            '댓글',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 170, 170, 170),
+                            ),
+                          ),
+                          Text(
+                            '15',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 95, 95, 95),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -198,8 +223,104 @@ class _MyBoardState extends State<MyBoard> {
 }
 
 // 질문게시판
+class MyBoard2 extends StatefulWidget {
+  const MyBoard2({super.key});
 
-// 로그아웃, 탈퇴하기
+  @override
+  _MyBoardState2 createState() => _MyBoardState2();
+}
+
+class _MyBoardState2 extends State<MyBoard2> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center, // 수직으로 가운데 정렬
+        children: [
+          Container(
+            width: 372,
+            height: 146,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                  color: const Color.fromARGB(255, 224, 235, 247), width: 2),
+            ),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 15),
+                Padding(
+                  padding: EdgeInsets.only(left: 25),
+                  child: Text(
+                    '질문 게시판',
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: Color.fromARGB(255, 95, 95, 95),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 7),
+                IntrinsicHeight(
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 25),
+                        child: Column(
+                          children: [
+                            Text(
+                              '게시글',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 170, 170, 170),
+                              ),
+                            ),
+                            SizedBox(height: 3),
+                            Text(
+                              '7',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 95, 95, 95),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      VerticalDivider(
+                        width: 50,
+                        thickness: 1.5,
+                        color: Color.fromARGB(255, 219, 219, 219),
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            '댓글',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 170, 170, 170),
+                            ),
+                          ),
+                          Text(
+                            '12',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 95, 95, 95),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// 로그아웃
 class LogOutBotton extends StatefulWidget {
   const LogOutBotton({super.key});
 
@@ -213,3 +334,5 @@ class _LogOutBottonState extends State<LogOutBotton> {
     return const Padding(padding: EdgeInsetsDirectional.all(20));
   }
 }
+
+// 탈퇴하기
