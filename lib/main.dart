@@ -6,6 +6,7 @@ import 'screen/board_screen.dart';
 import 'screen/join_screen.dart';
 import 'screen/login_screen.dart';
 import 'screen/profile_screen.dart';
+import 'screen/write_change_screen.dart';
 import 'screen/write_screen.dart'; // LoginScreen
 
 void main() {
@@ -25,7 +26,8 @@ void main() {
             // const JoinScreen(),
             // const BoardScreen(),
             // const ProfileScreen(),
-            const WriteScreen(),
+            // const WriteScreen(),
+            const WriteChangeScreen(),
         theme: ThemeData(fontFamily: "jeongianjeon-Regular"),
         themeMode: ThemeMode.system),
   );
