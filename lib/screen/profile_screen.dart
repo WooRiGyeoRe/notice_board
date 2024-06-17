@@ -34,10 +34,12 @@ class ProfileScreen extends StatelessWidget {
           SizedBox(height: 50),
           MyInformation(),
           SizedBox(height: 25),
-          MyBoard1(),
+          MyBoard1(), // 자유게시판 글, 댓글
           SizedBox(height: 25),
-          MyBoard2(),
-        ], // FreeBoardBox(), QuestionBoardBox()
+          MyBoard2(), // 질문게시판 글, 댓글
+          SizedBox(height: 100),
+          LogOutButton(),
+        ],
       ),
       bottomNavigationBar: const BottomBar(),
     );
@@ -322,19 +324,69 @@ class _MyBoardState2 extends State<MyBoard2> {
   }
 }
 
-// 로그아웃
-class LogOutBotton extends StatefulWidget {
-  const LogOutBotton({super.key});
+// 로그아웃, 탈퇴
+class LogOutButton extends StatefulWidget {
+  const LogOutButton({super.key});
 
   @override
-  _LogOutBottonState createState() => _LogOutBottonState();
+  _LogOutButtonState createState() => _LogOutButtonState();
 }
 
-class _LogOutBottonState extends State<LogOutBotton> {
+class _LogOutButtonState extends State<LogOutButton> {
   @override
   Widget build(BuildContext context) {
-    return const Padding(padding: EdgeInsetsDirectional.all(20));
+    return Column(
+      children: [
+        SizedBox(
+          width: 372,
+          height: 50,
+          child: ElevatedButton(
+            onPressed: () {
+              // 로그아웃 버튼이 눌렸을 때 처리할 로직을 추가하세요.
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: const Color.fromARGB(255, 196, 208, 223),
+            ),
+            child: const Text(
+              '로그아웃',
+              style: TextStyle(fontSize: 25),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.only(left: 20), // 왼쪽 여백 추가
+          child: Row(
+            children: [
+              /*
+            const Text(
+              '회원 탈퇴',
+              style: TextStyle(
+                fontFamily: "jeongianjeon-Regular",
+                fontSize: 14,
+                color: Color.fromARGB(255, 160, 160, 160),
+              ),
+            ),
+            */
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: () {
+                  // '회원 탈퇴하기' 텍스트를 탭했을 때 처리할 로직을 추가
+                },
+                child: const Text(
+                  '회원 탈퇴하기',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 134, 174, 190),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
-
-// 탈퇴하기

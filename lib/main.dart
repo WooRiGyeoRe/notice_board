@@ -20,8 +20,8 @@ void main() {
   runApp(
     MaterialApp(
         home: //HomeScreen(), // 홈 화면을 시작 화면으로 설정
-            //const LoginScreen(),
-            //JoinScreen(),
+            // const LoginScreen(),
+            // const JoinScreen(),
             // const freeBoardScreen(),
             const ProfileScreen(),
         theme: ThemeData(fontFamily: "jeongianjeon-Regular"),
