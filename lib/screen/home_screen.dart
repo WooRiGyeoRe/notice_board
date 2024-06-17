@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:test_1/main.dart';
-
 import 'bottom_navi_bar.dart';
 
 // 앱바 구현하기

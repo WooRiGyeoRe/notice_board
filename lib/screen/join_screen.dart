@@ -51,19 +51,19 @@ class _JoinFormState extends State<JoinForm> {
   // 닉네임 초기화 변수
   final TextEditingController _nickResetController = TextEditingController();
 
-  // 비밀번호 보기 여부를 관리할 변수
-  bool _passwordVisible = false;
-
-  // 비번 초기화 변수
+  // 비밀번호 초기화 변수 (비번1)
   final TextEditingController _passwordResetController =
       TextEditingController();
 
-  // 비밀번호 확인란 보기 여부를 관리할 변수
-  bool _passwordCheckVisible = false;
-
-  // 비밀번호 확인란 초기화 변수
+  // 비밀번호 확인란 초기화 변수 (비번2)
   final TextEditingController _passwordCheckController =
       TextEditingController();
+
+  // 비밀번호 보기 여부를 관리할 변수 (비번1)
+  bool _passwordVisible = false;
+
+  // 비밀번호 확인란 보기 여부를 관리할 변수 (비번2)
+  bool _passwordCheckVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +166,7 @@ class _JoinFormState extends State<JoinForm> {
                     },
                     icon: const Icon(Icons.clear,
                         color: Color.fromARGB(255, 158, 158, 158)),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -199,11 +199,11 @@ class _JoinFormState extends State<JoinForm> {
                       });
                     },
                     icon: Icon(
-                        _passwordVisible
+                        _passwordCheckVisible
                             ? Icons.visibility
                             : Icons.visibility_off,
                         // color: Theme.of(context).primaryColorDark,
-                        color: _passwordVisible
+                        color: _passwordCheckVisible
                             ? const Color.fromARGB(255, 158, 158, 158)
                             : const Color.fromARGB(255, 158, 158, 158)),
                   ),
