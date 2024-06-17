@@ -219,50 +219,58 @@ class _JoinFormState extends State<JoinForm> {
             ),
           ),
           const SizedBox(height: 60),
-          ElevatedButton(
-            onPressed: () {
-              // 로그인 버튼이 눌렸을 때 처리할 로직을 추가하세요.
-            },
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white,
-              backgroundColor: const Color.fromARGB(255, 196, 208, 223),
-              textStyle: const TextStyle(
-                fontFamily: "jeongianjeon-Regular",
-                fontSize: 25,
-              ),
-            ),
-            child: const Text(
-              '회원가입',
-            ),
-          ),
-          const SizedBox(height: 10),
-          Row(
+          Column(
             children: [
-              const Text(
-                '이미 회원이신가요?',
-                style: TextStyle(
-                  fontFamily: "jeongianjeon-Regular",
-                  fontSize: 14,
-                  color: Color.fromARGB(255, 160, 160, 160),
-                ),
-              ),
-              const SizedBox(width: 10),
-              GestureDetector(
-                onTap: () {
-                  // '로그인' 텍스트를 탭했을 때 처리할 로직을 추가
-                },
-                child: const Text(
-                  '로그인',
-                  style: TextStyle(
-                    fontFamily: "jeongianjeon-Regular",
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 134, 174, 190),
+              SizedBox(
+                width: 372,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // 로그인 버튼이 눌렸을 때 처리할 로직을 추가하세요.
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: const Color.fromARGB(255, 196, 208, 223),
+                    textStyle: const TextStyle(
+                      fontFamily: "jeongianjeon-Regular",
+                      fontSize: 25,
+                    ),
+                  ),
+                  child: const Text(
+                    '회원가입',
                   ),
                 ),
               ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  const Text(
+                    '이미 회원이신가요?',
+                    style: TextStyle(
+                      fontFamily: "jeongianjeon-Regular",
+                      fontSize: 14,
+                      color: Color.fromARGB(255, 160, 160, 160),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  GestureDetector(
+                    onTap: () {
+                      // '로그인' 텍스트를 탭했을 때 처리할 로직을 추가
+                    },
+                    child: const Text(
+                      '로그인',
+                      style: TextStyle(
+                        fontFamily: "jeongianjeon-Regular",
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 134, 174, 190),
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ],
-          )
+          ),
         ],
       ),
     );
