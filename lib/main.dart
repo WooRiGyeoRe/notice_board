@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 //import 'package:test_1/screen/home_screen.dart';
 import 'screen/bottom_navi_bar.dart'; // BottomNaviBar를 불러옵니다.
 import 'screen/board_screen.dart';
+import 'screen/comment_screen.dart';
 import 'screen/home_screen.dart';
 import 'screen/join_screen.dart';
 import 'screen/login_screen.dart';
@@ -23,12 +24,13 @@ void main() {
   runApp(
     MaterialApp(
         home: //const HomeScreen(), // 홈 화면을 시작 화면으로 설정
-            // const LoginScreen(),
-            const JoinScreen(),
-        // const BoardScreen(),
-        // const ProfileScreen(),
-        // const WriteScreen(),
-        //const WriteChangeScreen(),
+            // const LoginScreen(),ㄹ
+            // const JoinScreen(),
+            //  const BoardScreen(),
+            //  const ProfileScreen(),
+            //const WriteScreen(),
+            //const WriteChangeScreen(),
+            const CommentScreen(),
         theme: ThemeData(fontFamily: "jeongianjeon-Regular"),
         themeMode: ThemeMode.system),
   );
