@@ -76,7 +76,8 @@ class _MyInformationState extends State<MyInformation> {
                 const EdgeInsets.only(left: 25, right: 25), // 왼쪽과 오른쪽에 여백 추가
 
             child: const Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceBetween, // 위젯의 children 사이의 간격을 조정
+              mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween, // 위젯의 children 사이의 간격을 조정
               children: [
                 Row(
                   children: [
@@ -110,6 +111,7 @@ class _MyInformationState extends State<MyInformation> {
                     ),
                   ],
                 ),
+                // SizedBox(width: 50),
                 Icon(
                   Icons.mode_edit,
                   size: 25, //imageSize,
