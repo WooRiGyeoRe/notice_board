@@ -359,16 +359,6 @@ class _LogOutButtonState extends State<LogOutButton> {
           padding: const EdgeInsets.only(left: 20), // 왼쪽 여백 추가
           child: Row(
             children: [
-              /*
-            const Text(
-              '회원 탈퇴',
-              style: TextStyle(
-                fontFamily: "jeongianjeon-Regular",
-                fontSize: 14,
-                color: Color.fromARGB(255, 160, 160, 160),
-              ),
-            ),
-            */
               const SizedBox(width: 10),
               GestureDetector(
                 onTap: () {

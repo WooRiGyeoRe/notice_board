@@ -8,6 +8,7 @@ class WriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false, // 키보드 오버플로우
       appBar: AppBar(
         title: const Row(
           children: [
@@ -70,6 +71,7 @@ class _WriteFormState extends State<WriteForm> {
               ),
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.start, // 왼쪽 정렬
               children: [
                 Expanded(
                   // Row 내부에서 TextField를 Expanded로 감쌈
@@ -88,6 +90,7 @@ class _WriteFormState extends State<WriteForm> {
                     ),
                   ),
                 ),
+                /* 취소 버튼있는데 굳이 필요할까 싶기도...
                 IconButton(
                   onPressed: () {
                     _titleController.clear(); // 텍스트 필드 내용 초기화
@@ -97,6 +100,7 @@ class _WriteFormState extends State<WriteForm> {
                     color: Color.fromARGB(255, 158, 158, 158),
                   ),
                 ),
+                */
               ],
             ),
           ),
@@ -126,6 +130,49 @@ class _WriteFormState extends State<WriteForm> {
                   color: Color.fromARGB(255, 160, 160, 160),
                 ),
               ),
+            ),
+          ),
+          const SizedBox(height: 50),
+          Padding(
+            padding: const EdgeInsets.only(left: 20), // 여백 설정
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 180,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // 취소 버튼 클릭 시 처리할 로직 추가
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: const Color.fromARGB(255, 196, 208, 223),
+                    ),
+                    child: const Text(
+                      '취소',
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                SizedBox(
+                  width: 180,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // 로그아웃 버튼 클릭 시 처리할 로직 추가
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: const Color.fromARGB(255, 196, 208, 223),
+                    ),
+                    child: const Text(
+                      '확인',
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
