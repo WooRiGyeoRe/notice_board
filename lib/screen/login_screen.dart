@@ -28,12 +28,14 @@ class LoginScreen extends StatelessWidget {
         ),
         backgroundColor: const Color.fromARGB(255, 185, 215, 224),
         elevation: 3,
+        /* 뒤로 가기 버튼
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
+        */
         shadowColor: Colors.black,
       ),
       backgroundColor: Colors.white,

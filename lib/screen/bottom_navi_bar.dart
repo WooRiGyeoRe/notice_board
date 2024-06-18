@@ -48,6 +48,7 @@ class BottomBar extends StatelessWidget {
             label: '프로필', // '로그인'
           ),
         ],
+        /* initialRoute 사용 시...
         // BottomNavigationBar 아이템이 선택되었을 때 처리할 로직을 정의합니다.
         onTap: (index) {
           switch (index) {
@@ -65,6 +66,7 @@ class BottomBar extends StatelessWidget {
               break;
           }
         },
+        */
       ),
     );
   }

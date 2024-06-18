@@ -21,6 +21,7 @@ void main() {
     ),
   );
 
+  /*
   runApp(
     MaterialApp(
       // home 대신 initialRoute를 사용하여 첫 화면을 설정합니다.
@@ -38,5 +39,25 @@ void main() {
       theme: ThemeData(fontFamily: "jeongianjeon-Regular"),
       themeMode: ThemeMode.system,
     ),
+  );
+}
+*/
+
+  runApp(
+    MaterialApp(
+        home: const HomeScreen(), // 홈 화면을 시작 화면으로 설정
+        // const LoginScreen(),
+        // const JoinScreen(),
+        // const BoardScreen(),
+        // const ProfileScreen(),
+        // const WriteScreen(),
+        //const WriteChangeScreen(),
+        //const JoinScreen(),
+        // const BoardScreen(),
+        // const ProfileScreen(),
+        // const WriteScreen(),
+        //const WriteChangeScreen(),
+        theme: ThemeData(fontFamily: "jeongianjeon-Regular"),
+        themeMode: ThemeMode.system),
   );
 }
