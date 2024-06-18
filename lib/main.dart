@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 //import 'package:test_1/screen/home_screen.dart';
+import 'router.dart';
 import 'screen/bottom_navi_bar.dart'; // BottomNaviBar를 불러옵니다.
 import 'screen/board_screen.dart';
 import 'screen/comment_screen.dart';
@@ -20,6 +22,32 @@ void main() {
       statusBarBrightness: Brightness.light, // 상태바 텍스트를 검정색으로 설정 (iOS용)
     ),
   );
+
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
+}
+
+class MyApp extends ConsumerWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider); // GoRouter 설정을 사용
+
+    return MaterialApp.router(
+      routerConfig: router, // GoRouter 설정 적용
+      title: 'go_router',
+      theme: ThemeData(fontFamily: "jeongianjeon-Regular"),
+      themeMode: ThemeMode.system,
+    );
+  }
+}
+
+
+
 
   /*
   runApp(
@@ -43,6 +71,7 @@ void main() {
 }
 */
 
+/* 기존 
   runApp(
     MaterialApp(
         home: const HomeScreen(), // 홈 화면을 시작 화면으로 설정
@@ -61,3 +90,5 @@ void main() {
         themeMode: ThemeMode.system),
   );
 }
+*/
+

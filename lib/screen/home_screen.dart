@@ -14,9 +14,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false, // 키보드 오버플로우
       // 앱바 위제 추가
       appBar: AppBar(
           // 앱 타이틀 설정
+          centerTitle: true,
           title: const Text(
             'Talk tok',
             style: TextStyle(
@@ -96,7 +98,7 @@ class _FreeBoardBoxState extends State<FreeBoardBox> {
                           // 더보기 버튼을 눌렀을 때의 동작 추가
                         },
                         child: Container(
-                          margin: const EdgeInsets.only(right: 50), // 오른쪽 여백 추가
+                          margin: const EdgeInsets.only(right: 20), // 오른쪽 여백 추가
                           child: const Text(
                             '더보기',
                             style: TextStyle(

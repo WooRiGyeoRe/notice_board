@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'bottom_navi_bar.dart';
+import 'package:go_router/go_router.dart';
 
 class JoinScreen extends StatelessWidget {
   const JoinScreen({super.key});

@@ -1,9 +1,17 @@
 import 'dart:ffi';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:go_router/go_router.dart';
 
-class BottomBar extends StatelessWidget {
+class BottomBar extends StatefulWidget {
   const BottomBar({super.key});
+
+  @override
+  _BottomBarState createState() => _BottomBarState();
+}
+
+class _BottomBarState extends State<BottomBar> {
+  int selectedIndex = 0; // 현재 선택된 아이콘 인덱스를 저장하는 변수
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +38,8 @@ class BottomBar extends StatelessWidget {
             const Color.fromARGB(255, 158, 158, 158), // 선택되지 않은 요소 색
         selectedLabelStyle: textStyle,
         unselectedLabelStyle: textStyle,
+        currentIndex: selectedIndex, // 현재 선택된 인덱스 설정
+
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -48,25 +58,27 @@ class BottomBar extends StatelessWidget {
             label: '프로필', // '로그인'
           ),
         ],
-        /* initialRoute 사용 시...
         // BottomNavigationBar 아이템이 선택되었을 때 처리할 로직을 정의합니다.
         onTap: (index) {
+          setState(() {
+            selectedIndex = index; // 아이콘 눌렀을 때 선택된 인덱스로 업데이트
+          });
+
           switch (index) {
             case 0:
-              Navigator.pushNamed(context, '/home');
+              context.go('/');
               break;
             case 1:
-              Navigator.pushNamed(context, '/board');
+              context.go('/board'); // 필요에 따라 추가된 경로
               break;
             case 2:
-              Navigator.pushNamed(context, '/comment');
+              context.go('/comment'); // 필요에 따라 추가된 경로
               break;
             case 3:
-              Navigator.pushNamed(context, '/login');
+              context.go('/login'); // '/login' 경로로 이동
               break;
           }
         },
-        */
       ),
     );
   }

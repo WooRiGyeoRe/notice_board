@@ -12,8 +12,8 @@ class WriteScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Row(
           children: [
-            Icon(Icons.mode_edit, color: Colors.white, size: 30),
-            SizedBox(width: 15), // 아이콘과 텍스트 사이의 간격 조절
+            //Icon(Icons.mode_edit, color: Colors.white, size: 30),
+            //SizedBox(width: 15), // 아이콘과 텍스트 사이의 간격 조절
             Text(
               '글 쓰기',
               style: TextStyle(

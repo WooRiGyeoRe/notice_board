@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'bottom_navi_bar.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -11,6 +12,7 @@ class LoginScreen extends StatelessWidget {
     // Scaffold 레이아웃 위젯 중 하나로, 앱의 기본 구조를 정의
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Row(
           mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬 설정
           crossAxisAlignment: CrossAxisAlignment.center, // 세로 정렬 설정 추가
@@ -28,7 +30,8 @@ class LoginScreen extends StatelessWidget {
         ),
         backgroundColor: const Color.fromARGB(255, 185, 215, 224),
         elevation: 3,
-        /* 뒤로 가기 버튼
+        // 뒤로 가기 버튼
+        /*
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
@@ -153,7 +156,8 @@ class _LoginFormState extends State<LoginForm> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    // 로그인 버튼이 눌렸을 때 처리할 로직을 추가하세요.
+                    // 로그인 버튼이 눌렸을 때 처리할 로직
+                    // context.go('/'); // 홈 화면으로 전환 ---> 아이디, 비밀번호가 맞으면 되도록 바꿔야 됨.
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -180,9 +184,13 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  GestureDetector(
+                  //GestureDetector(
+                  InkWell(
+                    highlightColor: const Color.fromARGB(255, 236, 246, 250),
+                    borderRadius: BorderRadius.circular(20),
                     onTap: () {
-                      // '회원가입' 텍스트를 탭했을 때 처리할 로직을 추가
+                      // '회원가입' 텍스트를 탭했을 때 처리할 로직
+                      context.go('/join');
                     },
                     child: const Text(
                       '회원가입',
