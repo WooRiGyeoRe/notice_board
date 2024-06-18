@@ -9,30 +9,29 @@ class JoinScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          // 앱 타이틀 설정
-          centerTitle: true,
-          title: const Row(
-            mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬 설정
-            crossAxisAlignment: CrossAxisAlignment.center, // 세로 정렬 설정 추가
-            children: [
-              //Icon(Icons.person_add, color: Colors.white, size: 30),
-              //SizedBox(width: 15), // 아이콘과 텍스트 사이의 간격 조절
-              Text(
-                '회원가입',
-                style: TextStyle(
-                    fontFamily: "jeongianjeon-Regular",
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          backgroundColor: const Color.fromARGB(255, 185, 215, 224), // 앱바 배경색
-          elevation: 3, // 그림자 깊이
-          shadowColor: Colors.black), // 앱바 그림자
-      backgroundColor: Colors.white, // 전체 화면 배경색
       resizeToAvoidBottomInset: false, // 키보드 오버플로우 해결
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          '회원가입',
+          style: TextStyle(
+            fontFamily: "jeongianjeon-Regular",
+            color: Colors.white,
+            fontSize: 35,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            context.go('/');
+          },
+        ),
+        backgroundColor: const Color.fromARGB(255, 185, 215, 224), // 앱바 배경색
+        elevation: 3, // 그림자 깊이
+        shadowColor: Colors.black, // 앱바 그림자
+      ),
+      backgroundColor: Colors.white, // 전체 화면 배경색
       body: const Column(
         children: [JoinForm()],
       ),
