@@ -23,33 +23,20 @@ void main() {
 
   runApp(
     MaterialApp(
-        home: //const HomeScreen(), // 홈 화면을 시작 화면으로 설정
-            // const LoginScreen(),ㄹ
-            // const JoinScreen(),
-            //  const BoardScreen(),
-            //  const ProfileScreen(),
-            //const WriteScreen(),
-            //const WriteChangeScreen(),
-            const CommentScreen(),
-        theme: ThemeData(fontFamily: "jeongianjeon-Regular"),
-        themeMode: ThemeMode.system),
+      // home 대신 initialRoute를 사용하여 첫 화면을 설정합니다.
+      initialRoute: '/home',
+      routes: {
+        '/home': (context) => const HomeScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/join': (context) => const JoinScreen(),
+        '/board': (context) => const BoardScreen(),
+        '/profile': (context) => const ProfileScreen(),
+        '/write': (context) => const WriteScreen(),
+        '/write_change': (context) => const WriteChangeScreen(),
+        '/comment': (context) => const CommentScreen(),
+      },
+      theme: ThemeData(fontFamily: "jeongianjeon-Regular"),
+      themeMode: ThemeMode.system,
+    ),
   );
 }
-
-
-  /*
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
-    );
-  }
-}
-*/

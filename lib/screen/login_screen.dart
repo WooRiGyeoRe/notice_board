@@ -11,29 +11,35 @@ class LoginScreen extends StatelessWidget {
     // Scaffold 레이아웃 위젯 중 하나로, 앱의 기본 구조를 정의
     return Scaffold(
       appBar: AppBar(
-          // 앱 타이틀 설정
-          title: const Row(
-            children: [
-              Icon(Icons.power_settings_new, color: Colors.white, size: 30),
-              SizedBox(width: 15), // 아이콘과 텍스트 사이의 간격 조절
-              Text(
-                '로그인',
-                style: TextStyle(
-                    fontFamily: "jeongianjeon-Regular",
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold),
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬 설정
+          crossAxisAlignment: CrossAxisAlignment.center, // 세로 정렬 설정 추가
+          children: [
+            Text(
+              '로그인',
+              style: TextStyle(
+                fontFamily: "jeongianjeon-Regular",
+                color: Colors.white,
+                fontSize: 35,
+                fontWeight: FontWeight.bold,
               ),
-            ],
-          ),
-          backgroundColor: const Color.fromARGB(255, 185, 215, 224), // 앱바 배경색
-          elevation: 3, // 그림자 깊이
-          shadowColor: Colors.black), // 앱바 그림자
-      backgroundColor: Colors.white, // 전체 화면 배경색
+            ),
+          ],
+        ),
+        backgroundColor: const Color.fromARGB(255, 185, 215, 224),
+        elevation: 3,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        shadowColor: Colors.black,
+      ),
+      backgroundColor: Colors.white,
       body: const Column(
         children: [LoginForm()],
       ),
-      // bottomNavigationBar: const BottomBar(),
     );
   }
 }
