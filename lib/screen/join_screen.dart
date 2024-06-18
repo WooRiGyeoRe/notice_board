@@ -11,10 +11,13 @@ class JoinScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           // 앱 타이틀 설정
+          centerTitle: true,
           title: const Row(
+            mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬 설정
+            crossAxisAlignment: CrossAxisAlignment.center, // 세로 정렬 설정 추가
             children: [
-              Icon(Icons.person_add, color: Colors.white, size: 30),
-              SizedBox(width: 15), // 아이콘과 텍스트 사이의 간격 조절
+              //Icon(Icons.person_add, color: Colors.white, size: 30),
+              //SizedBox(width: 15), // 아이콘과 텍스트 사이의 간격 조절
               Text(
                 '회원가입',
                 style: TextStyle(
@@ -227,7 +230,8 @@ class _JoinFormState extends State<JoinForm> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    // 로그인 버튼이 눌렸을 때 처리할 로직을 추가하세요.
+                    // 로그인 버튼이 눌렸을 때 처리할 로직
+                    context.go('/login');
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -254,9 +258,15 @@ class _JoinFormState extends State<JoinForm> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  GestureDetector(
+                  //GestureDetector(
+                  InkWell(
+                    highlightColor:
+                        const Color.fromARGB(255, 236, 246, 250), // 꾸욱
+                    splashColor: const Color.fromARGB(255, 236, 246, 250), // 타닥
+                    borderRadius: BorderRadius.circular(20),
                     onTap: () {
-                      // '로그인' 텍스트를 탭했을 때 처리할 로직을 추가
+                      // '로그인' 텍스트를 탭했을 때 처리할 로직
+                      context.go('/login');
                     },
                     child: const Text(
                       '로그인',

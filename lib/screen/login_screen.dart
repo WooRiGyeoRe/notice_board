@@ -186,7 +186,9 @@ class _LoginFormState extends State<LoginForm> {
                   const SizedBox(width: 10),
                   //GestureDetector(
                   InkWell(
-                    highlightColor: const Color.fromARGB(255, 236, 246, 250),
+                    highlightColor:
+                        const Color.fromARGB(255, 236, 246, 250), // 꾸욱
+                    splashColor: const Color.fromARGB(255, 236, 246, 250), // 타닥
                     borderRadius: BorderRadius.circular(20),
                     onTap: () {
                       // '회원가입' 텍스트를 탭했을 때 처리할 로직
