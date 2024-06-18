@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'bottom_navi_bar.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -13,33 +14,24 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬 설정
-          crossAxisAlignment: CrossAxisAlignment.center, // 세로 정렬 설정 추가
-          children: [
-            Text(
-              '로그인',
-              style: TextStyle(
-                fontFamily: "jeongianjeon-Regular",
-                color: Colors.white,
-                fontSize: 35,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+        title: const Text(
+          '로그인',
+          style: TextStyle(
+            fontFamily: "jeongianjeon-Regular",
+            color: Colors.white,
+            fontSize: 35,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        backgroundColor: const Color.fromARGB(255, 185, 215, 224),
-        elevation: 3,
-        // 뒤로 가기 버튼
-        /*
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context);
+            context.go('/');
           },
         ),
-        */
+        backgroundColor: const Color.fromARGB(255, 185, 215, 224),
         shadowColor: Colors.black,
+        elevation: 3,
       ),
       backgroundColor: Colors.white,
       body: const Column(

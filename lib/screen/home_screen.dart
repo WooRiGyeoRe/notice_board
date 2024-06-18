@@ -31,10 +31,12 @@ class HomeScreen extends StatelessWidget {
           elevation: 3, // 그림자 깊이
           shadowColor: Colors.black), // 앱바 그림자
       backgroundColor: Colors.white, // 전체 화면 배경색
+
       body: const Column(
         children: [FreeBoardBox(), QuestionBoardBox()],
       ),
       bottomNavigationBar: const BottomBar(),
+
       /*
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
