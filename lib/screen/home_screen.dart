@@ -4,6 +4,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:test_1/main.dart';
 import 'bottom_navi_bar.dart';
 
@@ -22,9 +23,9 @@ class HomeScreen extends StatelessWidget {
           title: const Text(
             'Talk tok',
             style: TextStyle(
-                fontFamily: "jeongianjeon-Regular",
+                fontFamily: "Cafe24Meongi-W", //"jeongianjeon-Regular",
                 color: Colors.white,
-                fontSize: 40,
+                fontSize: 50,
                 fontWeight: FontWeight.bold),
           ),
           backgroundColor: const Color.fromARGB(255, 185, 215, 224), // 앱바 배경색
@@ -97,7 +98,8 @@ class _FreeBoardBoxState extends State<FreeBoardBox> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // 더보기 버튼을 눌렀을 때의 동작 추가
+                          // 더보기 버튼을 눌렀을 때의 동작
+                          context.go('/board');
                         },
                         child: Container(
                           margin: const EdgeInsets.only(right: 20), // 오른쪽 여백 추가

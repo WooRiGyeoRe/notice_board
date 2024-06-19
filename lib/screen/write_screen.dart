@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 
 // 글 쓰기&수정
 class WriteScreen extends StatelessWidget {
@@ -84,17 +85,6 @@ class _WriteFormState extends State<WriteForm> {
                     ),
                   ),
                 ),
-                /* 취소 버튼있는데 굳이 필요할까 싶기도...
-                IconButton(
-                  onPressed: () {
-                    _titleController.clear(); // 텍스트 필드 내용 초기화
-                  },
-                  icon: const Icon(
-                    Icons.clear,
-                    color: Color.fromARGB(255, 158, 158, 158),
-                  ),
-                ),
-                */
               ],
             ),
           ),
@@ -136,7 +126,7 @@ class _WriteFormState extends State<WriteForm> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      // 취소 버튼 클릭 시 처리할 로직 추가
+                      context.go('/board');
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
