@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 //import 'package:test_1/screen/home_screen.dart';
 import 'router.dart';
 import 'screen/bottom_navi_bar.dart'; // BottomNaviBar를 불러옵니다.
@@ -32,6 +33,8 @@ void main() {
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
+
+  // 날씨
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

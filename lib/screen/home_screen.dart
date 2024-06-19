@@ -1,9 +1,12 @@
 // 앱 기본 화면(메인 화면)
 // ignore_for_file: unused_element
 
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 import 'package:go_router/go_router.dart';
 import 'package:test_1/main.dart';
 import 'bottom_navi_bar.dart';
@@ -34,7 +37,10 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.white, // 전체 화면 배경색
 
       body: const Column(
-        children: [FreeBoardBox(), QuestionBoardBox()],
+        children: [
+          FreeBoardBox(),
+          QuestionBoardBox(),
+        ], // WeatherWidget()
       ),
       bottomNavigationBar: const BottomBar(),
 
@@ -216,7 +222,7 @@ class _QuestionBoardBoxState extends State<QuestionBoardBox> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 50), // 위아래 간격 추가
+        //margin: const EdgeInsets.symmetric(vertical: 1), // 위아래 간격 추가
         height: 247,
         width: 372,
         decoration: BoxDecoration(

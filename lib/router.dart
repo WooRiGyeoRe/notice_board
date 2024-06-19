@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'screen/board_screen.dart';
+import 'screen/comment_screen.dart';
 import 'screen/home_screen.dart';
 import 'screen/login_screen.dart';
 import 'screen/write_screen.dart';
@@ -52,11 +53,17 @@ final routerProvider = Provider(
           path: '/join',
           builder: (context, state) => JoinScreen(key: state.pageKey),
         ),
-        // 글작성 페이지
+        // 글 작성 페이지
         GoRoute(
           name: 'write',
           path: '/write',
           builder: (context, state) => WriteScreen(key: state.pageKey),
+        ),
+        // 댓글 작성 페이지
+        GoRoute(
+          name: 'comment',
+          path: '/comment',
+          builder: (context, state) => CommentScreen(key: state.pageKey),
         ),
       ],
     );
