@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 // 글 쓰기&수정
@@ -10,18 +11,11 @@ class WriteScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false, // 키보드 오버플로우
       appBar: AppBar(
-        title: const Row(
-          children: [
-            //Icon(Icons.mode_edit, color: Colors.white, size: 30),
-            //SizedBox(width: 15), // 아이콘과 텍스트 사이의 간격 조절
-            Text(
-              '글 쓰기',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold),
-            ),
-          ],
+        centerTitle: true,
+        title: const Text(
+          '글 쓰기',
+          style: TextStyle(
+              color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
         ),
         backgroundColor: const Color.fromARGB(255, 185, 215, 224), // 앱바 배경색
         elevation: 3, // 그림자 깊이

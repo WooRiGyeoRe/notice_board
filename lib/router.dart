@@ -52,6 +52,12 @@ final routerProvider = Provider(
           path: '/join',
           builder: (context, state) => JoinScreen(key: state.pageKey),
         ),
+        // 글작성 페이지
+        GoRoute(
+          name: 'write',
+          path: '/write',
+          builder: (context, state) => WriteScreen(key: state.pageKey),
+        ),
       ],
     );
   },

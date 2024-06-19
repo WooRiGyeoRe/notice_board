@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'bottom_navi_bar.dart';
 
 // 자유&질문 게시판
@@ -19,16 +20,30 @@ class BoardScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Icon(Icons.mode_edit,
-                color: Color.fromARGB(255, 255, 255, 255), size: 20),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Icon(Icons.delete,
-                color: Color.fromARGB(255, 255, 255, 255), size: 20),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            context.go('/');
+          },
+        ),
+        actions: [
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.mode_edit,
+                    color: Color.fromARGB(255, 255, 255, 255), size: 20),
+                onPressed: () {
+                  context.go('/write');
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete,
+                    color: Color.fromARGB(255, 255, 255, 255), size: 20),
+                onPressed: () {
+                  context.go('/board');
+                },
+              ),
+            ],
           ),
         ],
         backgroundColor: const Color.fromARGB(255, 185, 215, 224),
