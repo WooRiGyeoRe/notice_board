@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -37,6 +38,7 @@ class LoginScreen extends StatelessWidget {
       body: const Column(
         children: [LoginForm()],
       ),
+      bottomNavigationBar: const BottomBar(),
     );
   }
 }
@@ -58,7 +60,7 @@ class _LoginFormState extends State<LoginForm> {
   // 비번 초기화 변수
   final TextEditingController _passwordResetController =
       TextEditingController();
-
+  final dio = Dio();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -200,6 +202,19 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ],
           ),
+          const SizedBox(
+            height: 59,
+          ),
+          /*
+          GestureDetector(
+            onTap: () async {
+              final test =
+                  await dio.get('http://10.0.2.2:4000/api/board/free?page=1');
+              print(test.data['data'][0]['no']);
+            },
+            child: const Text('버튼'),
+          ),
+          */
         ],
       ),
     );

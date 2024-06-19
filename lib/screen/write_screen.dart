@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 
 // 글 쓰기&수정
 class WriteScreen extends StatelessWidget {
-  const WriteScreen({super.key});
+  const WriteScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

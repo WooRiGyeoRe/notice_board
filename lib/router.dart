@@ -6,6 +6,7 @@ import 'screen/home_screen.dart';
 import 'screen/login_screen.dart';
 import 'screen/write_screen.dart';
 import 'screen/join_screen.dart';
+import 'screen/bottom_navi_bar.dart';
 
 // 고라우터 기본 구조
 /*
@@ -37,16 +38,11 @@ final routerProvider = Provider(
         GoRoute(
           name: 'board',
           path: '/board',
-          builder: (context, state) => BoardScreen(key: state.pageKey),
+          builder: (context, state) => BoardScreen(
+            key: state.pageKey,
+            extra: state.extra!,
+          ),
         ),
-        // 질문 게시판
-        /* 
-        GoRoute(
-          name: 'write',
-          path: '/write',
-          builder: (context, state) => const WriteScreen(),
-        ),
-        */
         // 회원가입 페이지
         GoRoute(
           name: 'join',
@@ -57,7 +53,9 @@ final routerProvider = Provider(
         GoRoute(
           name: 'write',
           path: '/write',
-          builder: (context, state) => WriteScreen(key: state.pageKey),
+          builder: (context, state) => WriteScreen(
+            key: state.pageKey,
+          ),
         ),
         // 댓글 작성 페이지
         GoRoute(

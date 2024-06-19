@@ -1,6 +1,4 @@
-import 'dart:ffi';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 
 class BottomBar extends StatefulWidget {
@@ -11,7 +9,30 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
-  int selectedIndex = 0; // 현재 선택된 아이콘 인덱스를 저장하는 변수
+  int _selectedIndex = 0; // 현재 선택된 인덱스를 저장하는 상태 변수
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index; // 아이템 탭될 때 상태 업데이트
+
+      switch (index) {
+        case 0:
+          context.go('/');
+          break;
+        case 1:
+          context.go('/board', extra: 'free');
+          break;
+        case 2:
+          context.go('/board', extra: 'q&a');
+          break;
+        case 3:
+          context.go('/login');
+          break;
+        default:
+          break;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +59,8 @@ class _BottomBarState extends State<BottomBar> {
             const Color.fromARGB(255, 158, 158, 158), // 선택되지 않은 요소 색
         selectedLabelStyle: textStyle,
         unselectedLabelStyle: textStyle,
-        currentIndex: selectedIndex, // 현재 선택된 인덱스 설정
-
+        currentIndex: _selectedIndex, // 현재 선택된 인덱스
+        onTap: _onItemTapped, // 아이템 탭될 때 콜백 함수
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -54,31 +75,10 @@ class _BottomBarState extends State<BottomBar> {
             label: '질문',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person), // 프로필을 나타내는 아이콘으로 변경
+            icon: Icon(Icons.person),
             label: '프로필', // '로그인'
           ),
         ],
-        // BottomNavigationBar 아이템이 선택되었을 때 처리할 로직을 정의합니다.
-        onTap: (index) {
-          setState(() {
-            selectedIndex = index; // 아이콘 눌렀을 때 선택된 인덱스로 업데이트
-          });
-
-          switch (index) {
-            case 0:
-              context.go('/');
-              break;
-            case 1:
-              context.go('/board'); // 필요에 따라 추가된 경로
-              break;
-            case 2:
-              context.go('/comment'); // 필요에 따라 추가된 경로
-              break;
-            case 3:
-              context.go('/login'); // '/login' 경로로 이동
-              break;
-          }
-        },
       ),
     );
   }

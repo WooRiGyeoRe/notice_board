@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'bottom_navi_bar.dart';
@@ -228,9 +229,28 @@ class _JoinFormState extends State<JoinForm> {
                 width: 372,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    try {
+                      final dio = Dio();
+                      final test = await dio.post(
+                          'http://10.0.2.2:4000/api/auth/local/join',
+                          data: {
+                            'id': _idResetController.text,
+                            'nick': _nickResetController.text,
+                            'password': _passwordResetController.text,
+                          });
+
+                      print(test);
+                    } catch (e) {
+                      print(e);
+                    }
+
                     // 로그인 버튼이 눌렸을 때 처리할 로직
-                    context.go('/login');
+                    //context.go('/login');
+                    print(_idResetController.text);
+                    print(_nickResetController.text);
+                    print(_passwordResetController.text);
+                    print(_passwordCheckController.text);
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,

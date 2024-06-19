@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
+import 'bottom_navi_bar.dart';
+
 // 글 쓰기&수정
 class CommentScreen extends StatelessWidget {
   const CommentScreen({super.key});
@@ -17,12 +19,6 @@ class CommentScreen extends StatelessWidget {
           style: TextStyle(
               color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            context.go('/');
-          },
-        ),
         backgroundColor: const Color.fromARGB(255, 185, 215, 224), // 앱바 배경색
         elevation: 3, // 그림자 깊이
         shadowColor: Colors.black, // 앱바 그림자
@@ -33,6 +29,7 @@ class CommentScreen extends StatelessWidget {
           WriteForm(),
         ],
       ),
+      bottomNavigationBar: const BottomBar(),
     );
   }
 }
@@ -93,7 +90,8 @@ class _WriteFormState extends State<WriteForm> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      // 취소 버튼 클릭 시 처리할 로직 추가
+                      context
+                          .go('/board'); // 게시판 첫화면보다는 댓글을 쓴 게시물로 돌아가는 걸로 바꾸도록~
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -110,9 +108,7 @@ class _WriteFormState extends State<WriteForm> {
                   width: 180,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // 로그아웃 버튼 클릭 시 처리할 로직 추가
-                    },
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: const Color.fromARGB(255, 196, 208, 223),

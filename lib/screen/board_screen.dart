@@ -4,16 +4,24 @@ import 'bottom_navi_bar.dart';
 
 // 자유&질문 게시판
 class BoardScreen extends StatelessWidget {
-  const BoardScreen({super.key});
+  const BoardScreen({
+    super.key,
+    required this.extra,
+  });
+
+  final Object extra;
 
   @override
   Widget build(BuildContext context) {
+    print('======a');
+    print(extra);
+    print('======a');
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          '게시판',
-          style: TextStyle(
+        title: Text(
+          extra == 'free' ? '자유 게시판' : '질문 게시판',
+          style: const TextStyle(
             fontFamily: "jeongianjeon-Regular",
             color: Colors.white,
             fontSize: 35,

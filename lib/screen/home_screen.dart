@@ -105,7 +105,7 @@ class _FreeBoardBoxState extends State<FreeBoardBox> {
                       GestureDetector(
                         onTap: () {
                           // 더보기 버튼을 눌렀을 때의 동작
-                          context.go('/board');
+                          context.go('/board', extra: 'free');
                         },
                         child: Container(
                           margin: const EdgeInsets.only(right: 20), // 오른쪽 여백 추가
@@ -252,6 +252,7 @@ class _QuestionBoardBoxState extends State<QuestionBoardBox> {
                     GestureDetector(
                       onTap: () {
                         // 더보기 버튼 눌렀을 때 동작 추가
+                        context.go('/board', extra: 'q&a');
                       },
                       child: Container(
                         margin: const EdgeInsets.only(right: 20),

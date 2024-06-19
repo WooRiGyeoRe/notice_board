@@ -34,8 +34,6 @@ void main() {
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
-  // 날씨
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider); // GoRouter 설정을 사용
