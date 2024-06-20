@@ -149,9 +149,20 @@ class _LoginFormState extends State<LoginForm> {
                 width: 372,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // 로그인 버튼이 눌렸을 때 처리할 로직
-                    // context.go('/'); // 홈 화면으로 전환 ---> 아이디, 비밀번호가 맞으면 되도록 바꿔야 됨.
+                  onPressed: () async {
+                    try {
+                      // 로그인 버튼이 눌렸을 때 처리할 로직
+                      // context.go('/'); // 홈 화면으로 전환
+                      //---> 아이디, 비밀번호가 맞으면 되도록 바꿔야 됨.
+                      final dio = Dio();
+                      final test = await dio
+                          .post('http://10.0.2.2:4000/api/auth/login', data: {
+                        'id': _idResetController.text,
+                        'password': _passwordResetController.text,
+                      });
+                    } catch (e) {
+                      // print(e);
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -205,7 +216,7 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(
             height: 59,
           ),
-          /*
+          /*  예시
           GestureDetector(
             onTap: () async {
               final test =

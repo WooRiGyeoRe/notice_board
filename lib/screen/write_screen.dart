@@ -137,8 +137,7 @@ class _WriteFormState extends State<WriteForm> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      // (자유글쓰기->자유게시판) / (질문쓰기->질문게시판)
-                      // extra == 'free' ? 'free Write' : 'q&a Write';
+                      // (자유글쓰기->자유게시판) / (질문작성->질문게시판)
                       String board =
                           widget.extra == 'free Write' ? 'free' : 'q&a';
                       context.go('/board', extra: board);
