@@ -5,18 +5,23 @@ import 'package:go_router/go_router.dart';
 
 // 글 쓰기&수정
 class WriteScreen extends StatelessWidget {
-  const WriteScreen({
-    super.key,
-  });
+  const WriteScreen({super.key, required this.extra});
+
+  final Object extra;
 
   @override
   Widget build(BuildContext context) {
+    print('======write');
+    print(extra);
+    print('======');
     return Scaffold(
       resizeToAvoidBottomInset: false, // 키보드 오버플로우
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
           '글 쓰기',
+          // extra == 'free' ? '자유글 작성' : '질문 작성',
+          // '글 쓰기',
           style: TextStyle(
               color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
         ),
@@ -146,7 +151,8 @@ class _WriteFormState extends State<WriteForm> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      // 로그아웃 버튼 클릭 시 처리할 로직 추가
+                      // 취소 버튼 클릭 시 처리할 로직 추가
+                      context.go('/board', extra: 'free');
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,

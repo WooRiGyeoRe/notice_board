@@ -19,7 +19,7 @@ void main() {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // 상태바 배경색을 투명하게 설정
-      statusBarIconBrightness: Brightness.dark, // 상태바 아이콘을 검정색으로 설정 (안드로이드용)
+      statusBarIconBrightness: Brightness.light, // 상태바 아이콘을 검정색으로 설정 (안드로이드용)
       statusBarBrightness: Brightness.light, // 상태바 텍스트를 검정색으로 설정 (iOS용)
     ),
   );
@@ -36,7 +36,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider); // GoRouter 설정을 사용
+    final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
       routerConfig: router, // GoRouter 설정 적용

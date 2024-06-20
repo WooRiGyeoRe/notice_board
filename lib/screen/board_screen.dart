@@ -13,9 +13,9 @@ class BoardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('======a');
+    print('======board');
     print(extra);
-    print('======a');
+    print('======');
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -41,7 +41,10 @@ class BoardScreen extends StatelessWidget {
                 icon: const Icon(Icons.mode_edit,
                     color: Color.fromARGB(255, 255, 255, 255), size: 20),
                 onPressed: () {
-                  context.go('/write');
+                  String boardWrite =
+                      extra == 'free' ? 'free Write' : 'q&a Write';
+                  context.go('/write',
+                      extra: boardWrite); // boardWrite 변수 자체를 전달
                 },
               ),
               IconButton(

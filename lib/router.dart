@@ -55,6 +55,7 @@ final routerProvider = Provider(
           path: '/write',
           builder: (context, state) => WriteScreen(
             key: state.pageKey,
+            extra: state.extra!,
           ),
         ),
         // 댓글 작성 페이지
