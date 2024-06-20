@@ -46,7 +46,6 @@ final routerProvider = Provider(
           ),
         ),
 
-        /*
         // 자유게시판
         GoRoute(
           name: 'free',
@@ -65,7 +64,6 @@ final routerProvider = Provider(
             extra: 'q&a', // 질문게시판
           ),
         ),
-        */
 
         // 회원가입 페이지
         GoRoute(

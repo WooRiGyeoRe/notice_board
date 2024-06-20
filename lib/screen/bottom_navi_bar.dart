@@ -41,10 +41,10 @@ class BottomBar extends ConsumerWidget {
           context.go('/');
           break;
         case 1:
-          context.go('/board', extra: 'free');
+          context.go('/free'); // ('/board', extra: 'free');
           break;
         case 2:
-          context.go('/board', extra: 'q&a');
+          context.go('/q&a'); // ('/board', extra: 'q&a');
           break;
         case 3:
           context.go('/login');
