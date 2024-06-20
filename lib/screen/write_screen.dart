@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -157,10 +158,26 @@ class _WriteFormState extends State<WriteForm> {
                   width: 180,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // 확인 버튼 클릭 시 처리할 로직
+                    onPressed: () async {
+                      try {
+                        final dio = Dio();
+                        final test = await dio.post(
+                            'http://10.0.2.2:4000//api/board/free',
+                            data: {
+                              'title': _titleController.text,
+                              'content': _contentController.text
+                            });
+                        print(test);
+                      } catch (e) {
+                        print(e);
+                      }
+                      print(_titleController.text);
+                      print(_contentController.text);
 
-                      context.go('/board');
+                      // 확인 버튼 클릭 시 로직
+                      String board =
+                          widget.extra == 'free Write' ? 'free' : 'q&a';
+                      context.go('/board', extra: board);
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,

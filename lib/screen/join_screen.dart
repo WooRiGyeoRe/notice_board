@@ -9,6 +9,9 @@ class JoinScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('======profile');
+    print('join');
+    print('======');
     return Scaffold(
       resizeToAvoidBottomInset: false, // 키보드 오버플로우 해결
       appBar: AppBar(
@@ -229,6 +232,8 @@ class _JoinFormState extends State<JoinForm> {
                 width: 372,
                 height: 50,
                 child: ElevatedButton(
+                  // 로그인 버튼이 눌렸을 때 처리할 로직
+                  //context.go('/login');
                   onPressed: () async {
                     try {
                       final dio = Dio();
@@ -244,9 +249,6 @@ class _JoinFormState extends State<JoinForm> {
                     } catch (e) {
                       print(e);
                     }
-
-                    // 로그인 버튼이 눌렸을 때 처리할 로직
-                    //context.go('/login');
                     print(_idResetController.text);
                     print(_nickResetController.text);
                     print(_passwordResetController.text);

@@ -11,6 +11,9 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('======profile');
+    print('login');
+    print('======');
     // Scaffold 레이아웃 위젯 중 하나로, 앱의 기본 구조를 정의
     return Scaffold(
       appBar: AppBar(
@@ -160,9 +163,12 @@ class _LoginFormState extends State<LoginForm> {
                         'id': _idResetController.text,
                         'password': _passwordResetController.text,
                       });
+                      print(test);
                     } catch (e) {
-                      // print(e);
+                      print(e);
                     }
+                    print(_idResetController.text);
+                    print(_passwordResetController.text);
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
