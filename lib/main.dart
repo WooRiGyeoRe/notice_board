@@ -24,6 +24,7 @@ void main() {
     ),
   );
 
+  // ProviderScope -> 생성한 모든 프로바이더의 상태를 저장하는 위젯
   runApp(
     const ProviderScope(
       child: MyApp(),

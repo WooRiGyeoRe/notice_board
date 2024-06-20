@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'bottom_navi_bar.dart';
 
@@ -18,6 +19,7 @@ class BoardScreen extends StatelessWidget {
     print('======');
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -65,9 +67,73 @@ class BoardScreen extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       body: const Column(
-          // children: [LoginForm()],
-          ),
+        children: [Page()],
+      ),
       bottomNavigationBar: const BottomBar(),
+    );
+  }
+}
+
+// 페이지 이동 , 검색 창 만들기...
+class Page extends StatefulWidget {
+  const Page({super.key});
+
+  @override
+  _PageState createState() => _PageState();
+}
+
+class _PageState extends State<Page> {
+  @override
+  Widget build(BuildContext context) {
+    // 게시판 검색 변수
+    final TextEditingController contentFindController = TextEditingController();
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 650),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  keyboardType: TextInputType.text,
+                  controller: contentFindController,
+                  decoration: const InputDecoration(
+                      filled: true, fillColor: Colors.black),
+                ),
+              ),
+              SizedBox(
+                height: 40,
+                width: 80,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // 검색 버튼 눌렀을 때 로직
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromARGB(255, 196, 208, 223), // 글자색
+                    textStyle: const TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
+                  child: const Text(
+                    '검색',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: "jeongianjeon-Regular",
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
