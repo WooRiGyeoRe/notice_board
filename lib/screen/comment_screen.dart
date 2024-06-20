@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -52,11 +53,11 @@ class _WriteFormState extends State<WriteForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // 내용
-          const SizedBox(height: 50),
+          const SizedBox(height: 30),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15), // 좌우 내부 여백 추가
             width: 372,
-            height: 300,
+            height: 200,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
@@ -73,7 +74,7 @@ class _WriteFormState extends State<WriteForm> {
               ),
               decoration: const InputDecoration(
                 border: InputBorder.none,
-                hintText: '내용을 입력하세요.',
+                hintText: '댓글을 입력하세요.',
                 hintStyle: TextStyle(
                   color: Color.fromARGB(255, 160, 160, 160),
                 ),
@@ -108,7 +109,22 @@ class _WriteFormState extends State<WriteForm> {
                   width: 180,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      try {
+                        final dio = Dio();
+                        final test = await dio.post(
+                            'http://10.0.2.2:4000//api/comment/free',
+                            data: {
+                              // "boardNo":
+                              'content': _contentController.text,
+                            });
+                        print(test);
+                      } catch (e) {
+                        print(e);
+                      }
+                      print(_contentController.text);
+                      // print(boardNo);
+                    },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: const Color.fromARGB(255, 196, 208, 223),
