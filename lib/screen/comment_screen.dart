@@ -80,7 +80,7 @@ class _WriteFormState extends State<WriteForm> {
               ),
             ),
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.only(left: 20), // 여백 설정
             child: Row(

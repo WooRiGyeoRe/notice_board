@@ -5,9 +5,10 @@ import 'package:go_router/go_router.dart';
 
 // 글 쓰기&수정
 class WriteScreen extends StatelessWidget {
-  const WriteScreen({super.key, required this.extra});
-
+  //final Object? extra;
   final Object extra;
+
+  const WriteScreen({super.key, required this.extra});
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +31,9 @@ class WriteScreen extends StatelessWidget {
         shadowColor: Colors.black, // 앱바 그림자
       ),
       backgroundColor: Colors.white, // 전체 화면 배경색
-      body: const Column(
+      body: Column(
         children: [
-          WriteForm(),
+          WriteForm(extra: extra),
         ],
       ),
     );
@@ -40,7 +41,10 @@ class WriteScreen extends StatelessWidget {
 }
 
 class WriteForm extends StatefulWidget {
-  const WriteForm({super.key});
+  const WriteForm({super.key, required this.extra});
+
+  //final Object? extra;
+  final Object extra;
 
   @override
   _WriteFormState createState() => _WriteFormState();
@@ -123,7 +127,7 @@ class _WriteFormState extends State<WriteForm> {
               ),
             ),
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.only(left: 20), // 여백 설정
             child: Row(
@@ -133,6 +137,8 @@ class _WriteFormState extends State<WriteForm> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
+                      // (자유글쓰기->자유게시판) / (질문쓰기->질문게시판)
+                      // extra == 'free' ? 'free Write' : 'q&a Write';
                       context.go('/board');
                     },
                     style: ElevatedButton.styleFrom(
@@ -151,8 +157,9 @@ class _WriteFormState extends State<WriteForm> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      // 취소 버튼 클릭 시 처리할 로직 추가
-                      context.go('/board', extra: 'free');
+                      // 확인 버튼 클릭 시 처리할 로직
+
+                      context.go('/board');
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,

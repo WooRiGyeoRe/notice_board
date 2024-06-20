@@ -4,18 +4,19 @@ import 'bottom_navi_bar.dart';
 
 // 자유&질문 게시판
 class BoardScreen extends StatelessWidget {
+  final Object extra;
+
   const BoardScreen({
     super.key,
     required this.extra,
   });
-
-  final Object extra;
 
   @override
   Widget build(BuildContext context) {
     print('======board');
     print(extra);
     print('======');
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
