@@ -40,9 +40,9 @@ final routerProvider = Provider(
           path: '/board',
           builder: (context, state) => BoardScreen(
             key: state.pageKey,
-            extra: state.extra ??
-                'default', // state.extra가 null일 경우 'default' 값으로 설정
-            // extra: state.extra!,
+            // extra: state.extra ??
+            //'default', // state.extra가 null일 경우 'default' 값으로 설정
+            extra: state.extra!,
           ),
         ),
 
@@ -64,7 +64,6 @@ final routerProvider = Provider(
             extra: 'q&a', // 질문게시판
           ),
         ),
-
         // 회원가입 페이지
         GoRoute(
           name: 'join',
@@ -80,7 +79,7 @@ final routerProvider = Provider(
             extra: state.extra!,
           ),
         ),
-        // 댓글 작성 페이지
+        // 댓글 작성 페이지(free comment, q&a comment)
         GoRoute(
           name: 'comment',
           path: '/comment',

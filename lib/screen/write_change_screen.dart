@@ -90,17 +90,6 @@ class _WriteFormState extends State<WriteForm> {
                     ),
                   ),
                 ),
-                /* 취소 버튼있는데 굳이 필요할까 싶기도...
-                IconButton(
-                  onPressed: () {
-                    _titleController.clear(); // 텍스트 필드 내용 초기화
-                  },
-                  icon: const Icon(
-                    Icons.clear,
-                    color: Color.fromARGB(255, 158, 158, 158),
-                  ),
-                ),
-                */
               ],
             ),
           ),

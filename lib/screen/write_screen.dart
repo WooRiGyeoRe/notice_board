@@ -173,7 +173,6 @@ class _WriteFormState extends State<WriteForm> {
                       }
                       print(_titleController.text);
                       print(_contentController.text);
-
                       // 확인 버튼 클릭 시 로직
                       String board =
                           widget.extra == 'free Write' ? 'free' : 'q&a';
