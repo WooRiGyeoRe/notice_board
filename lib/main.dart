@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
-//import 'package:test_1/screen/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'router.dart';
-import 'screen/bottom_navi_bar.dart'; // BottomNaviBar를 불러옵니다.
+import 'screen/bottom_navi_bar.dart';
 import 'screen/board_screen.dart';
 import 'screen/comment_screen.dart';
 import 'screen/home_screen.dart';
@@ -12,9 +12,9 @@ import 'screen/join_screen.dart';
 import 'screen/login_screen.dart';
 import 'screen/profile_screen.dart';
 import 'screen/write_change_screen.dart';
-import 'screen/write_screen.dart'; // LoginScreen
+import 'screen/write_screen.dart';
 
-void main() {
+void main() async {
   // 시스템 UI 오버레이 스타일 설정
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -27,6 +27,12 @@ void main() {
   // 앱 시작될 때 키보드 자동 숨기기
   WidgetsFlutterBinding.ensureInitialized();
   SystemChannels.textInput.invokeMethod('TextInput.hide');
+
+  // SharedPreferences 인스턴스 생성
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('key', 'value'); // setter-데이터 저장
+  // String testString  = sp.getString(); // getter-데이터 읽기
+  // delete-데이터 삭제
 
   // ProviderScope -> 생성한 모든 프로바이더의 상태를 저장하는 위젯
   runApp(

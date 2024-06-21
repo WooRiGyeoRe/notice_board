@@ -119,7 +119,12 @@ class _SearchState extends State<Search> {
                         const TextStyle(
                             color: Color.fromARGB(255, 158, 158, 158)),
                       ),
-                      trailing: const [Icon(Icons.search)],
+                      trailing: const [
+                        Icon(
+                          Icons.search,
+                          color: Color.fromARGB(255, 136, 159, 163),
+                        ),
+                      ],
                       backgroundColor: const WidgetStatePropertyAll(
                           Color.fromARGB(255, 239, 242, 245)),
                       shadowColor: const WidgetStatePropertyAll(
