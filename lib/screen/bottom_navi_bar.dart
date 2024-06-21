@@ -12,8 +12,7 @@ class BottomBar extends ConsumerWidget {
     final selectedIndex = ref.watch(selectedIndexProvider);
 
     void onItemTapped(int index) {
-      ref.read(selectedIndexProvider.notifier).state = index;
-
+      ref.read(selectedIndexProvider.notifier).update((state) => index);
       // context.go() 대신 context.replace()사용하면
       // 화면 전환 애니메이션 효과 제거 가능
 
