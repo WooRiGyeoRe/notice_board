@@ -11,11 +11,12 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+          centerTitle: true,
           // 앱 타이틀 설정
           title: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(Icons.person, color: Colors.white, size: 30),
-              SizedBox(width: 15), // 아이콘과 텍스트 사이의 간격 조절
               Text(
                 '프로필',
                 style: TextStyle(

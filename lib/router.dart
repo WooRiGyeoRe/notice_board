@@ -4,6 +4,7 @@ import 'screen/board_screen.dart';
 import 'screen/comment_screen.dart';
 import 'screen/home_screen.dart';
 import 'screen/login_screen.dart';
+import 'screen/profile_screen.dart';
 import 'screen/write_screen.dart';
 import 'screen/join_screen.dart';
 import 'screen/bottom_navi_bar.dart';
@@ -33,6 +34,12 @@ final routerProvider = Provider(
           name: 'login',
           path: '/login',
           builder: (context, state) => LoginScreen(key: state.pageKey),
+        ),
+        // 프로필 탭 -> 로그인 -> 내 프로필
+        GoRoute(
+          name: 'profile',
+          path: '/profile',
+          builder: (context, state) => ProfileScreen(key: state.pageKey),
         ),
         // 게시판(free, q&a)
         GoRoute(

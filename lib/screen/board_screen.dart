@@ -55,7 +55,7 @@ class BoardScreen extends StatelessWidget {
                     color: Color.fromARGB(255, 255, 255, 255), size: 20),
                 onPressed: () {
                   // context.go('/board'); // 선택된 글이 삭제된 후, 게시판 화면으로 전환
-                  context.go('/comment');
+                  context.go('/profile');
                 },
               ),
             ],

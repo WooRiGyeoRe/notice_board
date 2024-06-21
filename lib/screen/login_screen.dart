@@ -108,6 +108,7 @@ class _LoginFormState extends State<LoginForm> {
             obscureText: !_passwordVisible, // obscureText: true, // 비밀번호 가리기
             decoration: InputDecoration(
               labelText: '비밀번호',
+              // helperText: '*필수 입력값입니다.',
               labelStyle: const TextStyle(
                 fontFamily: "jeongianjeon-Regular",
                 color: Color.fromARGB(255, 95, 95, 95),
