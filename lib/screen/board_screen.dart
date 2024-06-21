@@ -18,73 +18,78 @@ class BoardScreen extends StatelessWidget {
     print(extra);
     print('======');
 
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          extra == 'free' ? '자유 게시판' : '질문 게시판',
-          style: const TextStyle(
-            fontFamily: "jeongianjeon-Regular",
-            color: Colors.white,
-            fontSize: 35,
-            fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            extra == 'free' ? '자유 게시판' : '질문 게시판',
+            style: const TextStyle(
+              fontFamily: "jeongianjeon-Regular",
+              color: Colors.white,
+              fontSize: 35,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              context.go('/');
+            },
+          ),
+          actions: [
+            Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.mode_edit,
+                      color: Color.fromARGB(255, 255, 255, 255), size: 20),
+                  onPressed: () {
+                    String boardWrite =
+                        extra == 'free' ? 'free Write' : 'q&a Write';
+                    context.go('/write',
+                        extra: boardWrite); // boardWrite 변수 자체를 전달
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete,
+                      color: Color.fromARGB(255, 255, 255, 255), size: 20),
+                  onPressed: () {
+                    // context.go('/board'); // 선택된 글이 삭제된 후, 게시판 화면으로 전환
+                    context.go('/profile');
+                  },
+                ),
+              ],
+            ),
+          ],
+          backgroundColor: const Color.fromARGB(255, 185, 215, 224),
+          elevation: 3,
+          shadowColor: Colors.black,
+        ),
+        backgroundColor: Colors.white,
+        body: const SingleChildScrollView(
+          child: Column(
+            children: [Search()],
           ),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            context.go('/');
-          },
-        ),
-        actions: [
-          Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.mode_edit,
-                    color: Color.fromARGB(255, 255, 255, 255), size: 20),
-                onPressed: () {
-                  String boardWrite =
-                      extra == 'free' ? 'free Write' : 'q&a Write';
-                  context.go('/write',
-                      extra: boardWrite); // boardWrite 변수 자체를 전달
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete,
-                    color: Color.fromARGB(255, 255, 255, 255), size: 20),
-                onPressed: () {
-                  // context.go('/board'); // 선택된 글이 삭제된 후, 게시판 화면으로 전환
-                  context.go('/profile');
-                },
-              ),
-            ],
-          ),
-        ],
-        backgroundColor: const Color.fromARGB(255, 185, 215, 224),
-        elevation: 3,
-        shadowColor: Colors.black,
+        bottomNavigationBar: const BottomBar(),
       ),
-      backgroundColor: Colors.white,
-      body: const SingleChildScrollView(
-        child: Column(
-          children: [Page()],
-        ),
-      ),
-      bottomNavigationBar: const BottomBar(),
     );
   }
 }
 
-// 페이지 이동 , 검색 창 만들기...
-class Page extends StatefulWidget {
-  const Page({super.key});
+//검색 창 만들기...
+class Search extends StatefulWidget {
+  const Search({super.key});
 
   @override
-  _PageState createState() => _PageState();
+  _SearchState createState() => _SearchState();
 }
 
-class _PageState extends State<Page> {
+class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     // 게시판 검색 변수
@@ -97,59 +102,32 @@ class _PageState extends State<Page> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Padding(
-              padding: EdgeInsets.only(top: 650),
+              padding: EdgeInsets.only(top: 30),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Wrap(
+              alignment: WrapAlignment.center,
               children: [
-                SizedBox(
-                  height: 45,
-                  width: 200,
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    controller: contentFindController,
-                    textAlignVertical: TextAlignVertical.center, // 상하 중앙 정렬
-                    onTapOutside: (event) => FocusManager.instance.primaryFocus
-                        ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: const Color.fromARGB(255, 239, 239, 239),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide.none, // 테두리 제거
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: SizedBox(
+                    height: 40,
+                    // 검색창 위젯 기본 제공
+                    child: SearchBar(
+                      controller: contentFindController,
+                      hintText: '검색어를 입력하세요 : ) ',
+                      hintStyle: WidgetStateProperty.all(
+                        const TextStyle(
+                            color: Color.fromARGB(255, 158, 158, 158)),
                       ),
-                      //포커스 됐을 때 스타일 설정
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(right: 5),
-                ),
-                SizedBox(
-                  height: 45,
-                  width: 80,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // 검색 버튼 눌렀을 때 로직
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor:
-                          const Color.fromARGB(255, 196, 208, 223), // 글자색
-                      textStyle: const TextStyle(
-                        fontSize: 25,
-                      ),
-                    ),
-                    child: const Text(
-                      '검색',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: "jeongianjeon-Regular",
-                      ),
+                      trailing: const [Icon(Icons.search)],
+                      backgroundColor: const WidgetStatePropertyAll(
+                          Color.fromARGB(255, 239, 242, 245)),
+                      shadowColor: const WidgetStatePropertyAll(
+                          Color.fromARGB(255, 226, 226, 226)),
+                      elevation: const WidgetStatePropertyAll(3),
+                      // constraints: BoxConstraints(maxWidth: 300, maxHeight: 100), 크기 설정
+                      shape: WidgetStateProperty.all(ContinuousRectangleBorder(
+                          borderRadius: BorderRadius.circular(20))),
                     ),
                   ),
                 ),

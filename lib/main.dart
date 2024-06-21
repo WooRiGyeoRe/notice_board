@@ -24,6 +24,10 @@ void main() {
     ),
   );
 
+  // 앱 시작될 때 키보드 자동 숨기기
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChannels.textInput.invokeMethod('TextInput.hide');
+
   // ProviderScope -> 생성한 모든 프로바이더의 상태를 저장하는 위젯
   runApp(
     const ProviderScope(
