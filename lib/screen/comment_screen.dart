@@ -67,6 +67,8 @@ class _WriteFormState extends State<WriteForm> {
             ),
             child: TextField(
               keyboardType: TextInputType.multiline,
+              onTapOutside: (event) => FocusManager.instance.primaryFocus
+                  ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
               maxLines: null, // 줄 바꿈
               controller: _contentController,
               style: const TextStyle(

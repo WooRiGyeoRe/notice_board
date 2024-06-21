@@ -40,9 +40,9 @@ final routerProvider = Provider(
           path: '/board',
           builder: (context, state) => BoardScreen(
             key: state.pageKey,
-            // extra: state.extra ??
-            //'default', // state.extra가 null일 경우 'default' 값으로 설정
-            extra: state.extra!,
+            extra: state.extra ??
+                'default', // state.extra가 null일 경우 'default' 값으로 설정
+            // extra: state.extra!,
           ),
         ),
 

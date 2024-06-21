@@ -84,6 +84,8 @@ class _WriteFormState extends State<WriteForm> {
                   // Row 내부에서 TextField를 Expanded로 감쌈
                   child: TextField(
                     keyboardType: TextInputType.text,
+                    onTapOutside: (event) => FocusManager.instance.primaryFocus
+                        ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
                     controller: _titleController,
                     style: const TextStyle(
                       color: Color.fromARGB(255, 95, 95, 95),
@@ -114,6 +116,8 @@ class _WriteFormState extends State<WriteForm> {
             ),
             child: TextField(
               keyboardType: TextInputType.multiline,
+              onTapOutside: (event) => FocusManager.instance.primaryFocus
+                  ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
               maxLines: null, // 줄 바꿈
               controller: _contentController,
               style: const TextStyle(

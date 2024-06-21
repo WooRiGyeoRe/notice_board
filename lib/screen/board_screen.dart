@@ -19,7 +19,7 @@ class BoardScreen extends StatelessWidget {
     print('======');
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -66,8 +66,10 @@ class BoardScreen extends StatelessWidget {
         shadowColor: Colors.black,
       ),
       backgroundColor: Colors.white,
-      body: const Column(
-        children: [Page()],
+      body: const SingleChildScrollView(
+        child: Column(
+          children: [Page()],
+        ),
       ),
       bottomNavigationBar: const BottomBar(),
     );
@@ -89,50 +91,72 @@ class _PageState extends State<Page> {
     final TextEditingController contentFindController = TextEditingController();
 
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 650),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  keyboardType: TextInputType.text,
-                  controller: contentFindController,
-                  decoration: const InputDecoration(
-                      filled: true, fillColor: Colors.black),
-                ),
-              ),
-              SizedBox(
-                height: 40,
-                width: 80,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // 검색 버튼 눌렀을 때 로직
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor:
-                        const Color.fromARGB(255, 196, 208, 223), // 글자색
-                    textStyle: const TextStyle(
-                      fontSize: 25,
-                    ),
-                  ),
-                  child: const Text(
-                    '검색',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontFamily: "jeongianjeon-Regular",
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: 650),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 45,
+                  width: 200,
+                  child: TextField(
+                    keyboardType: TextInputType.text,
+                    controller: contentFindController,
+                    textAlignVertical: TextAlignVertical.center, // 상하 중앙 정렬
+                    onTapOutside: (event) => FocusManager.instance.primaryFocus
+                        ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color.fromARGB(255, 239, 239, 239),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none, // 테두리 제거
+                      ),
+                      //포커스 됐을 때 스타일 설정
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          )
-        ],
+                const Padding(
+                  padding: EdgeInsets.only(right: 5),
+                ),
+                SizedBox(
+                  height: 45,
+                  width: 80,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // 검색 버튼 눌렀을 때 로직
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor:
+                          const Color.fromARGB(255, 196, 208, 223), // 글자색
+                      textStyle: const TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                    child: const Text(
+                      '검색',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: "jeongianjeon-Regular",
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

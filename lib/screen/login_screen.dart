@@ -71,9 +71,11 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: 50),
+          const SizedBox(height: 40),
           TextField(
             keyboardType: TextInputType.text,
+            onTapOutside: (event) => FocusManager.instance.primaryFocus
+                ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
             controller: _idResetController, // 컨트롤러 연결
             decoration: InputDecoration(
               labelText: '아이디',
@@ -100,6 +102,8 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 50),
           TextField(
             keyboardType: TextInputType.text,
+            onTapOutside: (event) => FocusManager.instance.primaryFocus
+                ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
             controller: _passwordResetController, // 컨트롤러 연결
             obscureText: !_passwordVisible, // obscureText: true, // 비밀번호 가리기
             decoration: InputDecoration(

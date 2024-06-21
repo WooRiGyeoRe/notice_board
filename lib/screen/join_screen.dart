@@ -79,9 +79,11 @@ class _JoinFormState extends State<JoinForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: 50),
+          const SizedBox(height: 40),
           TextField(
             keyboardType: TextInputType.text,
+            onTapOutside: (event) => FocusManager.instance.primaryFocus
+                ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
             controller: _idResetController,
             decoration: InputDecoration(
               labelText: '아이디',
@@ -108,6 +110,8 @@ class _JoinFormState extends State<JoinForm> {
           const SizedBox(height: 20),
           TextField(
             keyboardType: TextInputType.text,
+            onTapOutside: (event) => FocusManager.instance.primaryFocus
+                ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
             controller: _nickResetController,
             decoration: InputDecoration(
               labelText: '닉네임',
@@ -134,6 +138,8 @@ class _JoinFormState extends State<JoinForm> {
           const SizedBox(height: 20),
           TextField(
             keyboardType: TextInputType.text,
+            onTapOutside: (event) => FocusManager.instance.primaryFocus
+                ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
             controller: _passwordResetController,
             obscureText: !_passwordVisible,
             decoration: InputDecoration(
@@ -180,6 +186,8 @@ class _JoinFormState extends State<JoinForm> {
           ),
           const SizedBox(height: 20),
           TextField(
+            onTapOutside: (event) => FocusManager.instance.primaryFocus
+                ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
             keyboardType: TextInputType.text,
             controller: _passwordCheckController,
             obscureText: !_passwordCheckVisible,
