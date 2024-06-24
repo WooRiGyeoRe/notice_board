@@ -308,7 +308,7 @@ class _JoinFormState extends State<JoinForm> {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ],

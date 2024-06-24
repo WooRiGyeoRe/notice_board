@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../service/auth_service.dart';
 import 'bottom_navi_bar.dart';
 import 'home_screen.dart';
 
@@ -61,8 +60,6 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  // LoginModel 인스턴스 생성
-
   // 아이디 초기화 변수
   final TextEditingController _idResetController = TextEditingController();
 
@@ -72,7 +69,9 @@ class _LoginFormState extends State<LoginForm> {
   // 비번 초기화 변수
   final TextEditingController _passwordResetController =
       TextEditingController();
+
   final dio = Dio();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -154,7 +153,7 @@ class _LoginFormState extends State<LoginForm> {
                     },
                     icon: const Icon(Icons.clear,
                         color: Color.fromARGB(255, 158, 158, 158)),
-                  )
+                  ),
                 ],
               ),
             ),
