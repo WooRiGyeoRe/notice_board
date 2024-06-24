@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'router.dart';
+import 'dart:convert'; // JSON Encode, Decode를 위한 패키지
 import 'screen/bottom_navi_bar.dart';
 import 'screen/board_screen.dart';
 import 'screen/comment_screen.dart';
@@ -13,6 +14,7 @@ import 'screen/login_screen.dart';
 import 'screen/profile_screen.dart';
 import 'screen/write_change_screen.dart';
 import 'screen/write_screen.dart';
+import 'model/model.dart';
 
 void main() async {
   // 시스템 UI 오버레이 스타일 설정

@@ -1,10 +1,14 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../service/auth_service.dart';
 import 'bottom_navi_bar.dart';
 import 'home_screen.dart';
 
@@ -16,6 +20,7 @@ class LoginScreen extends StatelessWidget {
     print('======profile');
     print('login');
     print('======');
+
     // Scaffold 레이아웃 위젯 중 하나로, 앱의 기본 구조를 정의
     return Scaffold(
       appBar: AppBar(
@@ -56,6 +61,11 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  final dio = Dio();
+
+  // AuthService 인스턴스 선언
+  late AuthService authService;
+
   // 아이디 초기화 변수
   final TextEditingController _idResetController = TextEditingController();
 
@@ -65,7 +75,7 @@ class _LoginFormState extends State<LoginForm> {
   // 비번 초기화 변수
   final TextEditingController _passwordResetController =
       TextEditingController();
-  final dio = Dio();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -161,34 +171,12 @@ class _LoginFormState extends State<LoginForm> {
                 child: ElevatedButton(
                   onPressed: () async {
                     try {
-                      final dio = Dio();
-                      final test = await dio
-                          .post('http://10.0.2.2:4000/api/auth/login', data: {
-                        'id': _idResetController.text,
-                        'password': _passwordResetController.text,
-                      });
-                      final data = test.data['data'];
-                      // SharedPreferences 인스턴스 생성
-                      final SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      await prefs.setString('token', data['token']);
-                      print('--------');
-                      print(prefs.getString('token'));
-                      // 로그인 버튼이 눌렸을 때 처리할 로직
-                      context.go('/'); // 홈 화면으로 전환
-                      //---> 아이디, 비밀번호가 맞으면 되도록 바꿔야 됨.
-                    } catch (e) {
-                      print('[로그인 버튼]');
-                      // 여기서 넘어온 e는 타입을 알 수 없음.
-                      // 그래서 연두색 타입으로 강제로 바꿔줌
-                      DioException error = e as DioException;
-                      // 에러 안에 응답 안에 응답코드로 구분해서
-                      // 아이디 없음이나 비밀번호 틀림 등 에러 처리
-                      // 물음표인 이유는 응답코드가 없을 수도 있어서
-                      print(error.response?.statusCode);
-                    }
-                    print(_idResetController.text);
-                    print(_passwordResetController.text);
+                      await authService.login(_idResetController.text,
+                          _passwordResetController.text);
+                      context.go('/');
+                    } catch (e) {}
+                    // 예외 발생
+                    print('로그인 실패');
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -249,16 +237,6 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(
             height: 59,
           ),
-          /*  예시
-          GestureDetector(
-            onTap: () async {
-              final test =
-                  await dio.get('http://10.0.2.2:4000/api/board/free?page=1');
-              print(test.data['data'][0]['no']);
-            },
-            child: const Text('버튼'),
-          ),
-          */
         ],
       ),
     );
