@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../service/auth_service.dart';
 import 'bottom_navi_bar.dart';
 import 'home_screen.dart';
 
@@ -167,21 +168,23 @@ class _LoginFormState extends State<LoginForm> {
                 child: ElevatedButton(
                   onPressed: () async {
                     try {
-                      final dio = Dio();
-                      final test = await dio
-                          .post('http://10.0.2.2:4000/api/auth/login', data: {
-                        'id': _idResetController.text,
-                        'password': _passwordResetController.text,
-                      });
-                      final data = test.data['data'];
-                      // SharedPreferences 인스턴스 생성
-                      final SharedPreferences prefs =
+                      final test = await AuthService().login(
+                          _idResetController.text,
+                          _passwordResetController.text);
+                      // final test = await dio
+                      //     .post('http://10.0.2.2:4000/api/auth/login', data: {
+                      //   'id': _idResetController.text,
+                      //   'password': _passwordResetController.text,
+                      // });
+                      // final data = test.data['data'];
+                      // // SharedPreferences 인스턴스 생성
+                      /* final SharedPreferences prefs =
                           await SharedPreferences.getInstance();
-                      await prefs.setString('token', data['token']);
+                      await prefs.setString('token', data['token']); */
                       print('--------');
-                      print(prefs.getString('token'));
+                      //print(prefs.getString('token'));
                       // 로그인 버튼이 눌렸을 때 처리할 로직
-                      context.go('/'); // 홈 화면으로 전환
+                      //context.go('/'); // 홈 화면으로 전환
                       //---> 아이디, 비밀번호가 맞으면 되도록 바꿔야 됨.
                     } catch (e) {
                       print('[로그인 버튼]');
@@ -191,7 +194,9 @@ class _LoginFormState extends State<LoginForm> {
                       // 에러 안에 응답 안에 응답코드로 구분해서
                       // 아이디 없음이나 비밀번호 틀림 등 에러 처리
                       // 물음표인 이유는 응답코드가 없을 수도 있어서
-                      print(error.response?.statusCode);
+                      print(e);
+                      print(error.response?.statusCode); // statusCode 스위치문....
+                      _showErrorDialog('확인');
                     }
                     print(_idResetController.text);
                     print(_passwordResetController.text);
@@ -257,6 +262,29 @@ class _LoginFormState extends State<LoginForm> {
           ),
         ],
       ),
+    );
+  }
+
+  // 로그인 실패
+  void _showErrorDialog(
+    String errorMessage,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('로그인 실패'),
+          content: Text(errorMessage),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('확인'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
