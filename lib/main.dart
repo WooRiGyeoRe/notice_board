@@ -30,9 +30,15 @@ void main() async {
 
   // SharedPreferences 인스턴스 생성
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString('key', 'value'); // setter-데이터 저장
-  // String testString  = sp.getString(); // getter-데이터 읽기
-  // delete-데이터 삭제
+
+  // setter- shared preferences에 데이터 저장
+  // await 변수명.set자료형(키, 밸류);
+
+  // getter-shared preferences에서 데이터 불러오기
+  // 자료형? 변수명 = SharedPreferences인스턴스.get자료형(키);
+
+  // delete-shared preferences에 존재하는 데이터 삭제하기
+  // await SharedPreferences인스턴스.remove(키);
 
   // ProviderScope -> 생성한 모든 프로바이더의 상태를 저장하는 위젯
   runApp(

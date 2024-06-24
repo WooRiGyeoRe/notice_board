@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'bottom_navi_bar.dart';
 import 'home_screen.dart';
 
@@ -159,18 +161,31 @@ class _LoginFormState extends State<LoginForm> {
                 child: ElevatedButton(
                   onPressed: () async {
                     try {
-                      // 로그인 버튼이 눌렸을 때 처리할 로직
-                      // context.go('/'); // 홈 화면으로 전환
-                      //---> 아이디, 비밀번호가 맞으면 되도록 바꿔야 됨.
                       final dio = Dio();
                       final test = await dio
                           .post('http://10.0.2.2:4000/api/auth/login', data: {
                         'id': _idResetController.text,
                         'password': _passwordResetController.text,
                       });
-                      print(test);
+                      final data = test.data['data'];
+                      // SharedPreferences 인스턴스 생성
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setString('token', data['token']);
+                      print('--------');
+                      print(prefs.getString('token'));
+                      // 로그인 버튼이 눌렸을 때 처리할 로직
+                      context.go('/'); // 홈 화면으로 전환
+                      //---> 아이디, 비밀번호가 맞으면 되도록 바꿔야 됨.
                     } catch (e) {
-                      print(e);
+                      print('[로그인 버튼]');
+                      // 여기서 넘어온 e는 타입을 알 수 없음.
+                      // 그래서 연두색 타입으로 강제로 바꿔줌
+                      DioException error = e as DioException;
+                      // 에러 안에 응답 안에 응답코드로 구분해서
+                      // 아이디 없음이나 비밀번호 틀림 등 에러 처리
+                      // 물음표인 이유는 응답코드가 없을 수도 있어서
+                      print(error.response?.statusCode);
                     }
                     print(_idResetController.text);
                     print(_passwordResetController.text);
@@ -219,6 +234,13 @@ class _LoginFormState extends State<LoginForm> {
                         color: Color.fromARGB(255, 134, 174, 190),
                       ),
                     ),
+                  ),
+                  const SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.go('/');
+                    },
+                    child: const Text('로그아웃'),
                   ),
                 ],
               ),
