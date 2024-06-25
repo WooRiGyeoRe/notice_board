@@ -196,7 +196,7 @@ class _LoginFormState extends State<LoginForm> {
                       // 물음표인 이유는 응답코드가 없을 수도 있어서
                       print(e);
                       print(error.response?.statusCode); // statusCode 스위치문....
-                      _showErrorDialog('확인');
+                      _showErrorDialog('');
                     }
                     print(_idResetController.text);
                     print(_passwordResetController.text);

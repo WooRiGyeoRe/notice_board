@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// 로그인&로그아웃
+// 로그인&로그아웃 기능
 class AuthService {
   final Dio _dio = Dio(); // Dio 인스턴스 생성
 

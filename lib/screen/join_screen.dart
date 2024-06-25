@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_1/service/join_service.dart';
 import 'bottom_navi_bar.dart';
 import 'package:go_router/go_router.dart';
 
@@ -72,6 +74,99 @@ class _JoinFormState extends State<JoinForm> {
   // 비밀번호 확인란 보기 여부를 관리할 변수 (비번2)
   bool _passwordCheckVisible = false;
 
+  /*
+  late final JoinService _joinService;
+
+  @override
+  void initState() {
+    super.initState();
+    _joinService = JoinService(Dio());
+  }
+  */
+
+  bool _idValid = true; // 아이디 검증 // 초기 에러 메세지 숨김
+  bool _idInput = false; // 아이디 입력 여부
+  bool _nickValid = true;
+  bool _nickInput = false;
+  bool _passwordValid = true;
+  bool _passwordInput = false;
+
+  void _validateId(String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    // existingId = 현존하는 아이디
+    final existingId = prefs.getString('id'); // 로컬 스토리지에서 기존 아이디 가져오기
+
+    setState(() {
+      _idInput = true; // 사용자가 입력을 시작하면 true로 설정
+      // 아이디 영어 소문자 5글자 이상
+      _idValid = RegExp(r'^[a-z0-9]{5,}$').hasMatch(value);
+      // 기존 아이디와 동일한 경우 검증 실패
+      // 널이 아니다 = 현존한다 && 현존 아이디 == 입력값이다 -> 둘다 참이면 입력한 아이디는 false
+      if (existingId != null && existingId == value) {
+        _idValid = false;
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('알림'),
+                content: const Text('이미 존재하는 아이디입니다.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                    },
+                    child: const Text('확인'),
+                  ),
+                ],
+              );
+            });
+      }
+    });
+  }
+
+  void _validateNick(String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    // existingId = 현존하는 아이디
+    final existingNick = prefs.getString('nick'); // 로컬 스토리지에서 기존 아이디 가져오기
+
+    setState(() {
+      _nickInput = true; // 사용자가 입력을 시작하면 true로 설정
+      // 닉네임 한글, 영어 소문자 한글자 이상
+      _nickValid = RegExp(r'^[a-z가-힣0-9]{1,}$').hasMatch(value);
+      // 기존 닉네임과 동일한 경우 검증 실패
+      // 널이 아니다 = 현존한다 && 현존 아이디 == 입력값이다 -> 둘다 참이면 입력한 닉네임은 false
+      if (existingNick != null && existingNick == value) {
+        _nickValid = false;
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('알림'),
+                content: const Text('이미 존재하는 닉네임입니다.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                    },
+                    child: const Text('확인'),
+                  ),
+                ],
+              );
+            });
+      }
+    });
+  }
+
+  // 비밀번호 유효성 검사 함수
+  void _validatePassword(String value) {
+    setState(() {
+      _passwordInput = true; // 비밀번호 입력 여부 true로 설정
+      // 정규식을 사용한 비밀번호 유효성 검사:  특수문자 최소 1개 + 영문자, 숫자 조합으로 5글자 이상
+      _passwordValid =
+          RegExp(r'^(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$').hasMatch(value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -85,6 +180,7 @@ class _JoinFormState extends State<JoinForm> {
             onTapOutside: (event) => FocusManager.instance.primaryFocus
                 ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
             controller: _idResetController,
+            onChanged: _validateId, // 아이디 입력값이 변경될 때마다 검증 함수 호출
             decoration: InputDecoration(
               labelText: '아이디',
               labelStyle: const TextStyle(
@@ -101,10 +197,18 @@ class _JoinFormState extends State<JoinForm> {
               suffixIcon: IconButton(
                 onPressed: () {
                   _idResetController.clear(); // 텍스트 필드 내용 초기화
+                  _validateId(''); // 초기화 후 검증 상태 업데이트
+                  setState(() {
+                    _idInput = false; // 텍스트 필드 초기화 시 다시 false로 설정
+                  });
                 },
                 icon: const Icon(Icons.clear,
                     color: Color.fromARGB(255, 158, 158, 158)),
               ),
+              // 검증 실패 시 에러 메시지, 사용자가 입력을 시작한 후에만 표시
+              errorText: _idInput && !_idValid
+                  ? '영어 소문자, 숫자를 조합하여 5글자 이상 입력해주세요.'
+                  : null,
             ),
           ),
           const SizedBox(height: 20),
@@ -113,6 +217,7 @@ class _JoinFormState extends State<JoinForm> {
             onTapOutside: (event) => FocusManager.instance.primaryFocus
                 ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
             controller: _nickResetController,
+            onChanged: _validateNick,
             decoration: InputDecoration(
               labelText: '닉네임',
               labelStyle: const TextStyle(
@@ -129,10 +234,15 @@ class _JoinFormState extends State<JoinForm> {
               suffixIcon: IconButton(
                 onPressed: () {
                   _nickResetController.clear(); // 텍스트 필드 내용 초기화
+                  _validateNick('');
+                  setState(() {
+                    _nickInput = false;
+                  });
                 },
                 icon: const Icon(Icons.clear,
                     color: Color.fromARGB(255, 158, 158, 158)),
               ),
+              errorText: _nickInput && !_nickValid ? '한 글자 이상 입력해주세요.' : null,
             ),
           ),
           const SizedBox(height: 20),
@@ -141,6 +251,7 @@ class _JoinFormState extends State<JoinForm> {
             onTapOutside: (event) => FocusManager.instance.primaryFocus
                 ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
             controller: _passwordResetController,
+            onChanged: _validatePassword,
             obscureText: !_passwordVisible,
             decoration: InputDecoration(
               labelText: '비밀번호',
@@ -176,12 +287,19 @@ class _JoinFormState extends State<JoinForm> {
                   IconButton(
                     onPressed: () {
                       _passwordResetController.clear(); // 텍스트 필드 내용 초기화
+                      _validatePassword('');
+                      setState(() {
+                        _passwordInput = false;
+                      });
                     },
                     icon: const Icon(Icons.clear,
                         color: Color.fromARGB(255, 158, 158, 158)),
                   ),
                 ],
               ),
+              errorText: _passwordInput && !_passwordValid
+                  ? '특수문자, 영문자, 숫자를 조합하여 5글자 이상 입력하세요.'
+                  : null,
             ),
           ),
           const SizedBox(height: 20),
