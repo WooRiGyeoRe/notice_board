@@ -54,6 +54,9 @@ class JoinForm extends StatefulWidget {
 }
 
 class _JoinFormState extends State<JoinForm> {
+  // SharedPreferences 변수 선언
+  late SharedPreferences prefs;
+
   // 아이디 초기화 변수
   final TextEditingController _idResetController = TextEditingController();
 
@@ -93,7 +96,19 @@ class _JoinFormState extends State<JoinForm> {
   bool _password2Input = false;
   bool _password2Valid = true;
 
+  @override
+  void initState() {
+    super.initState();
+    _initSharedPreferences();
+  }
+
+  // SharedPreferences 초기화 메서드
+  void _initSharedPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
   void _validateId(String value) async {
+// SharedPreferences가 로드되기 전에는 처리하지 않음
     final prefs = await SharedPreferences.getInstance();
     // existingId = 현존하는 아이디
     final existingId = prefs.getString('id'); // 로컬 스토리지에서 기존 아이디 가져오기
@@ -102,59 +117,62 @@ class _JoinFormState extends State<JoinForm> {
       _idInput = true; // 사용자가 입력을 시작하면 true로 설정
       // 아이디 영어 소문자 5글자 이상
       _idValid = RegExp(r'^[a-z0-9]{5,}$').hasMatch(value);
+
       // 기존 아이디와 동일한 경우 검증 실패
-      // 널이 아니다 = 현존한다 && 현존 아이디 == 입력값이다 -> 둘다 참이면 입력한 아이디는 false
+      // 널이 아니다 = 현존한다 && 현존 아이디 == 입력값이다 -> 둘다 참이면 입력한 아이디는 false = 회원가입 불가
       if (existingId != null && existingId == value) {
         _idValid = false;
         showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('알림'),
-                content: const Text('이미 존재하는 아이디입니다.'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // 다이얼로그 닫기
-                    },
-                    child: const Text('확인'),
-                  ),
-                ],
-              );
-            });
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('알림'),
+              content: const Text('이미 사용 중인 아이디입니다.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // 다이얼로그 닫기
+                  },
+                  child: const Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
       }
     });
   }
 
   void _validateNick(String value) async {
     final prefs = await SharedPreferences.getInstance();
-    // existingId = 현존하는 아이디
-    final existingNick = prefs.getString('nick'); // 로컬 스토리지에서 기존 아이디 가져오기
+    final existingNick = prefs.getString('nick');
 
     setState(() {
       _nickInput = true; // 사용자가 입력을 시작하면 true로 설정
       // 닉네임 한글, 영어 소문자 한글자 이상
       _nickValid = RegExp(r'^[a-z가-힣0-9]{1,}$').hasMatch(value);
+
       // 기존 닉네임과 동일한 경우 검증 실패
       // 널이 아니다 = 현존한다 && 현존 아이디 == 입력값이다 -> 둘다 참이면 입력한 닉네임은 false
       if (existingNick != null && existingNick == value) {
         _nickValid = false;
         showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('알림'),
-                content: const Text('이미 존재하는 닉네임입니다.'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // 다이얼로그 닫기
-                    },
-                    child: const Text('확인'),
-                  ),
-                ],
-              );
-            });
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('알림'),
+              content: const Text('이미 사용 중인 닉네임입니다.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // 다이얼로그 닫기
+                  },
+                  child: const Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
       }
     });
   }
@@ -173,7 +191,7 @@ class _JoinFormState extends State<JoinForm> {
   void _validate2Password(String value) {
     setState(() {
       _password2Input = true;
-      _password2Valid = value.isNotEmpty;
+      // _password2Valid = value.isNotEmpty;
       _password2Valid = _passwordResetController.text == value;
     });
   }
