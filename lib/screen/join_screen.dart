@@ -90,6 +90,8 @@ class _JoinFormState extends State<JoinForm> {
   bool _nickInput = false;
   bool _passwordValid = true;
   bool _passwordInput = false;
+  bool _password2Input = false;
+  bool _password2Valid = true;
 
   void _validateId(String value) async {
     final prefs = await SharedPreferences.getInstance();
@@ -164,6 +166,15 @@ class _JoinFormState extends State<JoinForm> {
       // 정규식을 사용한 비밀번호 유효성 검사:  특수문자 최소 1개 + 영문자, 숫자 조합으로 5글자 이상
       _passwordValid =
           RegExp(r'^(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$').hasMatch(value);
+    });
+  }
+
+  // 비밀번호 확인 유효성 검사
+  void _validate2Password(String value) {
+    setState(() {
+      _password2Input = true;
+      _password2Valid = value.isNotEmpty;
+      _password2Valid = _passwordResetController.text == value;
     });
   }
 
@@ -298,7 +309,7 @@ class _JoinFormState extends State<JoinForm> {
                 ],
               ),
               errorText: _passwordInput && !_passwordValid
-                  ? '특수문자, 영문자, 숫자를 조합하여 5글자 이상 입력하세요.'
+                  ? '특수문자 1개 이상, 영문자, 숫자를 조합하여 5글자 이상 입력하세요.'
                   : null,
             ),
           ),
@@ -309,6 +320,7 @@ class _JoinFormState extends State<JoinForm> {
             keyboardType: TextInputType.text,
             controller: _passwordCheckController,
             obscureText: !_passwordCheckVisible,
+            onChanged: _validate2Password,
             decoration: InputDecoration(
               labelText: '비밀번호 확인',
               labelStyle: const TextStyle(
@@ -343,12 +355,19 @@ class _JoinFormState extends State<JoinForm> {
                   IconButton(
                     onPressed: () {
                       _passwordCheckController.clear(); // 텍스트 필드 내용 초기화
+                      _validate2Password('');
+                      setState(() {
+                        _password2Input = true;
+                      });
                     },
                     icon: const Icon(Icons.clear,
                         color: Color.fromARGB(255, 158, 158, 158)),
-                  )
+                  ),
                 ],
               ),
+              errorText: _password2Input && !_password2Valid
+                  ? '비밀번호를 다시 확인해주세요.'
+                  : null,
             ),
           ),
           const SizedBox(height: 60),
@@ -361,6 +380,28 @@ class _JoinFormState extends State<JoinForm> {
                   // 로그인 버튼이 눌렸을 때 처리할 로직
                   //context.go('/login');
                   onPressed: () async {
+                    /*
+                    // 비밀번호 확인
+                    if (_passwordResetController.text !=
+                        _passwordCheckController.text) {
+                      
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('비밀번호 불일치 알림'),
+                              content: const Text('비밀번호가 일치하지 않습니다.'),
+                              actions: <Widget>[
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('확인'))
+                              ],
+                            );
+                          });
+                    }
+                    */
                     try {
                       final dio = Dio();
                       final test = await dio.post(
@@ -370,7 +411,6 @@ class _JoinFormState extends State<JoinForm> {
                             'nick': _nickResetController.text,
                             'password': _passwordResetController.text,
                           });
-
                       print(test);
                     } catch (e) {
                       print(e);
