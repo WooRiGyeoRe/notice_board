@@ -76,16 +76,6 @@ class _JoinFormState extends State<JoinForm> {
   // 비밀번호 확인란 보기 여부를 관리할 변수 (비번2)
   bool _passwordCheckVisible = false;
 
-  /*
-  late final JoinService _joinService;
-
-  @override
-  void initState() {
-    super.initState();
-    _joinService = JoinService(Dio());
-  }
-  */
-
   bool _idValid = true; // 아이디 검증 // 초기 에러 메세지 숨김
   bool _idInput = false; // 아이디 입력 여부
   bool _nickValid = true;
@@ -380,28 +370,6 @@ class _JoinFormState extends State<JoinForm> {
                   // 로그인 버튼이 눌렸을 때 처리할 로직
                   //context.go('/login');
                   onPressed: () async {
-                    /*
-                    // 비밀번호 확인
-                    if (_passwordController.text !=
-                        _passwordCheckController.text) {
-                      
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('비밀번호 불일치 알림'),
-                              content: const Text('비밀번호가 일치하지 않습니다.'),
-                              actions: <Widget>[
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('확인'))
-                              ],
-                            );
-                          });
-                    }
-                    */
                     if (_idController.text == '') {}
                     print('이야아아아아압!!!');
                     try {
@@ -424,16 +392,20 @@ class _JoinFormState extends State<JoinForm> {
                       print(test);
                     } catch (e) {
                       print(e);
-                      DioException error = e as DioException;
-                      switch (error.response?.statusCode) {
-                        case 409:
+                      // DioException error = e as DioException;
+                      // switch (error.response?.statusCode) {
+                      // case 409:
+                      // DioError 객체를 사용하여 예외 처리
+                      if (e is DioException) {
+                        // DioErrorType에 따라 다른 예외 처리 가능
+                        if (e.response?.statusCode == 409) {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 backgroundColor: Colors.white, // 다이얼로그 배경색
                                 title: const Text(
-                                  '이미 사용 중인 아이디 혹은 닉네임입니다.',
+                                  '이미 사용 중인 아이디 \n혹은 닉네임입니다.',
                                   style: TextStyle(
                                     color: Color.fromARGB(255, 111, 142, 179),
                                   ),
@@ -456,7 +428,100 @@ class _JoinFormState extends State<JoinForm> {
                               );
                             },
                           );
-                          break;
+                        } else if (e.response?.statusCode == 400) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white, // 다이얼로그 배경색
+                                title: const Text(
+                                  '필수 입력란이 비었습니다. \n확인해주세요.',
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 111, 142, 179),
+                                  ),
+                                ),
+                                content:
+                                    const Text('아이디, 닉네임, 비밀번호를 모두 입력해주세요.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                                    },
+                                    child: const Text(
+                                      '확인',
+                                      style: TextStyle(
+                                        color: Color.fromARGB(
+                                            255, 111, 142, 179), // 버튼 텍스트 색상
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else if (e.response?.statusCode == 500) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: Colors.white, // 다이얼로그 배경색
+                                  title: const Text(
+                                    '서버 오류가 발생했습니다.',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 111, 142, 179),
+                                    ),
+                                  ),
+                                  content: const Text('회원가입을 다시 진행해주세요.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); // 다이얼로그 닫기
+                                      },
+                                      child: const Text(
+                                        '확인',
+                                        style: TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 111, 142, 179), // 버튼 텍스트 색상
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              });
+                        } else {
+                          (e.response?.statusCode == 200);
+                        }
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white,
+                                title: const Text(
+                                  '회원가입이 완료되었습니다!',
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 111, 142, 179),
+                                  ),
+                                ),
+                                content:
+                                    const Text('Talk tok의 회원이 된 것을 환영합니다 :)'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                                    },
+                                    child: const Text(
+                                      '확인',
+                                      style: TextStyle(
+                                        color: Color.fromARGB(
+                                            255, 111, 142, 179), // 버튼 텍스트 색상
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            });
+                        //break;
+                        /*
                         case 400:
                           showDialog(
                             context: context,
@@ -489,6 +554,7 @@ class _JoinFormState extends State<JoinForm> {
                             },
                           );
                           break;
+                          */
                       }
                     }
                     print(_idController.text);
