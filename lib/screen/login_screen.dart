@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../service/auth_service.dart';
+import '../service/service.dart';
 import 'bottom_navi_bar.dart';
 import 'home_screen.dart';
 
@@ -61,17 +61,28 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  final dio = Dio();
+
   // 아이디 초기화 변수
-  final TextEditingController _idResetController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
 
   // 비밀번호 보기 여부를 관리할 변수
   bool _passwordVisible = false;
 
   // 비번 초기화 변수
-  final TextEditingController _passwordResetController =
-      TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  final dio = Dio();
+  final bool _idValid = true;
+  final bool _passwordValid = true;
+  final bool _idInput = false;
+
+  void _validateId(String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    final existingNick = prefs.getString('id');
+    setState(() {
+      // if
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +96,7 @@ class _LoginFormState extends State<LoginForm> {
             keyboardType: TextInputType.text,
             onTapOutside: (event) => FocusManager.instance.primaryFocus
                 ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
-            controller: _idResetController, // 컨트롤러 연결
+            controller: _idController, // 컨트롤러 연결
             decoration: InputDecoration(
               labelText: '아이디',
               labelStyle: const TextStyle(
@@ -101,7 +112,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               suffixIcon: IconButton(
                 onPressed: () {
-                  _idResetController.clear(); // 텍스트 필드 내용 초기화
+                  _idController.clear(); // 텍스트 필드 내용 초기화
                 },
                 icon: const Icon(Icons.clear,
                     color: Color.fromARGB(255, 158, 158, 158)),
@@ -113,7 +124,7 @@ class _LoginFormState extends State<LoginForm> {
             keyboardType: TextInputType.text,
             onTapOutside: (event) => FocusManager.instance.primaryFocus
                 ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
-            controller: _passwordResetController, // 컨트롤러 연결
+            controller: _passwordController, // 컨트롤러 연결
             obscureText: !_passwordVisible, // obscureText: true, // 비밀번호 가리기
             decoration: InputDecoration(
               labelText: '비밀번호',
@@ -150,7 +161,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   IconButton(
                     onPressed: () {
-                      _passwordResetController.clear(); // 텍스트 필드 내용 초기화
+                      _passwordController.clear(); // 텍스트 필드 내용 초기화
                     },
                     icon: const Icon(Icons.clear,
                         color: Color.fromARGB(255, 158, 158, 158)),
@@ -168,13 +179,12 @@ class _LoginFormState extends State<LoginForm> {
                 child: ElevatedButton(
                   onPressed: () async {
                     try {
-                      final test = await AuthService().login(
-                          _idResetController.text,
-                          _passwordResetController.text);
+                      final test = await LoginService()
+                          .login(_idController.text, _passwordController.text);
                       // final test = await dio
                       //     .post('http://10.0.2.2:4000/api/auth/login', data: {
-                      //   'id': _idResetController.text,
-                      //   'password': _passwordResetController.text,
+                      //   'id': _idController.text,
+                      //   'password': _passwordController.text,
                       // });
                       // final data = test.data['data'];
                       // // SharedPreferences 인스턴스 생성
@@ -198,8 +208,8 @@ class _LoginFormState extends State<LoginForm> {
                       print(error.response?.statusCode); // statusCode 스위치문....
                       _showErrorDialog('');
                     }
-                    print(_idResetController.text);
-                    print(_passwordResetController.text);
+                    print(_idController.text);
+                    print(_passwordController.text);
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,

@@ -14,7 +14,6 @@ import 'screen/login_screen.dart';
 import 'screen/profile_screen.dart';
 import 'screen/write_change_screen.dart';
 import 'screen/write_screen.dart';
-import 'model/model.dart';
 
 void main() async {
   // 시스템 UI 오버레이 스타일 설정

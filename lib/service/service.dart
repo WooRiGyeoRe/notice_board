@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// 로그인&로그아웃 기능
-class AuthService {
+// 로그인
+class LoginService {
   final Dio _dio = Dio(); // Dio 인스턴스 생성
 
   // 로그인 기능
@@ -29,7 +29,6 @@ class AuthService {
 
       // 로그인 성공 시, 홈 화면으로 이동
       // _showSuccessDialog();
-      // Get.offAllNamed('/'); // GetX 패키지 -> 강력한 상태 관리와 라우팅 기능을 제공
       return {
         'ok': true,
       };
@@ -63,69 +62,29 @@ class AuthService {
       rethrow;
     }
   }
-
-  // 로그인 성공
-  void _showSuccessDialog() {
-    showDialog(
-      context: Get.context!,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('로그인 성공'),
-          content: const Text('로그인 성공! 환영합니다 :)'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('확인'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // 로그인 실패
-  void _showErrorDialog(
-    String errorMessage,
-  ) {
-    showDialog(
-      context: Get.context!,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('로그인 실패'),
-          content: const Text('로그인 실패!'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('확인'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
 
-/*  catch (e) {
-      // 로그인 실패 시
-      // $ 기호 -> 문자열 내에서 변수나 표현식의 값을 삽입하는 문자열 보간(interpolation) 문법
-      print('로그인 실패! $e');
-      throw Exception('로그인 실패');
-    } */
+// 회원가입
+class JoinService {
+  final Dio _dio = Dio();
 
-// 로그아웃 기능
-Future<void> logout() async {
-  try {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token'); // 토근 삭제
+  // JoinService(this._dio);
 
-    // 로그아웃 후, 홈 화면으로 이동
-    Get.offAllNamed('/');
-  } catch (e) {
-    print('로그아웃 실패! $e');
-    throw Exception('로그아웃 실패');
+  // Future<Response> join(String id, String nick, String password)
+  Future<Map<String, dynamic>> join(
+      String id, String nick, String password, String text) async {
+    try {
+      final response = await _dio.post(
+        'http://10.0.2.2:4000/api/auth/local/join',
+        data: {
+          'id': id,
+          'nick': nick,
+          'password': password,
+        },
+      );
+      return response.data['data'];
+    } catch (e) {
+      rethrow;
+    }
   }
 }

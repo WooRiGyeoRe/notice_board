@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test_1/service/join_service.dart';
+import 'package:test_1/service/service.dart';
 import 'bottom_navi_bar.dart';
 import 'package:go_router/go_router.dart';
 
@@ -58,14 +58,13 @@ class _JoinFormState extends State<JoinForm> {
   late SharedPreferences prefs;
 
   // 아이디 초기화 변수
-  final TextEditingController _idResetController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
 
   // 닉네임 초기화 변수
-  final TextEditingController _nickResetController = TextEditingController();
+  final TextEditingController _nickController = TextEditingController();
 
   // 비밀번호 초기화 변수 (비번1)
-  final TextEditingController _passwordResetController =
-      TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   // 비밀번호 확인란 초기화 변수 (비번2)
   final TextEditingController _passwordCheckController =
@@ -108,7 +107,7 @@ class _JoinFormState extends State<JoinForm> {
   }
 
   void _validateId(String value) async {
-// SharedPreferences가 로드되기 전에는 처리하지 않음
+    // SharedPreferences가 로드되기 전에는 처리하지 않음
     final prefs = await SharedPreferences.getInstance();
     // existingId = 현존하는 아이디
     final existingId = prefs.getString('id'); // 로컬 스토리지에서 기존 아이디 가져오기
@@ -122,23 +121,6 @@ class _JoinFormState extends State<JoinForm> {
       // 널이 아니다 = 현존한다 && 현존 아이디 == 입력값이다 -> 둘다 참이면 입력한 아이디는 false = 회원가입 불가
       if (existingId != null && existingId == value) {
         _idValid = false;
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('알림'),
-              content: const Text('이미 사용 중인 아이디입니다.'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // 다이얼로그 닫기
-                  },
-                  child: const Text('확인'),
-                ),
-              ],
-            );
-          },
-        );
       }
     });
   }
@@ -192,7 +174,7 @@ class _JoinFormState extends State<JoinForm> {
     setState(() {
       _password2Input = true;
       // _password2Valid = value.isNotEmpty;
-      _password2Valid = _passwordResetController.text == value;
+      _password2Valid = _passwordController.text == value;
     });
   }
 
@@ -208,7 +190,7 @@ class _JoinFormState extends State<JoinForm> {
             keyboardType: TextInputType.text,
             onTapOutside: (event) => FocusManager.instance.primaryFocus
                 ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
-            controller: _idResetController,
+            controller: _idController,
             onChanged: _validateId, // 아이디 입력값이 변경될 때마다 검증 함수 호출
             decoration: InputDecoration(
               labelText: '아이디',
@@ -225,7 +207,7 @@ class _JoinFormState extends State<JoinForm> {
               ),
               suffixIcon: IconButton(
                 onPressed: () {
-                  _idResetController.clear(); // 텍스트 필드 내용 초기화
+                  _idController.clear(); // 텍스트 필드 내용 초기화
                   _validateId(''); // 초기화 후 검증 상태 업데이트
                   setState(() {
                     _idInput = false; // 텍스트 필드 초기화 시 다시 false로 설정
@@ -245,7 +227,7 @@ class _JoinFormState extends State<JoinForm> {
             keyboardType: TextInputType.text,
             onTapOutside: (event) => FocusManager.instance.primaryFocus
                 ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
-            controller: _nickResetController,
+            controller: _nickController,
             onChanged: _validateNick,
             decoration: InputDecoration(
               labelText: '닉네임',
@@ -262,7 +244,7 @@ class _JoinFormState extends State<JoinForm> {
               ),
               suffixIcon: IconButton(
                 onPressed: () {
-                  _nickResetController.clear(); // 텍스트 필드 내용 초기화
+                  _nickController.clear(); // 텍스트 필드 내용 초기화
                   _validateNick('');
                   setState(() {
                     _nickInput = false;
@@ -279,7 +261,7 @@ class _JoinFormState extends State<JoinForm> {
             keyboardType: TextInputType.text,
             onTapOutside: (event) => FocusManager.instance.primaryFocus
                 ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
-            controller: _passwordResetController,
+            controller: _passwordController,
             onChanged: _validatePassword,
             obscureText: !_passwordVisible,
             decoration: InputDecoration(
@@ -315,7 +297,7 @@ class _JoinFormState extends State<JoinForm> {
                   ),
                   IconButton(
                     onPressed: () {
-                      _passwordResetController.clear(); // 텍스트 필드 내용 초기화
+                      _passwordController.clear(); // 텍스트 필드 내용 초기화
                       _validatePassword('');
                       setState(() {
                         _passwordInput = false;
@@ -400,7 +382,7 @@ class _JoinFormState extends State<JoinForm> {
                   onPressed: () async {
                     /*
                     // 비밀번호 확인
-                    if (_passwordResetController.text !=
+                    if (_passwordController.text !=
                         _passwordCheckController.text) {
                       
                       showDialog(
@@ -420,22 +402,98 @@ class _JoinFormState extends State<JoinForm> {
                           });
                     }
                     */
+                    if (_idController.text == '') {}
+                    print('이야아아아아압!!!');
                     try {
+                      final test = await JoinService().join(
+                          _idController.text,
+                          _nickController.text,
+                          _passwordController.text,
+                          _passwordCheckController.text);
+                      /*
                       final dio = Dio();
                       final test = await dio.post(
                           'http://10.0.2.2:4000/api/auth/local/join',
                           data: {
-                            'id': _idResetController.text,
-                            'nick': _nickResetController.text,
-                            'password': _passwordResetController.text,
+                            'id': _idController.text,
+                            'nick': _nickController.text,
+                            'password': _passwordController.text,
                           });
+                          */
+
                       print(test);
                     } catch (e) {
                       print(e);
+                      DioException error = e as DioException;
+                      switch (error.response?.statusCode) {
+                        case 409:
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white, // 다이얼로그 배경색
+                                title: const Text(
+                                  '이미 사용 중인 아이디 혹은 닉네임입니다.',
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 111, 142, 179),
+                                  ),
+                                ),
+                                content: const Text('아이디 혹은 닉네임을 다시 입력해주세요.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                                    },
+                                    child: const Text(
+                                      '확인',
+                                      style: TextStyle(
+                                        color: Color.fromARGB(
+                                            255, 111, 142, 179), // 버튼 텍스트 색상
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          break;
+                        case 400:
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white, // 다이얼로그 배경색
+                                title: const Text(
+                                  '필수 입력란이 비었습니다. 확인해주세요.',
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 111, 142, 179),
+                                  ),
+                                ),
+                                content:
+                                    const Text('아이디, 닉네임, 비밀번호를 모두 입력해주세요.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                                    },
+                                    child: const Text(
+                                      '확인',
+                                      style: TextStyle(
+                                        color: Color.fromARGB(
+                                            255, 111, 142, 179), // 버튼 텍스트 색상
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          break;
+                      }
                     }
-                    print(_idResetController.text);
-                    print(_nickResetController.text);
-                    print(_passwordResetController.text);
+                    print(_idController.text);
+                    print(_nickController.text);
+                    print(_passwordController.text);
                     print(_passwordCheckController.text);
                   },
                   style: ElevatedButton.styleFrom(
