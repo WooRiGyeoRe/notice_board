@@ -158,7 +158,7 @@ class WithdrawalService {
         return {
           'ok': false,
           'statusCode': 0,
-          'message': 'No Response',
+          'message': '응답 없음',
         };
       }
     } catch (e) {
@@ -166,7 +166,7 @@ class WithdrawalService {
       return {
         'ok': false,
         'statusCode': -1,
-        'message': 'Unknown Error',
+        'message': '알 수 없는 에러',
       };
     }
   }
