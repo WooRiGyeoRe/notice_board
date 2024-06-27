@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final selectedIndexProvider = StateProvider<int>((ref) => 0);
+// final exampleProvider = StateProvider<String>((ref) => '예제');
 
 class BottomBar extends ConsumerWidget {
   const BottomBar({super.key});
@@ -14,6 +15,7 @@ class BottomBar extends ConsumerWidget {
     void onItemTapped(int index) {
       ref.read(selectedIndexProvider.notifier).update((state) => index);
 
+      // enum 방법을 사용하면 각각 인덱스가 무엇인지 좀 더 명확히 알 수 있음.
       switch (index) {
         case 0:
           context.go('/');

@@ -5,6 +5,31 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// 회원가입
+class JoinService {
+  final Dio _dio = Dio();
+  // JoinService(this._dio);
+
+  // Future<Response> join(String id, String nick, String password)
+  // 로그인고 달리 회원가입 시 토큰 저장 X
+  Future<Map<String, dynamic>> join(
+      String id, String nick, String password, String text) async {
+    try {
+      final response = await _dio.post(
+        'http://10.0.2.2:4000/api/auth/local/join',
+        data: {
+          'id': id,
+          'nick': nick,
+          'password': password,
+        },
+      );
+      return response.data['data'];
+    } catch (e) {
+      rethrow;
+    }
+  }
+}
+
 // 로그인
 class LoginService {
   final Dio _dio = Dio(); // Dio 인스턴스 생성
@@ -59,31 +84,6 @@ class LoginService {
       rethrow;
     } catch (e) {
       // 이 외 오류 예외처리
-      rethrow;
-    }
-  }
-}
-
-// 회원가입
-class JoinService {
-  final Dio _dio = Dio();
-
-  // JoinService(this._dio);
-
-  // Future<Response> join(String id, String nick, String password)
-  Future<Map<String, dynamic>> join(
-      String id, String nick, String password, String text) async {
-    try {
-      final response = await _dio.post(
-        'http://10.0.2.2:4000/api/auth/local/join',
-        data: {
-          'id': id,
-          'nick': nick,
-          'password': password,
-        },
-      );
-      return response.data['data'];
-    } catch (e) {
       rethrow;
     }
   }

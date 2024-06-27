@@ -41,7 +41,7 @@ void main() async {
   // delete-shared preferences에 존재하는 데이터 삭제하기
   // await SharedPreferences인스턴스.remove(키);
 
-  // ProviderScope -> 생성한 모든 프로바이더의 상태를 저장하는 위젯
+  // ProviderScope -> 프로바이더를 작동할 수 있게하는 위젯
   runApp(
     const ProviderScope(
       child: MyApp(),
@@ -64,31 +64,7 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
-
-
-
-
-  /*
-  runApp(
-    MaterialApp(
-      // home 대신 initialRoute를 사용하여 첫 화면을 설정합니다.
-      initialRoute: '/home',
-      routes: {
-        '/home': (context) => const HomeScreen(),
-        '/login': (context) => const LoginScreen(),
-        '/join': (context) => const JoinScreen(),
-        '/board': (context) => const BoardScreen(),
-        '/profile': (context) => const ProfileScreen(),
-        '/write': (context) => const WriteScreen(),
-        '/write_change': (context) => const WriteChangeScreen(),
-        '/comment': (context) => const CommentScreen(),
-      },
-      theme: ThemeData(fontFamily: "jeongianjeon-Regular"),
-      themeMode: ThemeMode.system,
-    ),
-  );
-}
-*/
+ 
 
 /* 기존 
   runApp(
