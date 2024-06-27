@@ -77,7 +77,7 @@ class _JoinFormState extends State<JoinForm> {
   // 비밀번호 확인란 보기 여부를 관리할 변수 (비번2)
   bool _passwordCheckVisible = false;
 
-  bool _idValid = true; // 아이디 검증 // 초기 에러 메세지 숨김
+  bool _idValid = true; // 유효 아이디 검증 // 초기 에러 메세지 숨김
   bool _idInput = false; // 아이디 입력 여부
   bool _nickValid = true;
   bool _nickInput = false;
@@ -397,7 +397,8 @@ class _JoinFormState extends State<JoinForm> {
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
-                                    // context.go('/login') // 확인 누르면 화면전환 (재로그인 vs 바로 로그인?)
+                                    context.go(
+                                        '/'); // 확인 누르면 화면전환 (재로그인 vs 바로 로그인?)
                                   },
                                   child: const Text(
                                     '확인',

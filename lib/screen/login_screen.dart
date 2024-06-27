@@ -23,6 +23,7 @@ class LoginScreen extends StatelessWidget {
 
     // Scaffold 레이아웃 위젯 중 하나로, 앱의 기본 구조를 정의
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
@@ -72,17 +73,38 @@ class _LoginFormState extends State<LoginForm> {
   // 비번 초기화 변수
   final TextEditingController _passwordController = TextEditingController();
 
-  final bool _idValid = true;
+  final bool _idValid = true; // 유효 아이디 검증
   final bool _passwordValid = true;
-  final bool _idInput = false;
+  bool _idInput = false;
+  bool _passwordInput = false;
 
   void _validateId(String value) async {
     final prefs = await SharedPreferences.getInstance();
-    final existingNick = prefs.getString('id');
+    final existingId = prefs.getString('id');
     setState(() {
-      // if
+      _idInput = value.isEmpty;
     });
   }
+
+  void _validatePassword(String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    final existingPassword = prefs.getString('password');
+    setState(() {
+      _passwordInput = value.isEmpty;
+    });
+  }
+
+/*   void _idInput(String value) async {
+    setState(() {
+      _idInput = value.isEmpty;
+    });
+  }
+
+  void _passwordInput(String value) async {
+    setState(() {
+      _passwordInput = value.isEmpty;
+    });
+  }  */
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +119,7 @@ class _LoginFormState extends State<LoginForm> {
             onTapOutside: (event) => FocusManager.instance.primaryFocus
                 ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
             controller: _idController, // 컨트롤러 연결
+            onChanged: _validateId,
             decoration: InputDecoration(
               labelText: '아이디',
               labelStyle: const TextStyle(
@@ -110,6 +133,7 @@ class _LoginFormState extends State<LoginForm> {
                   width: 2,
                 ),
               ),
+              errorText: _idInput ? '아이디를 입력하세요.' : null,
               suffixIcon: IconButton(
                 onPressed: () {
                   _idController.clear(); // 텍스트 필드 내용 초기화
@@ -125,10 +149,10 @@ class _LoginFormState extends State<LoginForm> {
             onTapOutside: (event) => FocusManager.instance.primaryFocus
                 ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
             controller: _passwordController, // 컨트롤러 연결
+            onChanged: _validatePassword,
             obscureText: !_passwordVisible, // obscureText: true, // 비밀번호 가리기
             decoration: InputDecoration(
               labelText: '비밀번호',
-              // helperText: '*필수 입력값입니다.',
               labelStyle: const TextStyle(
                 fontFamily: "jeongianjeon-Regular",
                 color: Color.fromARGB(255, 95, 95, 95),
@@ -140,6 +164,7 @@ class _LoginFormState extends State<LoginForm> {
                   width: 2,
                 ),
               ),
+              errorText: _passwordInput ? '비밀번호를 입력하세요' : null,
               // 오른쪽에 눈 아이콘 추가
               suffixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
