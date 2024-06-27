@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../service/service.dart';
 import 'bottom_navi_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -39,7 +42,7 @@ class ProfileScreen extends StatelessWidget {
           MyBoard1(), // 자유게시판 글, 댓글
           SizedBox(height: 25),
           MyBoard2(), // 질문게시판 글, 댓글
-          SizedBox(height: 80),
+          SizedBox(height: 50),
           LogOutButton(),
         ],
       ),
@@ -335,6 +338,15 @@ class LogOutButton extends StatefulWidget {
 }
 
 class _LogOutButtonState extends State<LogOutButton> {
+  final WithdrawalService _withdrawalService = WithdrawalService();
+
+  Future<void> _handleWithdrawal() async {
+    const String userId = 'user_id'; // 실제 사용자 ID로 변경
+    const String userPassword = 'user_password'; // 실제 사용자 비밀번호로 변경
+
+    final result = await _withdrawalService.withdrawal(userId, userPassword);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -365,6 +377,58 @@ class _LogOutButtonState extends State<LogOutButton> {
               GestureDetector(
                 onTap: () {
                   // '회원 탈퇴하기' 텍스트를 탭했을 때 처리할 로직을 추가
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: Colors.white,
+                          title: const Text(
+                            '정말 탈퇴하시겠어요?',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          content:
+                              const Text('탈퇴 버튼 선택 시, 계정은 삭제되며 복구되지 않습니다.'),
+                          actions: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  //onPressed: _handleWithdrawal, // 탈퇴 처리 함수 호출
+
+                                  onPressed: () async {
+                                    // SharedPreferences에서 사용자 정보 삭제
+                                    final prefs =
+                                        await SharedPreferences.getInstance();
+                                    await prefs.clear();
+
+                                    Navigator.of(context).pop();
+                                    context.go('/');
+                                  },
+
+                                  child: const Text(
+                                    '탈퇴',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    context.go('/profile');
+                                  },
+                                  child: const Text(
+                                    '취소',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 111, 142, 179),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        );
+                      });
                 },
                 child: const Text(
                   '회원 탈퇴하기',

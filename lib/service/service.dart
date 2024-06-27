@@ -52,39 +52,122 @@ class LoginService {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', data['token']);
 
-      // 로그인 성공 시, 홈 화면으로 이동
-      // _showSuccessDialog();
+      // 로그인 성공
       return {
         'ok': true,
       };
     } on DioException catch (e) {
-      // if (e.response != null) {
-      //   final int statusCode = e.response!.statusCode ?? 0;
-      //   switch (statusCode) {
-      //     case 400:
-      //       rethrow;
-      //     case 401:
-      //       rethrow;
-      //     case 403:
-      //       rethrow;
-      //     case 500:
-      //       rethrow;
-      //     default:
-      //       return {
-      //         'ok': false,
-      //         'statusCode': '',
-      //       };
-      //   }
-      // } else {
-      //   return {
-      //     'ok': false,
-      //     'statusCode': '',
-      //   };
-      // }
-      rethrow;
+      if (e.response != null) {
+        final int statusCode = e.response!.statusCode ?? 0;
+        switch (statusCode) {
+          case 400:
+            return {
+              'ok': false,
+              'statusCode': 400,
+              'message': '아이디 혹은 닉네임, 패스워드 미입력',
+            };
+          case 409:
+            return {
+              'ok': false,
+              'statusCode': 409,
+              'message': '아이디 혹은 닉네임 중복',
+            };
+          case 500:
+            return {
+              'ok': false,
+              'statusCode': 500,
+              'message': '서버 오류',
+            };
+          default:
+            return {
+              'ok': false,
+              'statusCode': statusCode,
+              'message': '알 수 없는 에러',
+            };
+        }
+      } else {
+        return {
+          'ok': false,
+          'statusCode': 0,
+          'message': 'No Response',
+        };
+      }
     } catch (e) {
       // 이 외 오류 예외처리
-      rethrow;
+      return {
+        'ok': false,
+        'statusCode': -1,
+        'message': 'Unknown Error',
+      };
+    }
+  }
+}
+
+// 회원탈퇴
+class WithdrawalService {
+  final Dio _dio = Dio();
+
+  Future<Map<String, dynamic>> withdrawal(String id, String password) async {
+    try {
+      final response = await _dio.post(
+        'http://10.0.2.2:4000/api/auth/local/withdraw',
+        data: {
+          'id': id,
+          'password': password,
+        },
+      );
+
+      final data = response.data['data'];
+
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.clear(); // SharedPreferences에서 모든 데이터 삭제
+
+      return {
+        'ok': true,
+      };
+    } on DioException catch (e) {
+      if (e.response != null) {
+        final int statusCode = e.response!.statusCode ?? 0;
+        switch (statusCode) {
+          case 401:
+            return {
+              'ok': false,
+              'statusCode': 401,
+              'message': '토큰 없음 혹은 위조, 만료',
+            };
+          case 404:
+            return {
+              'ok': false,
+              'statusCode': 404,
+              'message': '아이디를 찾을 수 없음',
+            };
+          case 500:
+            return {
+              'ok': false,
+              'statusCode': 500,
+              'message': '서버 오류',
+            };
+          default:
+            return {
+              'ok': false,
+              'statusCode': statusCode,
+              'message': '알 수 없는 에러',
+            };
+        }
+      } else {
+        return {
+          'ok': false,
+          'statusCode': 0,
+          'message': 'No Response',
+        };
+      }
+    } catch (e) {
+      // 이 외 오류 예외처리
+      return {
+        'ok': false,
+        'statusCode': -1,
+        'message': 'Unknown Error',
+      };
     }
   }
 }
