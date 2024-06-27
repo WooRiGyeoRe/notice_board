@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_1/service/service.dart';
 import 'bottom_navi_bar.dart';
@@ -104,8 +105,7 @@ class _JoinFormState extends State<JoinForm> {
 
     setState(() {
       _idInput = true; // 사용자가 입력을 시작하면 true로 설정
-      // 아이디 영어 소문자 5글자 이상
-      _idValid = RegExp(r'^[a-z0-9]{5,}$').hasMatch(value);
+      _idValid = RegExp(r'^[a-z0-9]{5,}$').hasMatch(value); // 아이디 영어 소문자 5글자 이상
 
       // 기존 아이디와 동일한 경우 검증 실패
       // 널이 아니다 = 현존한다 && 현존 아이디 == 입력값이다 -> 둘다 참이면 입력한 아이디는 false = 회원가입 불가
@@ -121,30 +121,13 @@ class _JoinFormState extends State<JoinForm> {
 
     setState(() {
       _nickInput = true; // 사용자가 입력을 시작하면 true로 설정
-      // 닉네임 한글, 영어 소문자 한글자 이상
-      _nickValid = RegExp(r'^[a-z가-힣0-9]{1,}$').hasMatch(value);
+      _nickValid =
+          RegExp(r'^[a-z가-힣0-9]{1,}$').hasMatch(value); // 닉네임 한글, 영어 소문자 한글자 이상
 
       // 기존 닉네임과 동일한 경우 검증 실패
       // 널이 아니다 = 현존한다 && 현존 아이디 == 입력값이다 -> 둘다 참이면 입력한 닉네임은 false
       if (existingNick != null && existingNick == value) {
         _nickValid = false;
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('알림'),
-              content: const Text('이미 사용 중인 닉네임입니다.'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // 다이얼로그 닫기
-                  },
-                  child: const Text('확인'),
-                ),
-              ],
-            );
-          },
-        );
       }
     });
   }
@@ -367,10 +350,57 @@ class _JoinFormState extends State<JoinForm> {
                 width: 372,
                 height: 50,
                 child: ElevatedButton(
-                  // 로그인 버튼이 눌렸을 때 처리할 로직
+                  // 회원가입 버튼이 눌렸을 때
                   //context.go('/login');
                   onPressed: () async {
-                    if (_idController.text == '') {}
+                    // 로컬저장소에 저장된 아이디, 닉네임
+                    final prefs = await SharedPreferences.getInstance();
+                    final existingId = prefs.getString('id');
+                    final existingNick = prefs.getString('nick');
+
+                    // if (_idController.text == '') {}
+                    if (_idController.text.isNotEmpty &&
+                        _nickController.text.isNotEmpty &&
+                        _passwordController.text.isNotEmpty &&
+                        _passwordCheckController.text.isNotEmpty &&
+                        _passwordValid &&
+                        _password2Valid &&
+                        _idValid &&
+                        _nickValid &&
+                        (existingId == null ||
+                            existingId != _idController.text) &&
+                        (existingNick == null ||
+                            existingNick != _nickController.text)) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: Colors.white,
+                              title: const Text(
+                                '회원가입이 완료되었습니다.',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 111, 142, 179),
+                                ),
+                              ),
+                              content: const Text('Talk tok의 회원이 되신 것을 환영합니다♥'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    // context.go('/login') // 확인 누르면 화면전환 (재로그인 vs 바로 로그인?)
+                                  },
+                                  child: const Text(
+                                    '확인',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(
+                                          255, 111, 142, 179), // 버튼 텍스트 색상
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          });
+                    }
                     print('이야아아아아압!!!');
                     try {
                       final test = await JoinService().join(
@@ -378,26 +408,12 @@ class _JoinFormState extends State<JoinForm> {
                           _nickController.text,
                           _passwordController.text,
                           _passwordCheckController.text);
-                      /*
-                      final dio = Dio();
-                      final test = await dio.post(
-                          'http://10.0.2.2:4000/api/auth/local/join',
-                          data: {
-                            'id': _idController.text,
-                            'nick': _nickController.text,
-                            'password': _passwordController.text,
-                          });
-                          */
-
                       print(test);
                     } catch (e) {
                       print(e);
-                      // DioException error = e as DioException;
-                      // switch (error.response?.statusCode) {
-                      // case 409:
-                      // DioError 객체를 사용하여 예외 처리
+
                       if (e is DioException) {
-                        // DioErrorType에 따라 다른 예외 처리 가능
+                        // DioErrorType에 따른 예외 처리
                         if (e.response?.statusCode == 409) {
                           showDialog(
                             context: context,
@@ -488,10 +504,11 @@ class _JoinFormState extends State<JoinForm> {
                                   ],
                                 );
                               });
-                        } else {
-                          (e.response?.statusCode == 200);
                         }
-                        showDialog(
+
+                        /*
+                        else {
+                          showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
@@ -519,42 +536,10 @@ class _JoinFormState extends State<JoinForm> {
                                   ),
                                 ],
                               );
-                            });
-                        //break;
-                        /*
-                        case 400:
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                backgroundColor: Colors.white, // 다이얼로그 배경색
-                                title: const Text(
-                                  '필수 입력란이 비었습니다. 확인해주세요.',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 111, 142, 179),
-                                  ),
-                                ),
-                                content:
-                                    const Text('아이디, 닉네임, 비밀번호를 모두 입력해주세요.'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop(); // 다이얼로그 닫기
-                                    },
-                                    child: const Text(
-                                      '확인',
-                                      style: TextStyle(
-                                        color: Color.fromARGB(
-                                            255, 111, 142, 179), // 버튼 텍스트 색상
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              );
                             },
                           );
-                          break;
-                          */
+                        }
+                        */
                       }
                     }
                     print(_idController.text);
@@ -594,7 +579,7 @@ class _JoinFormState extends State<JoinForm> {
                     splashColor: const Color.fromARGB(255, 236, 246, 250), // 타닥
                     borderRadius: BorderRadius.circular(20),
                     onTap: () {
-                      // '로그인' 텍스트를 탭했을 때 처리할 로직
+                      // 로그인 텍스트 탭했을 때
                       context.go('/login');
                     },
                     child: const Text(
