@@ -6,10 +6,12 @@ import 'bottom_navi_bar.dart';
 // 자유&질문 게시판
 class BoardScreen extends StatelessWidget {
   final Object extra;
+  //final bool authUser; // 회원 여부
 
   const BoardScreen({
     super.key,
     required this.extra,
+    //required this.authUser,
   });
 
   @override
@@ -41,6 +43,7 @@ class BoardScreen extends StatelessWidget {
               context.go('/');
             },
           ),
+          // if ()
           actions: [
             Row(
               children: [

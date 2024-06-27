@@ -23,7 +23,9 @@ class JoinService {
           'password': password,
         },
       );
-      return response.data['data'];
+
+      print(response.data);
+      return response.data;
     } catch (e) {
       rethrow;
     }
@@ -55,6 +57,8 @@ class LoginService {
       // 로그인 성공
       return {
         'ok': true,
+        'statusCode': 200,
+        'message': '로그인 성공',
       };
     } on DioException catch (e) {
       if (e.response != null) {
@@ -124,6 +128,8 @@ class WithdrawalService {
 
       return {
         'ok': true,
+        'statusCode': 200,
+        'message': '탈퇴 완료',
       };
     } on DioException catch (e) {
       if (e.response != null) {
