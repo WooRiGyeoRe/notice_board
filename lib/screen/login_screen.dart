@@ -45,15 +45,9 @@ class LoginScreen extends StatelessWidget {
         elevation: 3,
       ),
       backgroundColor: Colors.white,
-      body: const SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: LoginForm(),
-        ),
-      ),
-      /* const Column(
+      body: const Column(
         children: [LoginForm()],
-      ), */
+      ),
       bottomNavigationBar: const BottomBar(),
     );
   }

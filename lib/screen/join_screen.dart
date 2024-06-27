@@ -38,11 +38,8 @@ class JoinScreen extends StatelessWidget {
         shadowColor: Colors.black, // 앱바 그림자
       ),
       backgroundColor: Colors.white, // 전체 화면 배경색
-      body: const SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: JoinForm(),
-        ),
+      body: const Column(
+        children: [JoinForm()],
       ),
       // bottomNavigationBar: const BottomBar(),
     );
