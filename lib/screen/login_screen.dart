@@ -75,36 +75,24 @@ class _LoginFormState extends State<LoginForm> {
 
   final bool _idValid = true; // 유효 아이디 검증
   final bool _passwordValid = true;
-  bool _idInput = false;
-  bool _passwordInput = false;
+  bool _idInput = true;
+  bool _passwordInput = true;
 
   void _validateId(String value) async {
-    final prefs = await SharedPreferences.getInstance();
-    final existingId = prefs.getString('id');
+    //final prefs = await SharedPreferences.getInstance();
+    //final existingId = prefs.getString('id');
     setState(() {
-      _idInput = value.isEmpty;
+      _idInput = value.isNotEmpty;
     });
   }
 
   void _validatePassword(String value) async {
-    final prefs = await SharedPreferences.getInstance();
-    final existingPassword = prefs.getString('password');
+    //final prefs = await SharedPreferences.getInstance();
+    //final existingPassword = prefs.getString('password');
     setState(() {
-      _passwordInput = value.isEmpty;
+      _passwordInput = value.isNotEmpty;
     });
   }
-
-/*   void _idInput(String value) async {
-    setState(() {
-      _idInput = value.isEmpty;
-    });
-  }
-
-  void _passwordInput(String value) async {
-    setState(() {
-      _passwordInput = value.isEmpty;
-    });
-  }  */
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +121,7 @@ class _LoginFormState extends State<LoginForm> {
                   width: 2,
                 ),
               ),
-              errorText: _idInput ? '아이디를 입력하세요.' : null,
+              errorText: _idInput ? null : '아이디를 입력하세요.',
               suffixIcon: IconButton(
                 onPressed: () {
                   _idController.clear(); // 텍스트 필드 내용 초기화
@@ -164,7 +152,7 @@ class _LoginFormState extends State<LoginForm> {
                   width: 2,
                 ),
               ),
-              errorText: _passwordInput ? '비밀번호를 입력하세요' : null,
+              errorText: _passwordInput ? null : '비밀번호를 입력하세요',
               // 오른쪽에 눈 아이콘 추가
               suffixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
