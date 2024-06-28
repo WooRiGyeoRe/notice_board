@@ -351,10 +351,7 @@ class _JoinFormState extends State<JoinForm> {
                 width: 372,
                 height: 50,
                 child: ElevatedButton(
-                  // 회원가입 버튼이 눌렸을 때
-                  //context.go('/login');
                   onPressed: () async {
-                    // if (_idController.text == '') {}
                     // 로컬저장소에 저장된 아이디, 닉네임
                     final prefs = await SharedPreferences.getInstance();
                     final existingId = prefs.getString('id');
@@ -370,7 +367,6 @@ class _JoinFormState extends State<JoinForm> {
                         !_nickValid) {
                       return;
                     }
-
                     try {
                       print('이야아아아아압!!!');
                       final test = await JoinService().join(
@@ -413,7 +409,6 @@ class _JoinFormState extends State<JoinForm> {
                           });
                     } catch (e) {
                       print(e);
-
                       if (e is DioException) {
                         // DioErrorType에 따른 예외 처리
                         if (e.response?.statusCode == 409) {
@@ -479,77 +474,34 @@ class _JoinFormState extends State<JoinForm> {
                           );
                         } else if (e.response?.statusCode == 500) {
                           showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  backgroundColor: Colors.white, // 다이얼로그 배경색
-                                  title: const Text(
-                                    '서버 오류가 발생했습니다.',
-                                    style: TextStyle(
-                                      color: Color.fromARGB(255, 111, 142, 179),
-                                    ),
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white, // 다이얼로그 배경색
+                                title: const Text(
+                                  '서버 오류가 발생했습니다.',
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 111, 142, 179),
                                   ),
-                                  content: const Text('회원가입을 다시 진행해주세요.'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(); // 다이얼로그 닫기
-                                      },
-                                      child: const Text(
-                                        '확인',
-                                        style: TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 111, 142, 179), // 버튼 텍스트 색상
-                                        ),
+                                ),
+                                content: const Text('회원가입을 다시 진행해주세요.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                                    },
+                                    child: const Text(
+                                      '확인',
+                                      style: TextStyle(
+                                        color: Color.fromARGB(
+                                            255, 111, 142, 179), // 버튼 텍스트 색상
                                       ),
                                     ),
-                                  ],
-                                );
-                              });
-
-                          /*      
-                        } else if (_idController.text.isNotEmpty &&
-                                _nickController.text.isNotEmpty &&
-                                _passwordController.text.isNotEmpty &&
-                                _passwordCheckController.text.isNotEmpty &&
-                                _passwordValid &&
-                                _password2Valid &&
-                                _idValid &&
-                                _nickValid &&
-                                existingId == null ||
-                            existingId != _idController.text &&
-                                existingNick == null ||
-                            existingNick != _nickController.text) {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  backgroundColor: Colors.white,
-                                  title: const Text(
-                                    '회원가입이 완료되었습니다!',
-                                    style: TextStyle(
-                                      color: Color.fromARGB(255, 111, 142, 179),
-                                    ),
                                   ),
-                                  content:
-                                      const Text('Talk tok의 회원이 된 것을 환영합니다 :)'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(); // 다이얼로그 닫기
-                                      },
-                                      child: const Text(
-                                        '확인',
-                                        style: TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 111, 142, 179), // 버튼 텍스트 색상
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              });
-                              */
+                                ],
+                              );
+                            },
+                          );
                         }
                       }
                     }

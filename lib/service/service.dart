@@ -23,7 +23,6 @@ class JoinService {
           'password': password,
         },
       );
-
       print(response.data);
       return response.data;
     } catch (e) {

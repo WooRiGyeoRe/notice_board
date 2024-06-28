@@ -75,22 +75,22 @@ class _LoginFormState extends State<LoginForm> {
 
   final bool _idValid = true; // 유효 아이디 검증
   final bool _passwordValid = true;
-  bool _idInput = true;
-  bool _passwordInput = true;
+  bool _idInput = false;
+  bool _passwordInput = false;
 
   void _validateId(String value) async {
-    //final prefs = await SharedPreferences.getInstance();
-    //final existingId = prefs.getString('id');
+    final prefs = await SharedPreferences.getInstance();
+    final existingId = prefs.getString('id');
     setState(() {
-      _idInput = value.isNotEmpty;
+      _idInput = value.isEmpty;
     });
   }
 
   void _validatePassword(String value) async {
-    //final prefs = await SharedPreferences.getInstance();
-    //final existingPassword = prefs.getString('password');
+    final prefs = await SharedPreferences.getInstance();
+    final existingPassword = prefs.getString('password');
     setState(() {
-      _passwordInput = value.isNotEmpty;
+      _passwordInput = value.isEmpty;
     });
   }
 
@@ -121,7 +121,7 @@ class _LoginFormState extends State<LoginForm> {
                   width: 2,
                 ),
               ),
-              errorText: _idInput ? null : '아이디를 입력하세요.',
+              errorText: _idInput ? '아이디를 입력하세요.' : null,
               suffixIcon: IconButton(
                 onPressed: () {
                   _idController.clear(); // 텍스트 필드 내용 초기화
@@ -152,7 +152,7 @@ class _LoginFormState extends State<LoginForm> {
                   width: 2,
                 ),
               ),
-              errorText: _passwordInput ? null : '비밀번호를 입력하세요',
+              errorText: _passwordInput ? '비밀번호를 입력하세요' : null,
               // 오른쪽에 눈 아이콘 추가
               suffixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -191,35 +191,190 @@ class _LoginFormState extends State<LoginForm> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () async {
+                    // 로컬저장소에 저장된 아이디, 비밀번호
+                    final prefs = await SharedPreferences.getInstance();
+                    final existingId = prefs.getString('id');
+                    final existingPassword = prefs.getString('password');
+
+                    if (_idController.text.isEmpty ||
+                        _passwordController.text.isEmpty ||
+                        !_idValid ||
+                        !_passwordValid) {
+                      return;
+                    }
+
                     try {
                       final test = await LoginService()
                           .login(_idController.text, _passwordController.text);
-                      // final test = await dio
-                      //     .post('http://10.0.2.2:4000/api/auth/login', data: {
-                      //   'id': _idController.text,
-                      //   'password': _passwordController.text,
-                      // });
-                      // final data = test.data['data'];
+                      print('-------------------------');
+                      print(test); // 반환된 데이터 확인
+                      print('-------------------------');
+
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: Colors.white,
+                              title: const Text(
+                                '로그인 성공!',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 111, 142, 179),
+                                ),
+                              ),
+                              // 가입되어 있는 입력한 아이디가 출력되게ㅠㅠㅠㅠㅠㅠ
+                              content: const Text(
+                                  // '${test['id']}님 반갑습니다.\nTalk tok에서 즐겁게 활동을 시작해보세요 :)'),
+                                  '반갑습니다.\nTalk tok에서 즐겁게 활동을 시작해보세요 :)'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text(
+                                    '확인',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 111, 142, 179),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          });
+
                       // // SharedPreferences 인스턴스 생성
                       /* final SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       await prefs.setString('token', data['token']); */
-                      print('--------');
+
                       //print(prefs.getString('token'));
                       // 로그인 버튼이 눌렸을 때 처리할 로직
                       //context.go('/'); // 홈 화면으로 전환
                       //---> 아이디, 비밀번호가 맞으면 되도록 바꿔야 됨.
                     } catch (e) {
                       print('[로그인 버튼]');
-                      // 여기서 넘어온 e는 타입을 알 수 없음.
-                      // 그래서 연두색 타입으로 강제로 바꿔줌
-                      DioException error = e as DioException;
-                      // 에러 안에 응답 안에 응답코드로 구분해서
-                      // 아이디 없음이나 비밀번호 틀림 등 에러 처리
-                      // 물음표인 이유는 응답코드가 없을 수도 있어서
-                      print(e);
-                      print(error.response?.statusCode); // statusCode 스위치문....
-                      _showErrorDialog('');
+                      if (e is DioException) {
+                        if (e.response?.statusCode == 400) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white,
+                                title: const Text(
+                                  '필수 입력란이 비었습니다. \n확인해주세요.',
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 111, 142, 179),
+                                  ),
+                                ),
+                                content: const Text('아이디, 비밀번호를 모두 입력해주세요.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text(
+                                      '확인',
+                                      style: TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 111, 142, 179),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else if (e.response?.statusCode == 401) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white, // 다이얼로그 배경색
+                                title: const Text(
+                                  '비밀번호 오류',
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 111, 142, 179),
+                                  ),
+                                ),
+                                content: const Text('비밀번호가 틀렸습니다. 다시 입력해주세요.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                                    },
+                                    child: const Text(
+                                      '확인',
+                                      style: TextStyle(
+                                        color: Color.fromARGB(
+                                            255, 111, 142, 179), // 버튼 텍스트 색상
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else if (e.response?.statusCode == 404) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white, // 다이얼로그 배경색
+                                title: const Text(
+                                  '아이디 오류',
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 111, 142, 179),
+                                  ),
+                                ),
+                                content: const Text('없는 아이디입니다. 다시 입력해주세요.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                                    },
+                                    child: const Text(
+                                      '확인',
+                                      style: TextStyle(
+                                        color: Color.fromARGB(
+                                            255, 111, 142, 179), // 버튼 텍스트 색상
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else if (e.response?.statusCode == 500) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white, // 다이얼로그 배경색
+                                title: const Text(
+                                  '서버 오류가 발생했습니다.',
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 111, 142, 179),
+                                  ),
+                                ),
+                                content: const Text('다시 로그인해주세요.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                                    },
+                                    child: const Text(
+                                      '확인',
+                                      style: TextStyle(
+                                        color: Color.fromARGB(
+                                            255, 111, 142, 179), // 버튼 텍스트 색상
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      }
                     }
                     print(_idController.text);
                     print(_passwordController.text);
@@ -285,29 +440,6 @@ class _LoginFormState extends State<LoginForm> {
           ),
         ],
       ),
-    );
-  }
-
-  // 로그인 실패
-  void _showErrorDialog(
-    String errorMessage,
-  ) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('로그인 실패'),
-          content: Text(errorMessage),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('확인'),
-            ),
-          ],
-        );
-      },
     );
   }
 }
