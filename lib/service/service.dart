@@ -46,20 +46,22 @@ class LoginService {
         'password': password,
       });
 
-      // final data = response.data['data']; // Dio 패키지를 통해 받은 HTTP 응답의 데이터(JSON 형식으로 반환)
+      final data =
+          response.data['data']; // Dio 패키지를 통해 받은 HTTP 응답의 데이터(JSON 형식으로 반환)
       // SharedPreferences 인스턴스 생성
-      // final SharedPreferences prefs = await SharedPreferences.getInstance();
-      // await prefs.setString('token', data['token']);
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', data['token']);
 
       // 로그인 성공
       print(response.data);
+      print('-------로그인 서비스 응답 확인-------');
       // return response.data;
 
       return {
         'ok': true,
         'statusCode': 200,
         'message': '로그인 성공',
-        'userData': response.data['user'],
+        'userData': response.data['data'],
       };
     } catch (e) {
       rethrow;

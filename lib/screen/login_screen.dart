@@ -6,12 +6,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_1/screen/profile_screen.dart';
 import '../service/service.dart';
 import 'bottom_navi_bar.dart';
 import 'home_screen.dart';
 
 class MyLoginPage extends StatefulWidget {
-  const MyLoginPage(String id, String passw, String s, {super.key});
+  const MyLoginPage({super.key});
 
   @override
   State<MyLoginPage> createState() => _MyLoginPageState();
@@ -41,19 +42,28 @@ class _MyLoginPageState extends State<MyLoginPage> {
     userInfo = await storage.read(key: 'login');
 
     // user의 정보가 있다면 로그인 후 들어가는 첫 페이지로 넘어가게 합니다.
+    /*
     if (userInfo != null) {
+      print('_asyncMethod에서!!!!!!!!!!!!!');
       context.go('/profile');
     } else {
       print('로그인을 해주세요.');
     }
+    */
   }
 
   // 로그인 버튼 누르면 실행
   loginAction(String id, String password) async {
     try {
+      print('로그인 액션');
       final loginService = LoginService();
       final result = await loginService.login(id, password);
-      print('로그인 액션');
+
+      // 로그인 성공 시 flutter_secure_storage에 아이디 저장
+      // 비밀번호는 왜 저장 안할까?
+      // => 민감한 정보인 비밀번호는 메모리에 일시적으로 저장하거나,
+      //    로그인 세션이 유지되는 동안
+      await storage.write(key: 'login', value: id);
     } catch (e) {
       return false;
     }
@@ -61,7 +71,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const LoginScreen();
+    // return const LoginScreen();
+    return const ProfileScreen();
   }
 }
 
@@ -73,9 +84,6 @@ class LoginScreen extends StatelessWidget {
     print('======profile');
     print('login');
     print('======');
-
-    // AuthService 인스턴스 가져오기
-    // final AuthService authService = Get.find();
 
     // Scaffold 레이아웃 위젯 중 하나로, 앱의 기본 구조를 정의
     return Scaffold(
@@ -121,41 +129,41 @@ class _LoginFormState extends State<LoginForm> {
   final dio = Dio();
 
   // 아이디 초기화 변수
-  final TextEditingController _idController = TextEditingController();
+  final TextEditingController idController = TextEditingController();
 
   // 비밀번호 보기 여부를 관리할 변수
-  bool _passwordVisible = false;
+  bool passwordVisible = false;
 
   // 비번 초기화 변수
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-  bool _idValid = true; // 유효 아이디 검증
-  bool _passwordValid = true;
-  bool _idInput = false;
-  bool _passwordInput = false;
+  bool idValid = true; // 유효 아이디 검증
+  bool passwordValid = true;
+  bool idInput = false;
+  bool passwordInput = false;
 
-  void _validateId(String value) async {
+  void validateId(String value) async {
     final prefs = await SharedPreferences.getInstance();
 
     final existingId = prefs.getString('id');
     setState(() {
-      _idInput = value.isEmpty;
+      idInput = value.isEmpty;
     });
 
     setState(() {
-      _idValid = value.isNotEmpty;
+      idValid = value.isNotEmpty;
     });
   }
 
-  void _validatePassword(String value) async {
+  void validatePassword(String value) async {
     final prefs = await SharedPreferences.getInstance();
     final existingPassword = prefs.getString('password');
     setState(() {
-      _passwordInput = value.isEmpty;
+      passwordInput = value.isEmpty;
     });
 
     setState(() {
-      _passwordValid = value.isNotEmpty;
+      passwordValid = value.isNotEmpty;
     });
   }
 
@@ -171,8 +179,8 @@ class _LoginFormState extends State<LoginForm> {
             keyboardType: TextInputType.text,
             onTapOutside: (event) => FocusManager.instance.primaryFocus
                 ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
-            controller: _idController, // 컨트롤러 연결
-            onChanged: _validateId,
+            controller: idController, // 컨트롤러 연결
+            onChanged: validateId,
             decoration: InputDecoration(
               labelText: '아이디',
               labelStyle: const TextStyle(
@@ -186,10 +194,10 @@ class _LoginFormState extends State<LoginForm> {
                   width: 2,
                 ),
               ),
-              errorText: _idInput ? '아이디를 입력하세요.' : null,
+              errorText: idInput ? '아이디를 입력하세요.' : null,
               suffixIcon: IconButton(
                 onPressed: () {
-                  _idController.clear(); // 텍스트 필드 내용 초기화
+                  idController.clear(); // 텍스트 필드 내용 초기화
                 },
                 icon: const Icon(Icons.clear,
                     color: Color.fromARGB(255, 158, 158, 158)),
@@ -201,9 +209,9 @@ class _LoginFormState extends State<LoginForm> {
             keyboardType: TextInputType.text,
             onTapOutside: (event) => FocusManager.instance.primaryFocus
                 ?.unfocus(), // 키보드 외 구역 터치 시, 사라짐
-            controller: _passwordController, // 컨트롤러 연결
-            onChanged: _validatePassword,
-            obscureText: !_passwordVisible, // obscureText: true, // 비밀번호 가리기
+            controller: passwordController, // 컨트롤러 연결
+            onChanged: validatePassword,
+            obscureText: !passwordVisible, // obscureText: true, // 비밀번호 가리기
             decoration: InputDecoration(
               labelText: '비밀번호',
               labelStyle: const TextStyle(
@@ -217,7 +225,7 @@ class _LoginFormState extends State<LoginForm> {
                   width: 2,
                 ),
               ),
-              errorText: _passwordInput ? '비밀번호를 입력하세요' : null,
+              errorText: passwordInput ? '비밀번호를 입력하세요' : null,
               // 오른쪽에 눈 아이콘 추가
               suffixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -225,21 +233,21 @@ class _LoginFormState extends State<LoginForm> {
                   IconButton(
                     onPressed: () {
                       setState(() {
-                        _passwordVisible = !_passwordVisible;
+                        passwordVisible = !passwordVisible;
                       });
                     },
                     icon: Icon(
-                        _passwordVisible
+                        passwordVisible
                             ? Icons.visibility
                             : Icons.visibility_off,
                         // color: Theme.of(context).primaryColorDark,
-                        color: _passwordVisible
+                        color: passwordVisible
                             ? const Color.fromARGB(255, 158, 158, 158)
                             : const Color.fromARGB(255, 158, 158, 158)),
                   ),
                   IconButton(
                     onPressed: () {
-                      _passwordController.clear(); // 텍스트 필드 내용 초기화
+                      passwordController.clear(); // 텍스트 필드 내용 초기화
                     },
                     icon: const Icon(Icons.clear,
                         color: Color.fromARGB(255, 158, 158, 158)),
@@ -261,9 +269,9 @@ class _LoginFormState extends State<LoginForm> {
                     final existingId = prefs.getString('id');
                     final existingPassword = prefs.getString('password');
 
-                    // 여기 조건이 잘 못 된건지..  !_idValid || !_passwordValid
-                    if (_idController.text.isEmpty ||
-                        _passwordController.text.isEmpty) {
+                    // 조건... !_idValid || !_passwordValid
+                    if (idController.text.isEmpty ||
+                        passwordController.text.isEmpty) {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -295,9 +303,9 @@ class _LoginFormState extends State<LoginForm> {
                     }
                     try {
                       final test = await LoginService()
-                          .login(_idController.text, _passwordController.text);
+                          .login(idController.text, passwordController.text);
 
-                      print('-------------------------');
+                      print('-------------------반환된 데이터 확인');
                       print(test); // 반환된 데이터 확인
                       print('-------------------------');
 
@@ -319,10 +327,13 @@ class _LoginFormState extends State<LoginForm> {
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {
+                                    print('잘 받아오느냐!!?');
                                     Navigator.of(context).pop();
-                                    // 로그인 버튼이 눌렸을 때 처리할 로직
+                                    // 확인 버튼 눌렸을 때 처리할 로직
                                     //---> 아이디, 비밀번호가 정상인 경우에만!
-                                    context.go('/'); // 홈 화면으로 전환
+                                    if (idValid && passwordValid) {
+                                      context.go('/profile'); // 홈 화면으로 전환
+                                    }
                                   },
                                   child: const Text(
                                     '확인',
@@ -469,8 +480,8 @@ class _LoginFormState extends State<LoginForm> {
                         }
                       }
                     }
-                    print(_idController.text);
-                    print(_passwordController.text);
+                    print(idController.text);
+                    print(passwordController.text);
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -516,13 +527,6 @@ class _LoginFormState extends State<LoginForm> {
                         color: Color.fromARGB(255, 134, 174, 190),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.go('/');
-                    },
-                    child: const Text('로그아웃'),
                   ),
                 ],
               ),
