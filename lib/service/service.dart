@@ -59,6 +59,7 @@ class LoginService {
         'ok': true,
         'statusCode': 200,
         'message': '로그인 성공',
+        'userData': response.data['user'],
       };
     } catch (e) {
       rethrow;

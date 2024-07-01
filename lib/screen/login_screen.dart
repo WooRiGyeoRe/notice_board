@@ -2,12 +2,68 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../service/service.dart';
 import 'bottom_navi_bar.dart';
 import 'home_screen.dart';
+
+class MyLoginPage extends StatefulWidget {
+  const MyLoginPage(String id, String passw, String s, {super.key});
+
+  @override
+  State<MyLoginPage> createState() => _MyLoginPageState();
+}
+
+class _MyLoginPageState extends State<MyLoginPage> {
+  var userName = TextEditingController(); // id 입력 저장
+  var userPassword = TextEditingController(); // pw 입력 저장
+
+  //flutter_secure_storage 사용을 위한 초기화 작업
+  static const storage = FlutterSecureStorage();
+  dynamic userInfo = ''; // storage에 있는 유저 정보를 저장
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 비동기로 flutter secure storage 정보를 불러오는 작업
+    WidgetsBinding.instance.addPersistentFrameCallback((_) {
+      _asyncMethod();
+    });
+  }
+
+  _asyncMethod() async {
+    // read 함수로 key값에 맞는 정보를 불러오고 데이터타입은 String 타입
+    // 데이터가 없을때는 null을 반환
+    userInfo = await storage.read(key: 'login');
+
+    // user의 정보가 있다면 로그인 후 들어가는 첫 페이지로 넘어가게 합니다.
+    if (userInfo != null) {
+      context.go('/profile');
+    } else {
+      print('로그인을 해주세요.');
+    }
+  }
+
+  // 로그인 버튼 누르면 실행
+  loginAction(String id, String password) async {
+    try {
+      final loginService = LoginService();
+      final result = await loginService.login(id, password);
+      print('로그인 액션');
+    } catch (e) {
+      return false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const LoginScreen();
+  }
+}
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -80,6 +136,7 @@ class _LoginFormState extends State<LoginForm> {
 
   void _validateId(String value) async {
     final prefs = await SharedPreferences.getInstance();
+
     final existingId = prefs.getString('id');
     setState(() {
       _idInput = value.isEmpty;

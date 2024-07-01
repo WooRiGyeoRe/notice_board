@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'router.dart';
@@ -16,7 +17,7 @@ import 'screen/write_change_screen.dart';
 import 'screen/write_screen.dart';
 
 void main() async {
-  // 시스템 UI 오버레이 스타일 설정
+  // 상태바 스타일 설정
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // 상태바 배경색을 투명하게 설정
@@ -64,6 +65,9 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
+
+
+
  
 
 /* 기존 
