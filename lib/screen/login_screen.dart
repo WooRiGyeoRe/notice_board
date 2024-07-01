@@ -94,7 +94,7 @@ class LoginScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            // context.go('/');
+            context.go('/');
           },
         ),
         backgroundColor: const Color.fromARGB(255, 185, 215, 224),
