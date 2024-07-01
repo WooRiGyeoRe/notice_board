@@ -148,7 +148,8 @@ class _JoinFormState extends State<JoinForm> {
     setState(() {
       _password2Input = true;
       // _password2Valid = value.isNotEmpty;
-      _password2Valid = _passwordController.text == value;
+      // _password2Valid = _passwordController.text == value;
+      _password2Valid = _passwordController.text == value || value.isEmpty;
     });
   }
 
@@ -365,8 +366,9 @@ class _JoinFormState extends State<JoinForm> {
                         !_password2Valid ||
                         !_idValid ||
                         !_nickValid) {
-                      return;
+                      return; // 필드가 유효하지 않거나 비어있으면 다이얼로그를 표시하지 않고 반환
                     }
+                    // 모든 필드가 유효하고 채워져 있으면 회원가입 진행
                     try {
                       print('이야아아아아압!!!');
                       final test = await JoinService().join(
@@ -394,7 +396,7 @@ class _JoinFormState extends State<JoinForm> {
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                     context.go(
-                                        '/'); // 확인 누르면 화면전환 (재로그인 vs 바로 로그인?)
+                                        '/login'); // 확인 누르면 화면전환 (재로그인 vs 바로 로그인?)
                                   },
                                   child: const Text(
                                     '확인',
@@ -504,8 +506,42 @@ class _JoinFormState extends State<JoinForm> {
                           );
                         }
                       }
+                      /*
+                      else if (_passwordCheckController.text.isEmpty) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: Colors.white, // 다이얼로그 배경색
+                              title: const Text(
+                                '필수 입력란이 비었습니다. \n확인해주세요.',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 111, 142, 179),
+                                ),
+                              ),
+                              content: const Text('아이디, 닉네임, 비밀번호를 모두 입력해주세요.'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // 다이얼로그 닫기
+                                  },
+                                  child: const Text(
+                                    '확인',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(
+                                          255, 111, 142, 179), // 버튼 텍스트 색상
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                      */
                     }
                     print(_idController.text);
+                    const Color.fromARGB(255, 104, 98, 98);
                     print(_nickController.text);
                     print(_passwordController.text);
                     print(_passwordCheckController.text);
