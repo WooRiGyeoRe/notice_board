@@ -361,75 +361,72 @@ class _JoinFormState extends State<JoinForm> {
                     if (_idController.text.isEmpty ||
                         _nickController.text.isEmpty ||
                         _passwordController.text.isEmpty ||
-                        _passwordCheckController.text.isEmpty ||
-                        !_passwordValid ||
+                        _passwordCheckController.text.isEmpty) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            backgroundColor: Colors.white, // 다이얼로그 배경색
+                            title: const Text(
+                              '필수 입력란이 비었습니다. \n확인해주세요.',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 111, 142, 179),
+                              ),
+                            ),
+                            content: const Text('아이디, 닉네임, 비밀번호를 모두 입력해주세요.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // 다이얼로그 닫기
+                                },
+                                child: const Text(
+                                  '확인',
+                                  style: TextStyle(
+                                    color: Color.fromARGB(
+                                        255, 111, 142, 179), // 버튼 텍스트 색상
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                      // return; // 필드가 유효하지 않거나 비어있으면 다이얼로그를 표시하지 않고 반환
+                    }
+                    // 모든 필드가 유효하고 채워져 있으면 회원가입 진행
+                    else if (!_passwordValid ||
                         !_password2Valid ||
                         !_idValid ||
                         !_nickValid) {
-                      return; // 필드가 유효하지 않거나 비어있으면 다이얼로그를 표시하지 않고 반환
-                    }
-                    // 모든 필드가 유효하고 채워져 있으면 회원가입 진행
-                    try {
-                      print('이야아아아아압!!!');
-                      final test = await JoinService().join(
-                          _idController.text,
-                          _nickController.text,
-                          _passwordController.text,
-                          _passwordCheckController.text);
-                      print('-------------------------');
-                      print(test);
-                      print('-------------------------');
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              backgroundColor: Colors.white,
-                              title: const Text(
-                                '회원가입이 완료되었습니다.',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 111, 142, 179),
-                                ),
-                              ),
-                              content: const Text('Talk tok의 회원이 되신 것을 환영합니다♥'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    context.go(
-                                        '/login'); // 확인 누르면 화면전환 (재로그인 vs 바로 로그인?)
-                                  },
-                                  child: const Text(
-                                    '확인',
-                                    style: TextStyle(
-                                      color: Color.fromARGB(
-                                          255, 111, 142, 179), // 버튼 텍스트 색상
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          });
-                    } catch (e) {
-                      print(e);
-                      if (e is DioException) {
-                        // DioErrorType에 따른 예외 처리
-                        if (e.response?.statusCode == 409) {
-                          showDialog(
+                      try {
+                        print('이야아아아아압!!!');
+                        final test = await JoinService().join(
+                            _idController.text,
+                            _nickController.text,
+                            _passwordController.text,
+                            _passwordCheckController.text);
+                        print('-------------------------');
+                        print(test);
+                        print('-------------------------');
+                        showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                backgroundColor: Colors.white, // 다이얼로그 배경색
+                                backgroundColor: Colors.white,
                                 title: const Text(
-                                  '이미 사용 중인 아이디 \n혹은 닉네임입니다.',
+                                  '회원가입이 완료되었습니다.',
                                   style: TextStyle(
                                     color: Color.fromARGB(255, 111, 142, 179),
                                   ),
                                 ),
-                                content: const Text('아이디 혹은 닉네임을 다시 입력해주세요.'),
+                                content:
+                                    const Text('Talk tok의 회원이 되신 것을 환영합니다♥'),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () {
-                                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                                      Navigator.of(context).pop();
+                                      context.go(
+                                          '/login'); // 확인 누르면 화면전환 (재로그인 vs 바로 로그인?)
                                     },
                                     child: const Text(
                                       '확인',
@@ -441,9 +438,45 @@ class _JoinFormState extends State<JoinForm> {
                                   ),
                                 ],
                               );
-                            },
-                          );
-                        } else if (e.response?.statusCode == 400) {
+                            });
+                      } catch (e) {
+                        print(e);
+                        if (e is DioException) {
+                          // DioErrorType에 따른 예외 처리
+                          if (e.response?.statusCode == 409) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: Colors.white, // 다이얼로그 배경색
+                                  title: const Text(
+                                    '이미 사용 중인 아이디 \n혹은 닉네임입니다.',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 111, 142, 179),
+                                    ),
+                                  ),
+                                  content: const Text('아이디 혹은 닉네임을 다시 입력해주세요.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); // 다이얼로그 닫기
+                                      },
+                                      child: const Text(
+                                        '확인',
+                                        style: TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 111, 142, 179), // 버튼 텍스트 색상
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+
+                          /*
+                        else if (e.response?.statusCode == 400) {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -474,38 +507,43 @@ class _JoinFormState extends State<JoinForm> {
                               );
                             },
                           );
-                        } else if (e.response?.statusCode == 500) {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                backgroundColor: Colors.white, // 다이얼로그 배경색
-                                title: const Text(
-                                  '서버 오류가 발생했습니다.',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 111, 142, 179),
-                                  ),
-                                ),
-                                content: const Text('회원가입을 다시 진행해주세요.'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop(); // 다이얼로그 닫기
-                                    },
-                                    child: const Text(
-                                      '확인',
-                                      style: TextStyle(
-                                        color: Color.fromARGB(
-                                            255, 111, 142, 179), // 버튼 텍스트 색상
-                                      ),
+                        }
+                        */
+
+                          else if (e.response?.statusCode == 500) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: Colors.white, // 다이얼로그 배경색
+                                  title: const Text(
+                                    '서버 오류가 발생했습니다.',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 111, 142, 179),
                                     ),
                                   ),
-                                ],
-                              );
-                            },
-                          );
+                                  content: const Text('회원가입을 다시 진행해주세요.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); // 다이얼로그 닫기
+                                      },
+                                      child: const Text(
+                                        '확인',
+                                        style: TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 111, 142, 179), // 버튼 텍스트 색상
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         }
                       }
+
                       /*
                       else if (_passwordCheckController.text.isEmpty) {
                         showDialog(

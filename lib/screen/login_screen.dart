@@ -263,6 +263,9 @@ class _LoginFormState extends State<LoginForm> {
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
+                                    // 로그인 버튼이 눌렸을 때 처리할 로직
+                                    //---> 아이디, 비밀번호가 정상인 경우에만!
+                                    context.go('/'); // 홈 화면으로 전환
                                   },
                                   child: const Text(
                                     '확인',
@@ -274,17 +277,12 @@ class _LoginFormState extends State<LoginForm> {
                               ],
                             );
                           });
-
                       // // SharedPreferences 인스턴스 생성
                       /* final SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       await prefs.setString('token', data['token']); 
                       print(prefs.getString('token'));
                       */
-
-                      // 로그인 버튼이 눌렸을 때 처리할 로직
-                      //---> 아이디, 비밀번호가 맞으면 되도록 바꿔야 됨.
-                      //context.go('/'); // 홈 화면으로 전환
                     } catch (e) {
                       print('[로그인 버튼]');
                       if (e is DioException) {
