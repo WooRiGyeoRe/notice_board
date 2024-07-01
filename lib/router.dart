@@ -34,6 +34,7 @@ final routerProvider = Provider(
           name: 'login',
           path: '/login',
           builder: (context, state) => LoginScreen(key: state.pageKey),
+          // redirect
         ),
         // 프로필 탭 -> 로그인 -> 내 프로필
         GoRoute(

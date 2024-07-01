@@ -355,8 +355,11 @@ class _LogOutButtonState extends State<LogOutButton> {
           width: 372,
           height: 50,
           child: ElevatedButton(
-            onPressed: () {
-              // 로그아웃 버튼이 눌렸을 때 처리할 로직을 추가하세요.
+            onPressed: () async {
+              await LogoutService().logout();
+              //if()
+              // 로그아웃 버튼이 눌렸을 때 처리할 로직
+              context.go('/');
             },
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.white,
@@ -394,7 +397,6 @@ class _LogOutButtonState extends State<LogOutButton> {
                               children: [
                                 TextButton(
                                   //onPressed: _handleWithdrawal, // 탈퇴 처리 함수 호출
-
                                   onPressed: () async {
                                     // SharedPreferences에서 사용자 정보 삭제
                                     final prefs =
@@ -404,7 +406,6 @@ class _LogOutButtonState extends State<LogOutButton> {
                                     Navigator.of(context).pop();
                                     context.go('/');
                                   },
-
                                   child: const Text(
                                     '탈퇴',
                                     style: TextStyle(
@@ -412,6 +413,7 @@ class _LogOutButtonState extends State<LogOutButton> {
                                     ),
                                   ),
                                 ),
+                                // 취소 버튼 선택 시
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();

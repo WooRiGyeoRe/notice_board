@@ -69,73 +69,70 @@ class LoginService {
   }
 }
 
+// 로그아웃
+class LogoutService {
+  final Dio _dio = Dio();
+
+  Future<void> logout() async {
+    try {
+      // SharedPreferences 인스턴스를 생성
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token'); // 토큰 가져오기
+
+      // 서버로 로그아웃 요청
+      final response = await _dio.post(
+        'http://10.0.2.2:4000/api/auth/logout',
+        options: Options(
+          headers: {
+            'authorization': token!,
+          },
+        ),
+      );
+
+      // 'token' 키에 저장된 값을 삭제.
+      await prefs.remove('token');
+      print('로그아웃 완료');
+    } catch (e) {
+      // 예외 발생 시 처리 로직을 추가할 수 있습니다.
+      print(e);
+      print('로그아웃 중 오류 발생');
+    }
+  }
+}
+
 // 회원탈퇴
 class WithdrawalService {
   final Dio _dio = Dio();
 
   Future<Map<String, dynamic>> withdrawal(String id, String password) async {
     try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+
+      // 서버로 회원탈퇴 요청
       final response = await _dio.post(
         'http://10.0.2.2:4000/api/auth/local/withdraw',
+        options: Options(
+          headers: {'authorization': token!},
+        ),
         data: {
           'id': id,
           'password': password,
         },
       );
 
-      final data = response.data['data'];
-
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      // final data = response.data['data'];
       await prefs.clear(); // SharedPreferences에서 모든 데이터 삭제
-
+      print('회원탈퇴 완료');
       return {
         'ok': true,
         'statusCode': 200,
-        'message': '탈퇴 완료',
+        'message': '회원탈퇴 성공',
       };
-    } on DioException catch (e) {
-      if (e.response != null) {
-        final int statusCode = e.response!.statusCode ?? 0;
-        switch (statusCode) {
-          case 401:
-            return {
-              'ok': false,
-              'statusCode': 401,
-              'message': '토큰 없음 혹은 위조, 만료',
-            };
-          case 404:
-            return {
-              'ok': false,
-              'statusCode': 404,
-              'message': '아이디를 찾을 수 없음',
-            };
-          case 500:
-            return {
-              'ok': false,
-              'statusCode': 500,
-              'message': '서버 오류',
-            };
-          default:
-            return {
-              'ok': false,
-              'statusCode': statusCode,
-              'message': '알 수 없는 에러',
-            };
-        }
-      } else {
-        return {
-          'ok': false,
-          'statusCode': 0,
-          'message': '응답 없음',
-        };
-      }
     } catch (e) {
-      // 이 외 오류 예외처리
-      return {
-        'ok': false,
-        'statusCode': -1,
-        'message': '알 수 없는 에러',
-      };
+      print(e);
+      print('회원탈퇴 중 오류 발생');
+      rethrow;
     }
   }
 }
