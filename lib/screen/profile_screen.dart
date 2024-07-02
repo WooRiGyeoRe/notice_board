@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -338,6 +339,7 @@ class LogOutButton extends StatefulWidget {
 }
 
 class _LogOutButtonState extends State<LogOutButton> {
+  final LogoutService _logoutService = LogoutService(); // LogoutService 사용 준비
   final WithdrawalService _withdrawalService = WithdrawalService();
 
   Future<void> _handleWithdrawal() async {
@@ -357,10 +359,111 @@ class _LogOutButtonState extends State<LogOutButton> {
           child: ElevatedButton(
             onPressed: () async {
               print('로그아웃 버튼 눌러보기');
-              await LogoutService().logout();
-              //if()
-              // 로그아웃 버튼이 눌렸을 때 처리할 로직
-              context.go('/');
+
+              // 토큰 유효성 검사
+              final prefs = await SharedPreferences.getInstance();
+              final token = prefs.getString('token');
+
+              //if (token != null) {
+              try {
+                await LogoutService().logout();
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text(
+                        '로그아웃 성공',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 111, 142, 179),
+                        ),
+                      ),
+                      content: const Text('로그아웃 되었습니다.'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text(
+                            '확인',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 111, 142, 179),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+                context.go('/'); // 로그아웃 버튼 눌렀을 때
+              } catch (e) {
+                print(e);
+                if (e is DioException) {
+                  // 토큰 없음 혹은 위조, 만료
+                  if (e.response?.statusCode == 401) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: Colors.white, // 다이얼로그 배경색
+                          title: const Text(
+                            '로그아웃 실패',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 111, 142, 179),
+                            ),
+                          ),
+                          content:
+                              const Text('로그아웃을 위한 인증이 만료되었습니다. 다시 로그인해주세요.'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // 다이얼로그 닫기
+                              },
+                              child: const Text(
+                                '확인',
+                                style: TextStyle(
+                                  color: Color.fromARGB(
+                                      255, 111, 142, 179), // 버튼 텍스트 색상
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: Colors.white, // 다이얼로그 배경색
+                          title: const Text(
+                            '서버 오류가 발생했습니다.',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 111, 142, 179),
+                            ),
+                          ),
+                          content: const Text('로그아웃을 다시 진행해주세요.'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // 다이얼로그 닫기
+                              },
+                              child: const Text(
+                                '확인',
+                                style: TextStyle(
+                                  color: Color.fromARGB(
+                                      255, 111, 142, 179), // 버튼 텍스트 색상
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                }
+              }
+              //}
             },
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.white,

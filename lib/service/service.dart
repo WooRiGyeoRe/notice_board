@@ -78,23 +78,33 @@ class LogoutService {
       // SharedPreferences 인스턴스를 생성
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token'); // 토큰 가져오기
+      print('로그아웃 서비스 쪽입니다');
+      print(token);
+
+      if (token == null) {
+        print('로그아웃: 토큰 없음');
+        return;
+      }
 
       // 서버로 로그아웃 요청
       final response = await _dio.post(
         'http://10.0.2.2:4000/api/auth/logout',
         options: Options(
           headers: {
-            'authorization': token!,
+            'authorization': token,
           },
         ),
       );
 
       // 'token' 키에 저장된 값을 삭제.
-      await prefs.remove('token');
+      // await prefs.remove('token');
+      await prefs.clear();
       print('로그아웃 완료');
     } catch (e) {
       // 예외 발생 시 처리 로직을 추가할 수 있습니다.
       print(e);
+      DioException error = e as DioException;
+      print(error.response?.data);
       print('로그아웃 중 오류 발생');
     }
   }

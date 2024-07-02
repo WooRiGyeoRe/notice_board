@@ -306,9 +306,11 @@ class _LoginFormState extends State<LoginForm> {
                           .login(idController.text, passwordController.text);
 
                       print('-------------------반환된 데이터 확인');
-                      print(test); // 반환된 데이터 확인
+                      print(test['userData']['token']); // 반환된 데이터 확인
                       print('-------------------------');
 
+                      // 로그인 성공하면 토큰을 저장
+                      await prefs.setString('token', test['userData']['token']);
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {

@@ -432,7 +432,6 @@ class _JoinFormState extends State<JoinForm> {
                       );
                       return;
                     }
-
                     try {
                       print('이야아아아아압!!!');
                       final test = await JoinService().join(
