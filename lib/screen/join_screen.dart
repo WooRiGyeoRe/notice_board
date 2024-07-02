@@ -407,12 +407,12 @@ class _JoinFormState extends State<JoinForm> {
                           return AlertDialog(
                             backgroundColor: Colors.white,
                             title: const Text(
-                              '제대로입력하셈 ㅗ',
+                              '회원가입 오류',
                               style: TextStyle(
                                 color: Color.fromARGB(255, 111, 142, 179),
                               ),
                             ),
-                            content: const Text('제대로입력하셈 ㅗ'),
+                            content: const Text('회원가입 양식을 정확히 입력해주세요.'),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () {

@@ -356,6 +356,7 @@ class _LogOutButtonState extends State<LogOutButton> {
           height: 50,
           child: ElevatedButton(
             onPressed: () async {
+              print('로그아웃 버튼 눌러보기');
               await LogoutService().logout();
               //if()
               // 로그아웃 버튼이 눌렸을 때 처리할 로직
