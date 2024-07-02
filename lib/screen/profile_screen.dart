@@ -508,7 +508,37 @@ class _LogOutButtonState extends State<LogOutButton> {
                                     await prefs.clear();
 
                                     Navigator.of(context).pop();
-                                    context.go('/');
+                                    // context.go('/');
+
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            backgroundColor: Colors.white,
+                                            title: const Text(
+                                              '탈퇴가 완료되었습니다.',
+                                              style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 111, 142, 179),
+                                              ),
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  context.go('/');
+                                                },
+                                                child: const Text(
+                                                  '확인',
+                                                  style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 111, 142, 179),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        });
                                   },
                                   child: const Text(
                                     '탈퇴',
