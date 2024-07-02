@@ -345,8 +345,6 @@ class _LogOutButtonState extends State<LogOutButton> {
   Future<void> _handleWithdrawal() async {
     const String userId = 'user_id'; // 실제 사용자 ID로 변경
     const String userPassword = 'user_password'; // 실제 사용자 비밀번호로 변경
-
-    final result = await _withdrawalService.withdrawal(userId, userPassword);
   }
 
   @override
@@ -483,6 +481,7 @@ class _LogOutButtonState extends State<LogOutButton> {
               const SizedBox(width: 10),
               GestureDetector(
                 onTap: () {
+                  print('회원 탈퇴 쪽입니다');
                   // '회원 탈퇴하기' 텍스트를 탭했을 때 처리할 로직을 추가
                   showDialog(
                       context: context,
@@ -503,11 +502,9 @@ class _LogOutButtonState extends State<LogOutButton> {
                                   //onPressed: _handleWithdrawal, // 탈퇴 처리 함수 호출
                                   onPressed: () async {
                                     // SharedPreferences에서 사용자 정보 삭제
-                                    final prefs =
-                                        await SharedPreferences.getInstance();
-                                    await prefs.clear();
+                                    await WithdrawalService().withdrawal();
 
-                                    Navigator.of(context).pop();
+                                    //Navigator.of(context).pop();
                                     // context.go('/');
 
                                     showDialog(

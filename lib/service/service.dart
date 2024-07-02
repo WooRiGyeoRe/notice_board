@@ -97,8 +97,8 @@ class LogoutService {
       );
 
       // 'token' 키에 저장된 값을 삭제.
-      // await prefs.remove('token');
-      await prefs.clear();
+      await prefs.remove('token');
+      //  await prefs.clear();
       print('로그아웃 완료');
     } catch (e) {
       // 예외 발생 시 처리 로직을 추가할 수 있습니다.
@@ -114,21 +114,18 @@ class LogoutService {
 class WithdrawalService {
   final Dio _dio = Dio();
 
-  Future<Map<String, dynamic>> withdrawal(String id, String password) async {
+  Future<Map<String, dynamic>> withdrawal() async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
+      print(token);
 
       // 서버로 회원탈퇴 요청
       final response = await _dio.post(
         'http://10.0.2.2:4000/api/auth/local/withdraw',
         options: Options(
-          headers: {'authorization': token!},
+          headers: {'authorization': token},
         ),
-        data: {
-          'id': id,
-          'password': password,
-        },
       );
 
       // final data = response.data['data'];
