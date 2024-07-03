@@ -504,7 +504,7 @@ class _LogOutButtonState extends State<LogOutButton> {
                                     // SharedPreferences에서 사용자 정보 삭제
                                     await WithdrawalService().withdrawal();
 
-                                    //Navigator.of(context).pop();
+                                    Navigator.of(context).pop();
                                     // context.go('/');
 
                                     showDialog(
