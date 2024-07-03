@@ -13,43 +13,14 @@ import '../service/service.dart';
 import 'bottom_navi_bar.dart';
 import 'home_screen.dart';
 
-class MyLoginPage extends StatefulWidget {
+class MyLoginPage extends ConsumerStatefulWidget {
   const MyLoginPage({super.key});
 
   @override
-  State<MyLoginPage> createState() => _MyLoginPageState();
+  ConsumerState<MyLoginPage> createState() => _MyLoginPageState();
 }
 
-class _MyLoginPageState extends State<MyLoginPage> {
-  /*
-  var userName = TextEditingController(); // id 입력 저장
-  var userPassword = TextEditingController(); // pw 입력 저장
-
-  //flutter_secure_storage 사용을 위한 초기화 작업
-  static const storage = FlutterSecureStorage();
-  dynamic userInfo = ''; // storage에 있는 유저 정보를 저장
-
-  @override
-  void initState() {
-    super.initState();
-
-    // 비동기로 flutter secure storage 정보를 불러오는 작업
-    WidgetsBinding.instance.addPersistentFrameCallback((_) {
-      _asyncMethod();
-    });
-  }
-
-  _asyncMethod() async {
-    // read 함수로 key값에 맞는 정보를 불러오고 데이터타입은 String 타입
-    // 데이터가 없을때는 null을 반환
-    userInfo = await storage.read(key: 'login');
-    // 사용자 정보가 있으면 프로필 화면으로 이동
-    if (userInfo != null) {
-      context.go('/profile');
-    }
-  }
-  */
-
+class _MyLoginPageState extends ConsumerState<MyLoginPage> {
   // 로그인 버튼 누르면 실행
   loginAction(String id, String password) async {
     try {
@@ -63,6 +34,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
       await prefs.setString('id', id);
 
       // 로그인 후 프로필 화면으로 이동
+      // 상태를 업데이트하여 프로필 화면으로 이동
       context.go('/profile');
     } catch (e) {
       return false;
@@ -87,6 +59,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   void initState() {
     super.initState();
+    checkLoginStatus(); // initState에서 로그인 상태 확인
+  }
+
+  void checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    if (token != null && token.isNotEmpty) {
+      // 이미 로그인된 상태라면 프로필 화면으로 바로 이동
+      context.go('/profile');
+    }
   }
 
   @override
@@ -131,6 +114,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ],
                 );
               } else {
+                // 로그인되어 있으면 프로필 화면으로 이동
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  context.go('/profile');
+                });
+                return Container();
+
+                /*
                 return Column(
                   children: [
                     GestureDetector(
@@ -141,6 +131,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ],
                 );
+                */
               }
             },
             error: (error, stackTrace) {
