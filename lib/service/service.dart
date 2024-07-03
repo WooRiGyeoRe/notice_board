@@ -98,6 +98,9 @@ class LogoutService {
 
       // 'token' 키에 저장된 값을 삭제.
       await prefs.remove('token');
+      print('==== service');
+      print(prefs.getString('token'));
+      print('==== service');
       //  await prefs.clear();
       print('로그아웃 완료');
     } catch (e) {

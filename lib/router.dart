@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:test_1/provider/user_provider.dart';
 import 'screen/board_screen.dart';
 import 'screen/comment_screen.dart';
 import 'screen/home_screen.dart';
@@ -55,23 +56,23 @@ final routerProvider = Provider(
         ),
 
         // 자유게시판
-        // GoRoute(
-        //   name: 'free',
-        //   path: '/free',
-        //   builder: (context, state) => BoardScreen(
-        //     key: state.pageKey,
-        //     extra: 'free', // 자유게시판
-        //   ),
-        // ),
+        /*  GoRoute(
+            name: 'free',
+           path: '/free',
+              builder: (context, state) => BoardScreen(
+              key: state.pageKey,
+             extra: 'free', // 자유게시판
+            ),
+        ), */
         // // 질문게시판
-        // GoRoute(
-        //   name: 'q&a',
-        //   path: '/q&a',
-        //   builder: (context, state) => BoardScreen(
-        //     key: state.pageKey,
-        //     extra: 'q&a', // 질문게시판
-        //   ),
-        // ),
+        /*  GoRoute(
+           name: 'q&a',
+            path: '/q&a',
+            builder: (context, state) => BoardScreen(
+            key: state.pageKey,
+            extra: 'q&a', // 질문게시판
+            ),
+         ), */
 
         // 회원가입 페이지
         GoRoute(

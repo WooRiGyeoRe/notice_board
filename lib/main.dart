@@ -56,6 +56,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+    //final authUser = ref.watch(authProvider);
 
     return MaterialApp.router(
       routerConfig: router, // GoRouter 설정 적용

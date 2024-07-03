@@ -2,10 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_1/provider/user_provider.dart';
 import 'package:test_1/screen/profile_screen.dart';
 import '../service/service.dart';
 import 'bottom_navi_bar.dart';
@@ -19,6 +21,7 @@ class MyLoginPage extends StatefulWidget {
 }
 
 class _MyLoginPageState extends State<MyLoginPage> {
+  /*
   var userName = TextEditingController(); // id 입력 저장
   var userPassword = TextEditingController(); // pw 입력 저장
 
@@ -40,7 +43,12 @@ class _MyLoginPageState extends State<MyLoginPage> {
     // read 함수로 key값에 맞는 정보를 불러오고 데이터타입은 String 타입
     // 데이터가 없을때는 null을 반환
     userInfo = await storage.read(key: 'login');
+    // 사용자 정보가 있으면 프로필 화면으로 이동
+    if (userInfo != null) {
+      context.go('/profile');
+    }
   }
+  */
 
   // 로그인 버튼 누르면 실행
   loginAction(String id, String password) async {
@@ -49,11 +57,13 @@ class _MyLoginPageState extends State<MyLoginPage> {
       final loginService = LoginService();
       final result = await loginService.login(id, password);
 
-      // 로그인 성공 시 flutter_secure_storage에 아이디 저장
-      // 비밀번호는 왜 저장 안할까?
-      // => 민감한 정보인 비밀번호는 메모리에 일시적으로 저장하거나,
-      //    로그인 세션이 유지되는 동안
-      await storage.write(key: 'login', value: id);
+      // 로그인 성공 시 SharedPreferences에 로그인한 아이디, 토큰 저장
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', result['userData']['token']);
+      await prefs.setString('id', id);
+
+      // 로그인 후 프로필 화면으로 이동
+      context.go('/profile');
     } catch (e) {
       return false;
     }
@@ -66,8 +76,18 @@ class _MyLoginPageState extends State<MyLoginPage> {
   }
 }
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,9 +120,34 @@ class LoginScreen extends StatelessWidget {
         elevation: 3,
       ),
       backgroundColor: Colors.white,
-      body: const Column(
-        children: [LoginForm()],
-      ),
+      body: ref.watch(userAsyncProvider).when(
+            data: (data) {
+              print(data);
+              if (data == null) {
+                // 로그인 X
+                return const Column(
+                  children: [
+                    LoginForm(),
+                  ],
+                );
+              } else {
+                return Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        context.goNamed('profile');
+                      },
+                      child: const Text('나'),
+                    ),
+                  ],
+                );
+              }
+            },
+            error: (error, stackTrace) {
+              return Container();
+            },
+            loading: () => const CircularProgressIndicator(),
+          ),
       bottomNavigationBar: const BottomBar(),
     );
   }

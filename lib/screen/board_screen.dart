@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:test_1/provider/user_provider.dart';
 import 'bottom_navi_bar.dart';
 
 // 자유&질문 게시판
-class BoardScreen extends StatelessWidget {
+class BoardScreen extends ConsumerWidget {
   final Object extra;
   //final bool authUser; // 회원 여부
 
@@ -15,7 +17,7 @@ class BoardScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     print('======board');
     print(extra);
     print('======');
@@ -45,27 +47,40 @@ class BoardScreen extends StatelessWidget {
           ),
           // if ()
           actions: [
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.mode_edit,
-                      color: Color.fromARGB(255, 255, 255, 255), size: 20),
-                  onPressed: () {
-                    String boardWrite =
-                        extra == 'free' ? 'free Write' : 'q&a Write';
-                    context.go('/write',
-                        extra: boardWrite); // boardWrite 변수 자체를 전달
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete,
-                      color: Color.fromARGB(255, 255, 255, 255), size: 20),
-                  onPressed: () {
-                    // context.go('/board'); // 선택된 글이 삭제된 후, 게시판 화면으로 전환
-                    context.go('/profile');
-                  },
-                ),
-              ],
+            ref.watch(userAsyncProvider).maybeWhen(
+              data: (data) {
+                if (data == null) {
+                  return Container();
+                } else {
+                  return Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.mode_edit,
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            size: 20),
+                        onPressed: () {
+                          String boardWrite =
+                              extra == 'free' ? 'free Write' : 'q&a Write';
+                          context.go('/write',
+                              extra: boardWrite); // boardWrite 변수 자체를 전달
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete,
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            size: 20),
+                        onPressed: () {
+                          // context.go('/board'); // 선택된 글이 삭제된 후, 게시판 화면으로 전환
+                          context.go('/comment');
+                        },
+                      ),
+                    ],
+                  );
+                }
+              },
+              orElse: () {
+                return Container();
+              },
             ),
           ],
           backgroundColor: const Color.fromARGB(255, 185, 215, 224),

@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_1/provider/user_provider.dart';
 import '../service/service.dart';
 import 'bottom_navi_bar.dart';
 
@@ -53,14 +55,14 @@ class ProfileScreen extends StatelessWidget {
 }
 
 // 개인 정보
-class MyInformation extends StatefulWidget {
+class MyInformation extends ConsumerStatefulWidget {
   const MyInformation({super.key});
 
   @override
   _MyInformationState createState() => _MyInformationState();
 }
 
-class _MyInformationState extends State<MyInformation> {
+class _MyInformationState extends ConsumerState<MyInformation> {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -83,11 +85,11 @@ class _MyInformationState extends State<MyInformation> {
             padding:
                 const EdgeInsets.only(left: 25, right: 25), // 왼쪽과 오른쪽에 여백 추가
 
-            child: const Row(
+            child: Row(
               mainAxisAlignment:
                   MainAxisAlignment.spaceBetween, // 위젯의 children 사이의 간격을 조정
               children: [
-                Row(
+                const Row(
                   children: [
                     Icon(
                       Icons.account_circle,
@@ -119,12 +121,69 @@ class _MyInformationState extends State<MyInformation> {
                     ),
                   ],
                 ),
+                IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: Colors.white,
+                          title: const Text(
+                            '닉네임 수정',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 111, 142, 179),
+                            ),
+                          ),
+                          content: TextField(
+                            decoration: const InputDecoration(
+                                hintText: '수정할 닉네임을 입력해주세요.'),
+                            controller:
+                                TextEditingController(), // 필요에 따라 초기값 설정 가능
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text(
+                                '확인',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 134, 174, 190),
+                                ),
+                              ),
+                              onPressed: () {
+                                // 다이얼로그를 닫거나 입력값을 처리하는 로직을 추가할 수 있습니다.
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: const Text(
+                                '취소',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 160, 160, 160),
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.mode_edit,
+                    size: 25,
+                    color: Color.fromARGB(255, 134, 174, 190),
+                  ),
+                ),
+
+                /*
                 // SizedBox(width: 50),
                 Icon(
                   Icons.mode_edit,
                   size: 25, //imageSize,
                   color: Color.fromARGB(255, 134, 174, 190),
                 ),
+                */
               ],
             ),
           ),
@@ -331,14 +390,14 @@ class _MyBoardState2 extends State<MyBoard2> {
 }
 
 // 로그아웃, 탈퇴
-class LogOutButton extends StatefulWidget {
+class LogOutButton extends ConsumerStatefulWidget {
   const LogOutButton({super.key});
 
   @override
   _LogOutButtonState createState() => _LogOutButtonState();
 }
 
-class _LogOutButtonState extends State<LogOutButton> {
+class _LogOutButtonState extends ConsumerState<LogOutButton> {
   final LogoutService _logoutService = LogoutService(); // LogoutService 사용 준비
   final WithdrawalService _withdrawalService = WithdrawalService();
 
@@ -359,8 +418,6 @@ class _LogOutButtonState extends State<LogOutButton> {
               print('로그아웃 버튼 눌러보기');
 
               // 토큰 유효성 검사
-              final prefs = await SharedPreferences.getInstance();
-              final token = prefs.getString('token');
 
               //if (token != null) {
               try {
