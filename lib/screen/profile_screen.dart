@@ -63,6 +63,24 @@ class MyInformation extends ConsumerStatefulWidget {
 }
 
 class _MyInformationState extends ConsumerState<MyInformation> {
+  // 딱 한 번만 실행되는 함수
+  // 가장 먼저 실행됨.
+  // 뭔가를 초기화할 때 주로 쓰임.
+  // 리스너 등록할 때 JS의 addEventListender();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  // 이 페이지가 언마운트될 때 = 사라질 때 실행되는 함수
+  // removeListner;
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -89,36 +107,45 @@ class _MyInformationState extends ConsumerState<MyInformation> {
               mainAxisAlignment:
                   MainAxisAlignment.spaceBetween, // 위젯의 children 사이의 간격을 조정
               children: [
-                const Row(
+                Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.account_circle,
                       size: 60, //imageSize,
                       color: Color.fromARGB(255, 158, 158, 158),
                       //color: Color.fromARGB(255, 198, 213, 228),
                     ),
-                    SizedBox(width: 15),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '닉네임',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 95, 95, 95),
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(width: 17),
-                        Text(
-                          'myidddd',
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 95, 95, 95),
-                            fontSize: 13,
-                          ),
-                        )
-                      ],
-                    ),
+                    const SizedBox(width: 15),
+                    ref.watch(userAsyncProvider).when(
+                        data: (data) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                data['nick'],
+                                //nickname,
+                                style: const TextStyle(
+                                    color: Color.fromARGB(255, 95, 95, 95),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(width: 17),
+                              Text(
+                                data['id'],
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 95, 95, 95),
+                                  fontSize: 13,
+                                ),
+                              )
+                            ],
+                          );
+                        },
+                        error: (error, stackTrace) {
+                          print(error);
+                          return Container();
+                        },
+                        loading: () => const CircularProgressIndicator()),
                   ],
                 ),
                 IconButton(

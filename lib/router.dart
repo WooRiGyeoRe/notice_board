@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:go_router/go_router.dart';
 import 'package:go_router/go_router.dart';
 import 'package:test_1/provider/user_provider.dart';
 import 'screen/board_screen.dart';

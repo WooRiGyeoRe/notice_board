@@ -22,16 +22,11 @@ class MyLoginPage extends ConsumerStatefulWidget {
 
 class _MyLoginPageState extends ConsumerState<MyLoginPage> {
   // 로그인 버튼 누르면 실행
-  loginAction(String id, String password) async {
+  loginAction(String id, String password, String nick) async {
     try {
       print('로그인 액션');
       final loginService = LoginService();
-      final result = await loginService.login(id, password);
-
-      // 로그인 성공 시 SharedPreferences에 로그인한 아이디, 토큰 저장
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', result['userData']['token']);
-      await prefs.setString('id', id);
+      await loginService.login(id, password);
 
       // 로그인 후 프로필 화면으로 이동
       // 상태를 업데이트하여 프로필 화면으로 이동
@@ -106,7 +101,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       body: ref.watch(userAsyncProvider).when(
             data: (data) {
               print(data);
-              if (data == null) {
+              if (data['token'] == null) {
                 // 로그인 X
                 return const Column(
                   children: [
@@ -331,15 +326,16 @@ class _LoginFormState extends State<LoginForm> {
                       final test = await LoginService()
                           .login(idController.text, passwordController.text);
 
-                      print('-------------------반환된 데이터 확인');
-                      print(test['userData']['token']); // 반환된 데이터 확인
-                      print('-------------------------');
+                      // print('-------------------반환된 데이터 확인');
+                      // print(test['userData']['token']); // 반환된 데이터 확인
+                      // print('-------------------------');
 
-                      // 로그인 성공하면 토큰을 저장
-                      await prefs.setString('token', test['userData']['token']);
+                      // // 로그인 성공하면 토큰을 저장
+                      // await prefs.setString('token', test['userData']['token']);
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
+                            final nick = prefs.getString('nick');
                             return AlertDialog(
                               backgroundColor: Colors.white,
                               title: const Text(
@@ -348,10 +344,12 @@ class _LoginFormState extends State<LoginForm> {
                                   color: Color.fromARGB(255, 111, 142, 179),
                                 ),
                               ),
+                              // ${data.name}
+                              // ${data.name}ABC // 뒤에 올 게 영어일 경우
                               // 가입되어 있는 입력한 아이디가 출력되게ㅠㅠㅠㅠㅠㅠ
-                              content: const Text(
-                                  // '${test['id']}님 반갑습니다.\nTalk tok에서 즐겁게 활동을 시작해보세요 :)'),
-                                  '반갑습니다.\nTalk tok에서 즐겁게 활동을 시작해보세요 :)'),
+                              content: Text(
+                                  '$nick님 반갑습니다.\nTalk tok에서 즐겁게 활동을 시작해보세요 :)'),
+                              // '반갑습니다.\nTalk tok에서 즐겁게 활동을 시작해보세요 :)'),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {

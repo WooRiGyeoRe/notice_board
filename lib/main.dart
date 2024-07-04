@@ -29,9 +29,9 @@ void main() async {
   // 앱 시작될 때 키보드 자동 숨기기
   WidgetsFlutterBinding.ensureInitialized();
   SystemChannels.textInput.invokeMethod('TextInput.hide');
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
 
   // SharedPreferences 인스턴스 생성
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
 
   // setter- shared preferences에 데이터 저장
   // await 변수명.set자료형(키, 밸류);

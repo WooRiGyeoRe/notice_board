@@ -49,7 +49,7 @@ class BoardScreen extends ConsumerWidget {
           actions: [
             ref.watch(userAsyncProvider).maybeWhen(
               data: (data) {
-                if (data == null) {
+                if (data['token'] == null) {
                   return Container();
                 } else {
                   return Row(

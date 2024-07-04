@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_1/provider/user_provider.dart';
 
 // 회원가입
 class JoinService {
@@ -30,6 +32,12 @@ class JoinService {
   }
 }
 
+// final joinRepo = Provider((ref) {
+//   return JoinService();
+// });
+
+final joinRepo = Provider((ref) => JoinService());
+
 // 로그인
 class LoginService {
   final Dio _dio = Dio(); // Dio 인스턴스 생성
@@ -50,7 +58,9 @@ class LoginService {
           response.data['data']; // Dio 패키지를 통해 받은 HTTP 응답의 데이터(JSON 형식으로 반환)
       // SharedPreferences 인스턴스 생성
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', data['token']);
+      await prefs.setString('token', data['token']); // 토큰 저장
+      await prefs.setString('id', data['id']);
+      await prefs.setString('nick', data['nick']);
 
       // 로그인 성공
       print(response.data);
@@ -61,13 +71,15 @@ class LoginService {
         'ok': true,
         'statusCode': 200,
         'message': '로그인 성공',
-        'userData': response.data['data'],
+        'userData': response.data['data']
       };
     } catch (e) {
       rethrow;
     }
   }
 }
+
+final loginRepo = Provider((ref) => LoginService());
 
 // 로그아웃
 class LogoutService {
@@ -77,6 +89,7 @@ class LogoutService {
     try {
       // SharedPreferences 인스턴스를 생성
       final SharedPreferences prefs = await SharedPreferences.getInstance();
+
       final token = prefs.getString('token'); // 토큰 가져오기
       print('로그아웃 서비스 쪽입니다');
       print(token);
@@ -146,3 +159,44 @@ class WithdrawalService {
     }
   }
 }
+
+
+/*
+class BoardService {
+  final Dio _dio = Dio();
+  final String token;
+
+  BoardService({
+    required this.token,
+  });
+
+  Future<Map<String, dynamic>> getBoard() async {
+    try {
+      // 게시물가져오기
+      final response = await _dio.get(
+        'http://10.0.2.2:4000/api/board',
+        options: Options(
+          headers: {'authorization': token},
+        ),
+      );
+
+      return response;
+    } catch (e) {
+      // 에러처리하고.
+
+      //throw Exception;
+    }
+  }
+}
+
+final boardRepo = Provider((ref) {
+  final token = ref.read(userAsyncProvider.notifier).getToken();
+
+  if (token != null) {
+    return BoardService(token: token);
+  }
+
+  return null;
+});
+
+*/
