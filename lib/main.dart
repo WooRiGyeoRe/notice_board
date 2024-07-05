@@ -67,10 +67,6 @@ class MyApp extends ConsumerWidget {
   }
 }
 
-
-
- 
-
 /* 기존 
   runApp(
     MaterialApp(
@@ -91,4 +87,3 @@ class MyApp extends ConsumerWidget {
   );
 }
 */
-
