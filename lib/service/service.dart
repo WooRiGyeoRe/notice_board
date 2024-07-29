@@ -1,5 +1,3 @@
-// 서비스 코드
-
 import 'package:dio/dio.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +9,9 @@ import 'package:test_1/model/user.dart';
 import 'package:test_1/provider/user_provider.dart';
 
 // 회원가입
+// final joinRepo = Provider((ref) => JoinService());
+final joinProvider = Provider((ref) => JoinService());
+
 class JoinService {
   final Dio _dio = Dio();
   // JoinService(this._dio);
@@ -35,13 +36,10 @@ class JoinService {
   }
 }
 
-// final joinRepo = Provider((ref) {
-//   return JoinService();
-// });
-
-final joinRepo = Provider((ref) => JoinService());
-
 // 로그인
+// final loginRepo = Provider((ref) => LoginService());
+final loginProvider = Provider((ref) => LoginService());
+
 class LoginService {
   final Dio _dio = Dio(); // Dio 인스턴스 생성
 
@@ -87,9 +85,11 @@ class LoginService {
       rethrow;
     }
   }
-}
 
-final loginRepo = Provider((ref) => LoginService());
+  maybeWhen(
+      {required Widget Function(dynamic data) data,
+      required Container Function() orElse}) {}
+}
 
 // 로그아웃
 class LogoutService {

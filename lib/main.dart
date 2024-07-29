@@ -62,28 +62,8 @@ class MyApp extends ConsumerWidget {
       routerConfig: router, // GoRouter 설정 적용
       title: 'go_router',
       theme: ThemeData(fontFamily: "jeongianjeon-Regular"),
+      debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
     );
   }
 }
-
-/* 기존 
-  runApp(
-    MaterialApp(
-        home: const HomeScreen(), // 홈 화면을 시작 화면으로 설정
-        // const LoginScreen(),
-        // const JoinScreen(),
-        // const BoardScreen(),
-        // const ProfileScreen(),
-        // const WriteScreen(),
-        //const WriteChangeScreen(),
-        //const JoinScreen(),
-        // const BoardScreen(),
-        // const ProfileScreen(),
-        // const WriteScreen(),
-        //const WriteChangeScreen(),
-        theme: ThemeData(fontFamily: "jeongianjeon-Regular"),
-        themeMode: ThemeMode.system),
-  );
-}
-*/

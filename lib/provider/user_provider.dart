@@ -25,7 +25,7 @@ class UserAsyncNotifier extends AutoDisposeAsyncNotifier<Map<String, dynamic>> {
       _data = userData;
       return _data;
     } catch (e) {
-      //
+      // rethrow;
       return {};
     }
   }

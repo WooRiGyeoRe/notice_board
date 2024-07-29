@@ -72,6 +72,8 @@ class _MyInformationState extends ConsumerState<MyInformation> {
   @override
   void initState() {
     super.initState();
+    // 프로필 화면이 로드될 때 사용자 정보 갱신
+    ref.read(userAsyncProvider.notifier).getToken();
   }
 
   // 이 페이지가 언마운트될 때 = 사라질 때 실행되는 함수
