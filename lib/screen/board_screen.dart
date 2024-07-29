@@ -133,7 +133,7 @@ class _SearchState extends State<Search> {
                     child: SearchBar(
                       controller: contentFindController,
                       hintText: '검색어를 입력하세요 : ) ',
-                      hintStyle: WidgetStateProperty.all(
+                      hintStyle: MaterialStateProperty.all(
                         const TextStyle(
                             color: Color.fromARGB(255, 158, 158, 158)),
                       ),
@@ -143,14 +143,15 @@ class _SearchState extends State<Search> {
                           color: Color.fromARGB(255, 136, 159, 163),
                         ),
                       ],
-                      backgroundColor: const WidgetStatePropertyAll(
+                      backgroundColor: const MaterialStatePropertyAll(
                           Color.fromARGB(255, 239, 242, 245)),
-                      shadowColor: const WidgetStatePropertyAll(
+                      shadowColor: const MaterialStatePropertyAll(
                           Color.fromARGB(255, 226, 226, 226)),
-                      elevation: const WidgetStatePropertyAll(3),
+                      elevation: const MaterialStatePropertyAll(3),
                       // constraints: BoxConstraints(maxWidth: 300, maxHeight: 100), 크기 설정
-                      shape: WidgetStateProperty.all(ContinuousRectangleBorder(
-                          borderRadius: BorderRadius.circular(20))),
+                      shape: MaterialStateProperty.all(
+                          ContinuousRectangleBorder(
+                              borderRadius: BorderRadius.circular(20))),
                     ),
                   ),
                 ),

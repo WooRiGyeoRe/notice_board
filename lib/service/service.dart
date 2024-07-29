@@ -1,3 +1,5 @@
+// 서비스 코드
+
 import 'package:dio/dio.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_1/model/user.dart';
 import 'package:test_1/provider/user_provider.dart';
 
 // 회원가입
@@ -56,9 +59,15 @@ class LoginService {
 
       final data =
           response.data['data']; // Dio 패키지를 통해 받은 HTTP 응답의 데이터(JSON 형식으로 반환)
+      print('=============');
+      print(response.data);
+      print('=============');
+      final test2 = UserModel.fromJson(response.data);
+      print(test2);
+      // test2.data.no;
       // SharedPreferences 인스턴스 생성
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', data['token']); // 토큰 저장
+      await prefs.setString('token', data['token']); // 토큰 저장 // tst2.data.token
       await prefs.setString('id', data['id']);
       await prefs.setString('nick', data['nick']);
 
@@ -74,6 +83,7 @@ class LoginService {
         'userData': response.data['data']
       };
     } catch (e) {
+      print(e);
       rethrow;
     }
   }
@@ -89,7 +99,7 @@ class LogoutService {
     try {
       // SharedPreferences 인스턴스를 생성
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-
+      // await prefs.clear();
       final token = prefs.getString('token'); // 토큰 가져오기
       print('로그아웃 서비스 쪽입니다');
       print(token);
@@ -98,30 +108,30 @@ class LogoutService {
         print('로그아웃: 토큰 없음');
         return;
       }
+      try {
+        final response = await _dio.post(
+          'http://10.0.2.2:4000/api/auth/logout',
+          options: Options(
+            headers: {
+              'authorization': token,
+            },
+          ),
+        );
+      } catch (e) {
+        if (e is DioException && e.response?.statusCode == 401) {
+          print('토큰 만료, 로그아웃 처리');
+        } else {
+          rethrow;
+        }
+      }
 
-      // 서버로 로그아웃 요청
-      final response = await _dio.post(
-        'http://10.0.2.2:4000/api/auth/logout',
-        options: Options(
-          headers: {
-            'authorization': token,
-          },
-        ),
-      );
-
-      // 'token' 키에 저장된 값을 삭제.
       await prefs.remove('token');
       print('==== service');
       print(prefs.getString('token'));
       print('==== service');
-      //  await prefs.clear();
       print('로그아웃 완료');
     } catch (e) {
-      // 예외 발생 시 처리 로직을 추가할 수 있습니다.
-      print(e);
-      DioException error = e as DioException;
-      print(error.response?.data);
-      print('로그아웃 중 오류 발생');
+      print('로그아웃 중 오류 발생: $e');
     }
   }
 }
@@ -131,72 +141,113 @@ class WithdrawalService {
   final Dio _dio = Dio();
 
   Future<Map<String, dynamic>> withdrawal() async {
-    try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token');
-      print(token);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    print(token);
 
-      // 서버로 회원탈퇴 요청
-      final response = await _dio.post(
-        'http://10.0.2.2:4000/api/auth/local/withdraw',
-        options: Options(
-          headers: {'authorization': token},
-        ),
-      );
+    // 토큰이 있는 경우
+    if (token != null) {
+      try {
+        // 서버로 회원탈퇴 요청
+        final response = await _dio.post(
+          'http://10.0.2.2:4000/api/auth/local/withdraw',
+          options: Options(
+            headers: {
+              'authorization': token, // 'Bearer ' 추가
+            },
+          ),
+        );
+        print('탈퇴 성공');
 
-      // final data = response.data['data'];
-      await prefs.clear(); // SharedPreferences에서 모든 데이터 삭제
-      print('회원탈퇴 완료');
+        // 서버 요청 성공 시 SharedPreferences에서 데이터 삭제
+        await prefs.clear();
+
+        return {
+          'ok': true,
+          'statusCode': 200,
+          'message': '회원탈퇴 성공',
+        };
+      } catch (e) {
+        if (e is DioException && e.response?.statusCode == 401) {
+          print('토큰 만료, 회원탈퇴 실패');
+          return {
+            'ok': false,
+            'statusCode': 401,
+            'message': '토큰 만료',
+          };
+        } else {
+          print('회원탈퇴 중 오류 발생: $e');
+          rethrow;
+        }
+      }
+    } else {
+      // 토큰이 null
+      print('회원탈퇴: 토큰 없음');
       return {
-        'ok': true,
-        'statusCode': 200,
-        'message': '회원탈퇴 성공',
+        'ok': false,
+        'statusCode': 401,
+        'message': '토큰 없음',
       };
-    } catch (e) {
-      print(e);
-      print('회원탈퇴 중 오류 발생');
-      rethrow;
     }
   }
 }
 
+ 
+// 토큰 자동 갱신
+// class AuthService {
+//   final Dio _dio = Dio();
 
-/*
-class BoardService {
-  final Dio _dio = Dio();
-  final String token;
+//   Future<void> logout() async {
+//     try {
+//       final SharedPreferences prefs = await SharedPreferences.getInstance();
+//       final token = prefs.getString('token');
 
-  BoardService({
-    required this.token,
-  });
+//       if (token == null) return;
 
-  Future<Map<String, dynamic>> getBoard() async {
-    try {
-      // 게시물가져오기
-      final response = await _dio.get(
-        'http://10.0.2.2:4000/api/board',
-        options: Options(
-          headers: {'authorization': token},
-        ),
-      );
+//       final response = await _dio.post(
+//         'http://10.0.2.2:4000/api/auth/logout',
+//         options: Options(
+//           headers: {
+//             // 'authorization': token,
+//             'authorization': 'Bearer $token',
+//           },
+//         ),
+//       );
+//       await prefs.remove('token');
+//     } catch (e) {
+//       print('로그아웃 중 오류 발생 : $e');
+//     }
+//   }
 
-      return response;
-    } catch (e) {
-      // 에러처리하고.
+//   Future<void> handleApiRequest(String endpoint) async {
+//     try {
+//       final SharedPreferences prefs = await SharedPreferences.getInstance();
+//       final token = prefs.getString('token');
 
-      //throw Exception;
-    }
-  }
-}
+//       if (token == null) return;
 
-final boardRepo = Provider((ref) {
-  final token = ref.read(userAsyncProvider.notifier).getToken();
+//       final response = await _dio.get(
+//         endpoint,
+//         options: Options(
+//           headers: {
+//             // 'authorization': token,
+//             'authorization': 'Bearer $token',
+//           },
+//         ),
+//       );
 
-  if (token != null) {
-    return BoardService(token: token);
-  }
-
-  return null;
-});
-
-*/
+//       // 요청 성공
+//       print(response.data);
+//     } catch (e) {
+//       if (e is DioException && e.response?.statusCode == 401) {
+//         // 토큰 만료로 인한 오류 처리
+//         await logout(); // 로그아웃 처리
+//         // 로그인 페이지로 이동
+//         print('토큰 만료됨, 로그아웃 후 로그인 페이지로 이동');
+//       } else {
+//         print('API 요청 중 오류 발생: $e');
+//       }
+//     }
+//   }
+// }
+  

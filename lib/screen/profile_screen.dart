@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +71,6 @@ class _MyInformationState extends ConsumerState<MyInformation> {
   // 리스너 등록할 때 JS의 addEventListender();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -77,7 +78,6 @@ class _MyInformationState extends ConsumerState<MyInformation> {
   // removeListner;
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -118,13 +118,15 @@ class _MyInformationState extends ConsumerState<MyInformation> {
                     const SizedBox(width: 15),
                     ref.watch(userAsyncProvider).when(
                         data: (data) {
+                          // null 체크 및 기본값 제공
+                          final String nick = data['nick'] ?? '닉네임 없음';
+                          final String id = data['id'] ?? '아이디 없음';
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
                                 data['nick'],
-                                //nickname,
                                 style: const TextStyle(
                                     color: Color.fromARGB(255, 95, 95, 95),
                                     fontSize: 18,
@@ -202,15 +204,6 @@ class _MyInformationState extends ConsumerState<MyInformation> {
                     color: Color.fromARGB(255, 134, 174, 190),
                   ),
                 ),
-
-                /*
-                // SizedBox(width: 50),
-                Icon(
-                  Icons.mode_edit,
-                  size: 25, //imageSize,
-                  color: Color.fromARGB(255, 134, 174, 190),
-                ),
-                */
               ],
             ),
           ),

@@ -9,6 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:go_router/go_router.dart';
 import 'package:test_1/main.dart';
+import 'package:test_1/model/Board.dart';
 import 'bottom_navi_bar.dart';
 
 // 앱바 구현하기
