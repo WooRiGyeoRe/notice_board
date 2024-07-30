@@ -66,6 +66,11 @@ class MyInformation extends ConsumerStatefulWidget {
 }
 
 class _MyInformationState extends ConsumerState<MyInformation> {
+  final RegExp _nickRegex = RegExp(
+    r'^(?=.*[a-z])(?=.*[가-힣]).{2,}$',
+    caseSensitive: false,
+  );
+
   // 딱 한 번만 실행되는 함수
   // 가장 먼저 실행됨.
   // 뭔가를 초기화할 때 주로 쓰임.
