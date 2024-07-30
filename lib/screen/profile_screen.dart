@@ -1,3 +1,4 @@
+// 프로필 스크린
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:dio/dio.dart';
@@ -154,6 +155,8 @@ class _MyInformationState extends ConsumerState<MyInformation> {
                 ),
                 IconButton(
                   onPressed: () {
+                    final TextEditingController nickController =
+                        TextEditingController();
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -166,10 +169,9 @@ class _MyInformationState extends ConsumerState<MyInformation> {
                             ),
                           ),
                           content: TextField(
+                            controller: nickController,
                             decoration: const InputDecoration(
                                 hintText: '수정할 닉네임을 입력해주세요.'),
-                            controller:
-                                TextEditingController(), // 필요에 따라 초기값 설정 가능
                           ),
                           actions: <Widget>[
                             TextButton(
@@ -179,8 +181,39 @@ class _MyInformationState extends ConsumerState<MyInformation> {
                                   color: Color.fromARGB(255, 134, 174, 190),
                                 ),
                               ),
-                              onPressed: () {
-                                // 다이얼로그를 닫거나 입력값을 처리하는 로직을 추가할 수 있습니다.
+                              onPressed: () async {
+                                final newNick = nickController.text.trim();
+                                if (newNick.isNotEmpty) {
+                                  // 사용자 정보를 업데이트하는 메서드 호출
+                                  await ref
+                                      .read(userAsyncProvider.notifier)
+                                      .updateNick(newNick);
+
+                                  // 서버에서 닉네임 업데이트 시도
+                                  final updateResult =
+                                      await UpdateNickService(Dio())
+                                          .updateNick(newNick);
+
+                                  if (updateResult['ok']) {
+                                    // 닉네임 업데이트 성공
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 161, 180, 204),
+                                        content: Text('닉네임이 성공적으로 변경되었습니다.'),
+                                      ),
+                                    );
+                                  } else {
+                                    // 닉네임 업데이트 실패
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 161, 180, 204),
+                                        content: Text('닉네임 변경에 실패했습니다.'),
+                                      ),
+                                    );
+                                  }
+                                }
                                 Navigator.of(context).pop();
                               },
                             ),

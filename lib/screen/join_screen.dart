@@ -362,6 +362,7 @@ class _JoinFormState extends State<JoinForm> {
                         _nickController.text.isEmpty ||
                         _passwordController.text.isEmpty ||
                         _passwordCheckController.text.isEmpty) {
+                      // ignore: use_build_context_synchronously
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -401,6 +402,7 @@ class _JoinFormState extends State<JoinForm> {
                         !_password2Valid ||
                         !_idValid ||
                         !_nickValid) {
+                      // ignore: use_build_context_synchronously
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -443,6 +445,7 @@ class _JoinFormState extends State<JoinForm> {
                       print(test);
                       print('-------------------------');
 
+                      // ignore: use_build_context_synchronously
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -479,6 +482,7 @@ class _JoinFormState extends State<JoinForm> {
                       if (e is DioException) {
                         // DioErrorType에 따른 예외 처리
                         if (e.response?.statusCode == 409) {
+                          // ignore: use_build_context_synchronously
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -509,6 +513,7 @@ class _JoinFormState extends State<JoinForm> {
                             },
                           );
                         } else if (e.response?.statusCode == 500) {
+                          // ignore: use_build_context_synchronously
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
