@@ -66,8 +66,9 @@ class MyInformation extends ConsumerStatefulWidget {
 }
 
 class _MyInformationState extends ConsumerState<MyInformation> {
-  final RegExp _nickRegex = RegExp(
-    r'^(?=.*[a-z])(?=.*[가-힣]).{2,}$',
+  final RegExp _newNickRegex = RegExp(
+    // 영문 소문자와 한글만 허용하며, 특수문자, 숫자, 공백은 불가능
+    r'^[a-z가-힣]+$',
     caseSensitive: false,
   );
 
@@ -189,6 +190,35 @@ class _MyInformationState extends ConsumerState<MyInformation> {
                               onPressed: () async {
                                 final newNick = nickController.text.trim();
                                 if (newNick.isNotEmpty) {
+                                  // 뉴닉네임 공란
+                                  // 스낵바를 구현하려면
+                                  // => ScaffoldMessenger.of(context)함수와 그뒤에 ShowSnackBar()함수 필요
+                                  if (newNick.isEmpty) {
+                                    Navigator.of(context)
+                                        .pop(); // AlertDialog 닫기
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 161, 180, 204),
+                                        content: Text('닉네임을 입력해 주세요.'),
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                  if (!_newNickRegex.hasMatch(newNick)) {
+                                    Navigator.of(context)
+                                        .pop(); // AlertDialog 닫기
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 161, 180, 204),
+                                        content: Text(
+                                            '닉네임은 한글 또는 영어 소문자로 한 글자 이상이어야 합니다.'),
+                                      ),
+                                    );
+                                    return;
+                                  }
+
                                   // 사용자 정보를 업데이트하는 메서드 호출
                                   await ref
                                       .read(userAsyncProvider.notifier)
