@@ -226,11 +226,24 @@ class UpdateNickService {
       };
     } catch (e) {
       if (e is DioException) {
-        if (e.response?.statusCode == 401) {
+        final statusCode = e.response?.statusCode;
+        if (statusCode == 401) {
           return {
             'ok': false,
             'statusCode': 401,
             'message': '토큰 만료',
+          };
+        } else if (statusCode == 409) {
+          return {
+            'ok': false,
+            'statusCode': 409,
+            'message': '닉네임이 이미 사용 중입니다.',
+          };
+        } else if (statusCode == 500) {
+          return {
+            'ok': false,
+            'statusCode': 500,
+            'message': '서버 오류',
           };
         }
       }

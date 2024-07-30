@@ -66,9 +66,12 @@ class MyInformation extends ConsumerStatefulWidget {
 }
 
 class _MyInformationState extends ConsumerState<MyInformation> {
+  // final bool _nickValid = true;
+  // final bool _newNick = false;
+
   final RegExp _newNickRegex = RegExp(
-    // 영문 소문자와 한글만 허용하며, 특수문자, 숫자, 공백은 불가능
-    r'^[a-z가-힣]+$',
+    // 영문 소문자, 숫자, 한글만 허용하고 특수문자, 숫자, 공백은 불가능
+    r'^[a-z가-힣0-9]+$',
     caseSensitive: false,
   );
 
@@ -160,9 +163,13 @@ class _MyInformationState extends ConsumerState<MyInformation> {
                   ],
                 ),
                 IconButton(
-                  onPressed: () {
+                  onPressed: () // async
+                      {
+                    print('닉네임 수정 아이콘 클릭===========');
                     final TextEditingController nickController =
                         TextEditingController();
+
+                    // try { await
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -190,17 +197,15 @@ class _MyInformationState extends ConsumerState<MyInformation> {
                               onPressed: () async {
                                 final newNick = nickController.text.trim();
                                 if (newNick.isNotEmpty) {
-                                  // 뉴닉네임 공란
-                                  // 스낵바를 구현하려면
-                                  // => ScaffoldMessenger.of(context)함수와 그뒤에 ShowSnackBar()함수 필요
-                                  if (newNick.isEmpty) {
+                                  if (!_newNickRegex.hasMatch(newNick)) {
                                     Navigator.of(context)
                                         .pop(); // AlertDialog 닫기
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         backgroundColor:
                                             Color.fromARGB(255, 161, 180, 204),
-                                        content: Text('닉네임을 입력해 주세요.'),
+                                        content: Text(
+                                            '닉네임은 한글 또는 영어 소문자, 숫자 한 글자 이상이어야 합니다.'),
                                       ),
                                     );
                                     return;
@@ -213,24 +218,19 @@ class _MyInformationState extends ConsumerState<MyInformation> {
                                         backgroundColor:
                                             Color.fromARGB(255, 161, 180, 204),
                                         content: Text(
-                                            '닉네임은 한글 또는 영어 소문자로 한 글자 이상이어야 합니다.'),
+                                            '닉네임은 한글 또는 영어 소문자, 숫자 한 글자 이상이어야 합니다.'),
                                       ),
                                     );
                                     return;
                                   }
 
                                   // 사용자 정보를 업데이트하는 메서드 호출
-                                  await ref
-                                      .read(userAsyncProvider.notifier)
-                                      .updateNick(newNick);
+                                  try {
+                                    await ref
+                                        .read(userAsyncProvider.notifier)
+                                        .updateNick(newNick);
 
-                                  // 서버에서 닉네임 업데이트 시도
-                                  final updateResult =
-                                      await UpdateNickService(Dio())
-                                          .updateNick(newNick);
-
-                                  if (updateResult['ok']) {
-                                    // 닉네임 업데이트 성공
+                                    // 서버에서 닉네임 업데이트 시도
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         backgroundColor:
@@ -238,16 +238,27 @@ class _MyInformationState extends ConsumerState<MyInformation> {
                                         content: Text('닉네임이 성공적으로 변경되었습니다.'),
                                       ),
                                     );
-                                  } else {
-                                    // 닉네임 업데이트 실패
+                                  } catch (e) {
+                                    // 서버 업데이트 실패
+                                    print('닉네임 업데이트 중 오류 발생: $e');
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         backgroundColor:
                                             Color.fromARGB(255, 161, 180, 204),
-                                        content: Text('닉네임 변경에 실패했습니다.'),
+                                        content:
+                                            Text('이미 사용 중인 닉네임입니다. 다시 입력해주세요.'),
                                       ),
                                     );
                                   }
+                                } else {
+                                  Navigator.of(context).pop(); // AlertDialog 닫기
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 161, 180, 204),
+                                      content: Text('닉네임을 입력해 주세요.'),
+                                    ),
+                                  );
                                 }
                                 Navigator.of(context).pop();
                               },

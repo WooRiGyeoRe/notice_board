@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_1/service/service.dart';
 
 // Map 타입에다가 token, nick, id 담기.
 class UserAsyncNotifier extends AutoDisposeAsyncNotifier<Map<String, dynamic>> {
@@ -35,13 +36,29 @@ class UserAsyncNotifier extends AutoDisposeAsyncNotifier<Map<String, dynamic>> {
   // 닉네임을 업데이트하는 메서드
   Future<void> updateNick(String newNick) async {
     try {
-      // SharedPreferences에 새로운 닉네임 저장
-      await _prefs.setString('nick', newNick);
+      print('updateNick: 닉네임 업데이트 메서드 호출');
+      // 서버에서 닉네임 업데이트 시도
+      final updateNickResult =
+          await UpdateNickService(Dio()).updateNick(newNick);
 
-      // 업데이트된 데이터를 state에 반영
-      _data['nick'] = newNick;
-      state = AsyncValue.data(_data);
+      if (updateNickResult['ok']) {
+        // 서버에서 닉네임 업데이트 성공
+        await _prefs.setString('nick', newNick);
+
+        // 업데이트된 데이터를 state에 반영
+        _data['nick'] = newNick;
+        state = AsyncValue.data(_data);
+      } else {
+        switch (updateNickResult['statusCode']) {
+          case 409:
+            throw Exception('닉네임이 이미 사용 중입니다.');
+          default:
+            throw Exception('닉네임 업데이트 실패');
+        }
+      }
     } catch (e) {
+      // 실패 시 상태를 원래대로 유지
+      print('닉네임 업데이트 중 오류 발생: $e');
       rethrow;
     }
   }
