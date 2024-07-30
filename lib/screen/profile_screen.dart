@@ -169,7 +169,6 @@ class _MyInformationState extends ConsumerState<MyInformation> {
                     final TextEditingController nickController =
                         TextEditingController();
 
-                    // try { await
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -210,19 +209,6 @@ class _MyInformationState extends ConsumerState<MyInformation> {
                                     );
                                     return;
                                   }
-                                  if (!_newNickRegex.hasMatch(newNick)) {
-                                    Navigator.of(context)
-                                        .pop(); // AlertDialog 닫기
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 161, 180, 204),
-                                        content: Text(
-                                            '닉네임은 한글 또는 영어 소문자, 숫자 한 글자 이상이어야 합니다.'),
-                                      ),
-                                    );
-                                    return;
-                                  }
 
                                   // 사용자 정보를 업데이트하는 메서드 호출
                                   try {
@@ -231,6 +217,7 @@ class _MyInformationState extends ConsumerState<MyInformation> {
                                         .updateNick(newNick);
 
                                     // 서버에서 닉네임 업데이트 시도
+                                    print('닉네임 변경 성공===========');
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         backgroundColor:
