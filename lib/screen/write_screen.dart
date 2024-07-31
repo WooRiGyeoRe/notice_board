@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:test_1/service/service.dart';
 
 // 글 쓰기&수정
 class WriteScreen extends StatelessWidget {
@@ -164,14 +165,18 @@ class _WriteFormState extends State<WriteForm> {
                   child: ElevatedButton(
                     onPressed: () async {
                       try {
-                        final dio = Dio();
-                        final test = await dio.post(
-                            'http://10.0.2.2:4000//api/board/free',
-                            data: {
-                              'title': _titleController.text,
-                              'content': _contentController.text
-                            });
-                        print(test);
+                        // final test = await dio.post(
+                        //     'http://10.0.2.2:4000//api/board/free',
+                        //     data: {
+                        //       'title': _titleController.text,
+                        //       'content': _contentController.text
+                        //     });
+                        // print(test);
+                        // final t = FreeBoardWriteService().freeboarWrite(title, content)
+                        //  t.freeboarWrite(title, content)
+                        final res = await FreeBoardWriteService().freeboarWrite(
+                            _titleController.text, _contentController.text);
+                        print(res);
                       } catch (e) {
                         print(e);
                       }

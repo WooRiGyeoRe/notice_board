@@ -5,13 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_1/common/dio_service.dart';
 import 'package:test_1/model/user.dart';
 import 'package:test_1/provider/user_provider.dart';
 
 // 회원가입
 class JoinService {
-  final Dio _dio = Dio();
+  // final Dio _dio = Dio();
   // JoinService(this._dio);
+  final Dio _dio = DioServices().getInstance();
 
   // 로그인과 달리 회원가입 시 토큰 저장 X
   Future<Map<String, dynamic>> join(
@@ -41,7 +43,8 @@ final joinRepo = Provider((ref) => JoinService());
 
 // 로그인
 class LoginService {
-  final Dio _dio = Dio(); // Dio 인스턴스 생성
+  // final Dio _dio = Dio(); // Dio 인스턴스 생성
+  final Dio _dio = DioServices().getInstance();
 
   // 로그인 기능
   // Future -> 비동기 작업의 결과를 나타내는 객체로(미래에 완료될 수 있는 작업)
@@ -91,7 +94,8 @@ final loginRepo = Provider((ref) => LoginService());
 
 // 로그아웃
 class LogoutService {
-  final Dio _dio = Dio();
+  // final Dio _dio = Dio();
+  final Dio _dio = DioServices().getInstance();
 
   Future<void> logout() async {
     try {
@@ -134,7 +138,8 @@ class LogoutService {
 
 // 회원탈퇴
 class WithdrawalService {
-  final Dio _dio = Dio();
+  // inal Dio _dio = Dio();
+  final Dio _dio = DioServices().getInstance();
 
   Future<Map<String, dynamic>> withdrawal() async {
     try {
@@ -190,13 +195,11 @@ class WithdrawalService {
   }
 }
 
-// final updateNickname = Provider((ref) => UpdateNickService());
 // 닉네임 수정
-
 class UpdateNickService {
-  final Dio _dio;
-
-  UpdateNickService(this._dio);
+  // final Dio _dio;
+  // UpdateNickService(this._dio);
+  final Dio _dio = DioServices().getInstance();
 
   Future<Map<String, dynamic>> updateNick(String newNick) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -248,6 +251,71 @@ class UpdateNickService {
         }
       }
       throw Exception('닉네임 업데이트 실패: $e');
+    }
+  }
+}
+
+// 자유게시판 글 작성
+class FreeBoardWriteService {
+  final Dio _dio = DioServices().getInstance();
+
+  Future<Map<String, dynamic>> freeboarWrite(
+      String title, String content) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token == null) {
+      throw Exception('토큰이 없습니다.');
+    }
+    try {
+      final response = await _dio.post(
+        'http://10.0.2.2:4000/api/board/free',
+        data: {
+          "title": title,
+          "content": content,
+        },
+        options: Options(
+          headers: {
+            'authorization': token,
+          },
+        ),
+      );
+
+      // 작성한 글 데이터를 로컬 스토리지에 저장
+      List<String> posts = prefs.getStringList('posts') ?? [];
+      posts.add(response.data.toString()); // 데이터 직렬화하여 저장
+      await prefs.setStringList('posts', posts);
+
+      return {
+        'ok': true,
+        'statusCode': response.statusCode,
+        'message': '자유게시판 글 작성 성공',
+        'data': response.data,
+      };
+    } catch (e) {
+      if (e is DioException) {
+        final statusCode = e.response?.statusCode;
+        if (statusCode == 400) {
+          return {
+            'ok': false,
+            'statusCode': 400,
+            'message': '제목, 내용 없음',
+          };
+        } else if (statusCode == 401) {
+          return {
+            'ok': false,
+            'statusCode': 401,
+            'message': '토큰 없은 또는 만료',
+          };
+        } else if (statusCode == 500) {
+          return {
+            'ok': false,
+            'statusCode': 500,
+            'message': '서버 오류',
+          };
+        }
+      }
+      throw Exception('자유게시판 글 작성 실패: $e');
     }
   }
 }
