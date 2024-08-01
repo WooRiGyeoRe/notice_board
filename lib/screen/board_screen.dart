@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_1/provider/user_provider.dart';
+import 'package:test_1/service/freeboard_service.dart';
 import 'bottom_navi_bar.dart';
 
 // 자유&질문 게시판
@@ -93,7 +95,7 @@ class BoardScreen extends ConsumerWidget {
         backgroundColor: Colors.white,
         body: const SingleChildScrollView(
           child: Column(
-            children: [Search()],
+            children: [Search(), BoardContent()],
           ),
         ),
         bottomNavigationBar: const BottomBar(),
@@ -158,32 +160,86 @@ class _SearchState extends State<Search> {
                     ),
                   ),
                 ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-                // const Padding(
-                //   padding: EdgeInsets.symmetric(horizontal: 20),
-                // ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                  child: SizedBox(
-                    height: 100,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        border: Border(
-                          top: BorderSide(
-                            color: Color.fromARGB(255, 216, 216, 216),
-                            style: BorderStyle.solid,
-                            width: 1,
-                          ),
-                          bottom: BorderSide(
-                            color: Color.fromARGB(255, 216, 216, 216),
-                            style: BorderStyle.solid,
-                            width: 1,
-                          ),
-                        ),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(20),
+class BoardContent extends StatefulWidget {
+  const BoardContent({super.key});
+
+  @override
+  State<BoardContent> createState() => _BoardContentState();
+}
+
+class _BoardContentState extends State<BoardContent> {
+  // final FreeBoardListService _freeBoardListService = FreeBoardListService();
+
+  List<Map<String, dynamic>> data = [];
+  @override
+  void initState() {
+    super.initState();
+
+    getData();
+  }
+
+  Future<void> getData() async {
+    final service = FreeBoardListService();
+    try {
+      data = await service.freeboardList(1);
+      for (final el in data) {
+        print(el);
+      }
+      setState(() {});
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 30),
+        child: SizedBox(
+          // height: 100,
+          child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(
+                    color: Color.fromARGB(255, 216, 216, 216),
+                    style: BorderStyle.solid,
+                    width: 1,
+                  ),
+                  bottom: BorderSide(
+                    color: Color.fromARGB(255, 216, 216, 216),
+                    style: BorderStyle.solid,
+                    width: 1,
+                  ),
+                ),
+              ),
+              child: Column(
+                children: [
+                  // ListView.separated(itemBuilder: itemBuilder, separatorBuilder: separatorBuilder, itemCount: itemCount)
+                  ListView.builder(
+                    // padding: EdgeInsets.zero,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      // if (data.isEmpty) {
+                      //   return Container();
+                      // }
+                      final board = data[index];
+                      DateTime date = DateTime.parse(board['createdAt']);
+                      final createAt = DateFormat('yy.MM.dd').format(date);
+                      return Padding(
+                        padding: const EdgeInsets.all(20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -194,46 +250,46 @@ class _SearchState extends State<Search> {
                                 Row(
                                   children: [
                                     Text(
-                                      '글 제목',
-                                      style: TextStyle(
+                                      board['title'],
+                                      style: const TextStyle(
                                         fontSize: 20,
                                       ),
                                     ),
-                                    SizedBox(width: 10),
+                                    const SizedBox(width: 10),
                                     Text(
-                                      '[ 댓글 수 ]',
-                                      style: TextStyle(
+                                      '${board['commentCount']}',
+                                      style: const TextStyle(
                                           fontSize: 14,
                                           color: Color.fromARGB(
-                                              255, 138, 210, 219)),
+                                              255, 137, 190, 197)),
                                     ),
                                   ],
                                 )
                               ],
                             ),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
-                                  '작성 날짜',
-                                  style: TextStyle(
+                                  createAt,
+                                  style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
                                   ),
                                 ),
-                                SizedBox(width: 10),
-                                Text(
+                                const SizedBox(width: 10),
+                                const Text(
                                   '|',
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
                                   ),
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Text(
-                                  '닉네임',
-                                  style: TextStyle(
+                                  board['nick'],
+                                  style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
                                   ),
@@ -242,13 +298,11 @@ class _SearchState extends State<Search> {
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+                      );
+                    },
+                  )
+                ],
+              )),
         ),
       ),
     );

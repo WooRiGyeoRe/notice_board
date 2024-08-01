@@ -7,6 +7,7 @@ class Post {
   final DateTime updatedAt;
   final String author;
   final String nick;
+  final int commentCount;
 
   Post({
     required this.no,
@@ -17,6 +18,7 @@ class Post {
     required this.updatedAt,
     required this.author,
     required this.nick,
+    required this.commentCount,
   });
 
   factory Post.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class Post {
       updatedAt: DateTime.parse(json['updatedAt']),
       author: json['author'],
       nick: json['nick'],
+      commentCount: json['commentCount'],
     );
   }
 }
