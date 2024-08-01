@@ -9,7 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:go_router/go_router.dart';
 import 'package:test_1/main.dart';
-import 'package:test_1/model/Board.dart';
+import 'package:test_1/model/board.dart';
 import 'bottom_navi_bar.dart';
 
 // 앱바 구현하기
@@ -76,136 +76,137 @@ class _FreeBoardBoxState extends State<FreeBoardBox> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 30), // 위아래 간격 추가
-          height: 247,
-          width: 372,
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 230, 242, 247),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color.fromARGB(255, 224, 235, 247)),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center, // Column 자식들 왼쪽 정렬
-            children: [
-              const SizedBox(height: 15), // 간격 추가
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        '자유게시판',
-                        style: TextStyle(
-                            fontFamily: "jeongianjeon-Regular",
-                            color: Color.fromARGB(255, 95, 95, 95),
-                            fontSize: 30),
-                        textAlign: TextAlign.left, // 텍스트를 왼쪽으로 정렬
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          // 더보기 버튼을 눌렀을 때의 동작
-                          context.go('/board', extra: 'free');
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(right: 20), // 오른쪽 여백 추가
-                          child: const Text(
-                            '더보기',
-                            style: TextStyle(
-                                fontFamily: "jeongianjeon-Regular",
-                                color: Color.fromARGB(255, 124, 167, 175),
-                                fontSize: 15),
-                          ),
+        margin: const EdgeInsets.symmetric(vertical: 30), // 위아래 간격 추가
+        height: 247,
+        width: 372,
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 230, 242, 247),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color.fromARGB(255, 224, 235, 247)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center, // Column 자식들 왼쪽 정렬
+          children: [
+            const SizedBox(height: 15), // 간격 추가
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      '자유게시판',
+                      style: TextStyle(
+                          fontFamily: "jeongianjeon-Regular",
+                          color: Color.fromARGB(255, 95, 95, 95),
+                          fontSize: 30),
+                      textAlign: TextAlign.left, // 텍스트를 왼쪽으로 정렬
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // 더보기 버튼을 눌렀을 때의 동작
+                        context.go('/board', extra: 'free');
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 20), // 오른쪽 여백 추가
+                        child: const Text(
+                          '더보기',
+                          style: TextStyle(
+                              fontFamily: "jeongianjeon-Regular",
+                              color: Color.fromARGB(255, 124, 167, 175),
+                              fontSize: 15),
                         ),
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20), // 추가 컨테이너와의 간격 추가
+            Container(
+              height: 40, // 추가 컨테이너 높이 설정
+              width: 352,
+              padding: const EdgeInsets.only(left: 10),
+              alignment: Alignment.centerLeft, // 텍스트를 상하 중앙으로 정렬
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 230, 242, 247),
+                borderRadius: BorderRadius.circular(10),
+                border:
+                    Border.all(color: const Color.fromARGB(255, 196, 208, 223)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 3),
                   ),
-                ),
+                ],
               ),
-              const SizedBox(height: 20), // 추가 컨테이너와의 간격 추가
-              Container(
-                height: 40, // 추가 컨테이너 높이 설정
-                width: 352,
-                padding: const EdgeInsets.only(left: 10),
-                alignment: Alignment.centerLeft, // 텍스트를 상하 중앙으로 정렬
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 230, 242, 247),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 196, 208, 223)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: const Text(
-                  '점메추 부탁드립니다~',
-                  style: TextStyle(
-                      fontFamily: "jeongianjeon-Regular",
-                      color: Color.fromARGB(255, 95, 95, 95),
-                      fontSize: 20),
-                ),
+              child: const Text(
+                '점메추 부탁드립니다~',
+                style: TextStyle(
+                    fontFamily: "jeongianjeon-Regular",
+                    color: Color.fromARGB(255, 95, 95, 95),
+                    fontSize: 20),
               ),
-              const SizedBox(height: 10),
-              Container(
-                height: 40,
-                width: 352,
-                padding: const EdgeInsets.only(left: 10),
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 230, 242, 247),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 196, 208, 223)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: const Text(
-                  '오늘 날씨가 좋네요!',
-                  style: TextStyle(
-                      fontFamily: "jeongianjeon-Regular",
-                      color: Color.fromARGB(255, 95, 95, 95),
-                      fontSize: 20),
-                ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              height: 40,
+              width: 352,
+              padding: const EdgeInsets.only(left: 10),
+              alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 230, 242, 247),
+                borderRadius: BorderRadius.circular(10),
+                border:
+                    Border.all(color: const Color.fromARGB(255, 196, 208, 223)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
-              const SizedBox(height: 10),
-              Container(
-                height: 40,
-                width: 352,
-                padding: const EdgeInsets.only(left: 10),
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 230, 242, 247),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 196, 208, 223)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: const Text(
-                  '다들 여름 휴가 어디로 가시나용?',
-                  style: TextStyle(
-                      fontFamily: "jeongianjeon-Regular",
-                      color: Color.fromARGB(255, 95, 95, 95),
-                      fontSize: 20),
-                ),
+              child: const Text(
+                '오늘 날씨가 좋네요!',
+                style: TextStyle(
+                    fontFamily: "jeongianjeon-Regular",
+                    color: Color.fromARGB(255, 95, 95, 95),
+                    fontSize: 20),
               ),
-            ],
-          )),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              height: 40,
+              width: 352,
+              padding: const EdgeInsets.only(left: 10),
+              alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 230, 242, 247),
+                borderRadius: BorderRadius.circular(10),
+                border:
+                    Border.all(color: const Color.fromARGB(255, 196, 208, 223)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: const Text(
+                '다들 여름 휴가 어디로 가시나용?',
+                style: TextStyle(
+                    fontFamily: "jeongianjeon-Regular",
+                    color: Color.fromARGB(255, 95, 95, 95),
+                    fontSize: 20),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

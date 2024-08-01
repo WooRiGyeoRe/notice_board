@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test_1/service/service.dart';
+import 'package:test_1/service/user_service.dart';
 
 // Map 타입에다가 token, nick, id 담기.
 class UserAsyncNotifier extends AutoDisposeAsyncNotifier<Map<String, dynamic>> {

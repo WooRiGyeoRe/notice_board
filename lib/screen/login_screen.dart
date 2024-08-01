@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_1/provider/user_provider.dart';
 import 'package:test_1/screen/profile_screen.dart';
-import '../service/service.dart';
+import '../service/user_service.dart';
 import 'bottom_navi_bar.dart';
 import 'home_screen.dart';
 

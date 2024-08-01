@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:test_1/service/service.dart';
+import 'package:test_1/service/user_service.dart';
+import 'package:test_1/service/freeboard_service.dart';
 
 // 글 쓰기&수정
 class WriteScreen extends StatelessWidget {
