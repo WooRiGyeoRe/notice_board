@@ -50,7 +50,6 @@ class BoardScreen extends ConsumerWidget {
               context.go('/');
             },
           ),
-          // if ()
           actions: [
             ref.watch(userAsyncProvider).maybeWhen(
               data: (data) {
@@ -208,101 +207,107 @@ class _BoardContentState extends State<BoardContent> {
         child: SizedBox(
           // height: 100,
           child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                border: Border(
-                  top: BorderSide(
-                    color: Color.fromARGB(255, 216, 216, 216),
-                    style: BorderStyle.solid,
-                    width: 1,
-                  ),
-                  bottom: BorderSide(
-                    color: Color.fromARGB(255, 216, 216, 216),
-                    style: BorderStyle.solid,
-                    width: 1,
-                  ),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                top: BorderSide(
+                  color: Color.fromARGB(255, 216, 216, 216),
+                  style: BorderStyle.solid,
+                  width: 1,
+                ),
+                bottom: BorderSide(
+                  color: Color.fromARGB(255, 216, 216, 216),
+                  style: BorderStyle.solid,
+                  width: 1,
                 ),
               ),
-              child: Column(
-                children: [
-                  // ListView.separated(itemBuilder: itemBuilder, separatorBuilder: separatorBuilder, itemCount: itemCount)
-                  ListView.builder(
-                    // padding: EdgeInsets.zero,
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: data.length,
-                    itemBuilder: (context, index) {
-                      // if (data.isEmpty) {
-                      //   return Container();
-                      // }
-                      final board = data[index];
-                      DateTime date = DateTime.parse(board['createdAt']);
-                      final createAt = DateFormat('yy.MM.dd').format(date);
-                      return Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      board['title'],
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                      ),
+            ),
+            child: Column(
+              children: [
+                // ListView.separated(itemBuilder: itemBuilder, separatorBuilder: separatorBuilder, itemCount: itemCount)
+                // ListView.builder
+                ListView.separated(
+                  // padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: data.length,
+                  separatorBuilder: (context, index) => const Divider(
+                    height: 1,
+                    color: Color.fromARGB(255, 216, 216, 216),
+                  ),
+                  itemBuilder: (context, index) {
+                    // if (data.isEmpty) {
+                    //   return Container();
+                    // }
+                    final board = data[index];
+                    DateTime date = DateTime.parse(board['createdAt']);
+                    final createAt = DateFormat('yy.MM.dd').format(date);
+                    return Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    board['title'],
+                                    style: const TextStyle(
+                                      fontSize: 20,
                                     ),
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      '${board['commentCount']}',
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Color.fromARGB(
-                                              255, 137, 190, 197)),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            const SizedBox(height: 5),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  createAt,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey,
                                   ),
-                                ),
-                                const SizedBox(width: 10),
-                                const Text(
-                                  '|',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey,
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    '${board['commentCount']}',
+                                    style: const TextStyle(
+                                        fontSize: 14,
+                                        color:
+                                            Color.fromARGB(255, 137, 190, 197)),
                                   ),
+                                ],
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 5),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                createAt,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
                                 ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  board['nick'],
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey,
-                                  ),
+                              ),
+                              const SizedBox(width: 10),
+                              const Text(
+                                '|',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  )
-                ],
-              )),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                board['nick'],
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
