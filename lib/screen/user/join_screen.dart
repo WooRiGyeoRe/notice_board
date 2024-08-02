@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_1/service/user_service.dart';
-import 'bottom_navi_bar.dart';
+
 import 'package:go_router/go_router.dart';
 
 class JoinScreen extends StatelessWidget {

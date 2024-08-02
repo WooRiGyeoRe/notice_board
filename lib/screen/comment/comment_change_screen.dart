@@ -1,13 +1,14 @@
-import 'package:dio/dio.dart';
+// e글 쓰기&수정
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
+import 'package:test_1/screen/comment/comment_screen.dart';
 
-import 'bottom_navi_bar.dart';
+class CommentChangeScreen extends StatelessWidget {
+  final String extra; // extra를 필드로 추가
 
-// 글 쓰기&수정
-class CommentScreen extends StatelessWidget {
-  const CommentScreen({super.key});
+  const CommentChangeScreen({
+    super.key,
+    required this.extra,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,9 @@ class CommentScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          '댓글 쓰기',
+          '댓글 수정',
+          // extra == 'free' ? '자유글 작성' : '질문 작성',
+          // '글 쓰기',
           style: TextStyle(
               color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
         ),
@@ -25,18 +28,22 @@ class CommentScreen extends StatelessWidget {
         shadowColor: Colors.black, // 앱바 그림자
       ),
       backgroundColor: Colors.white, // 전체 화면 배경색
-      body: const Column(
+      body: Column(
         children: [
-          WriteForm(),
+          WriteForm(extra: extra), // extra를 WriteForm에 전달
         ],
       ),
-      bottomNavigationBar: const BottomBar(),
     );
   }
 }
 
 class WriteForm extends StatefulWidget {
-  const WriteForm({super.key});
+  final String extra;
+
+  const WriteForm({
+    super.key,
+    required this.extra,
+  });
 
   @override
   _WriteFormState createState() => _WriteFormState();
@@ -53,11 +60,11 @@ class _WriteFormState extends State<WriteForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // 내용
-          const SizedBox(height: 30),
           Container(
+            margin: const EdgeInsets.symmetric(vertical: 30),
             padding: const EdgeInsets.symmetric(horizontal: 15), // 좌우 내부 여백 추가
             width: 372,
-            height: 200,
+            height: 300,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
@@ -76,14 +83,13 @@ class _WriteFormState extends State<WriteForm> {
               ),
               decoration: const InputDecoration(
                 border: InputBorder.none,
-                hintText: '댓글을 입력하세요.',
+                hintText: '내용을 입력하세요.',
                 hintStyle: TextStyle(
                   color: Color.fromARGB(255, 160, 160, 160),
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.only(left: 20), // 여백 설정
             child: Row(
@@ -93,8 +99,10 @@ class _WriteFormState extends State<WriteForm> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      context
-                          .go('/board'); // 게시판 첫화면보다는 댓글을 쓴 게시물로 돌아가는 걸로 바꾸도록~
+                      // 댓글을 달았던 게시물로 이동...
+                      // final String board =
+                      //     widget.extra == 'free Write' ? 'free' : 'q&a';
+                      // context.go('/board', extra: board);
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -111,21 +119,8 @@ class _WriteFormState extends State<WriteForm> {
                   width: 180,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () async {
-                      try {
-                        final dio = Dio();
-                        final test = await dio.post(
-                            'http://10.0.2.2:4000//api/comment/free',
-                            data: {
-                              // "boardNo":
-                              'content': _contentController.text,
-                            });
-                        print(test);
-                      } catch (e) {
-                        print(e);
-                      }
-                      print(_contentController.text);
-                      // print(boardNo);
+                    onPressed: () {
+                      // context.go( );
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,

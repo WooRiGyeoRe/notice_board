@@ -108,39 +108,21 @@ class FreeBoardListService {
         };
       }).toList();
       return formattedPosts;
-      // return {
-      //   'ok': true,
-      //   'statusCode': response.statusCode,
-      //   'message': '자유게시판 글 불러오기 성공',
-      //   'data': response.data,
-      //   'boardCount': data['boardCount'],
-      //   'allCounts': data['allCounts'],
-      // };
     } catch (e) {
-      rethrow;
-      // if (e is DioException) {
-      //   final statusCode = e.response?.statusCode;
-      //   if (statusCode == 400) {
-      //     return {
-      //       'ok': false,
-      //       'statusCode': 400,
-      //       'message': '페이지 번호 없음',
-      //     };
-      //   } else if (statusCode == 404) {
-      //     return {
-      //       'ok': false,
-      //       'statusCode': 404,
-      //       'message': '게시글 없음',
-      //     };
-      //   } else if (statusCode == 500) {
-      //     return {
-      //       'ok': false,
-      //       'statusCode': 500,
-      //       'message': '서버 오류',
-      //     };
-      //   }
-      // }
-      // throw Exception('자유게시판 글 불러오기 실패: ${e.toString()}');
+      if (e is DioException) {
+        final statusCode = e.response?.statusCode;
+        if (statusCode == 400) {
+          throw Exception('잘못된 요청: ${e.message}');
+        } else if (statusCode == 404) {
+          throw Exception('페이지를 찾을 수 없습니다: ${e.message}');
+        } else if (statusCode == 500) {
+          throw Exception('서버 오류: ${e.message}');
+        } else {
+          throw Exception('네트워크 오류: ${e.message}');
+        }
+      } else {
+        throw Exception('자유게시판 글 불러오기 실패: ${e.toString()}');
+      }
     }
   }
 }

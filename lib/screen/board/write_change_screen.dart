@@ -1,36 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 
 // 글 쓰기&수정
 class WriteChangeScreen extends StatelessWidget {
-  const WriteChangeScreen({super.key});
+  final String extra; // extra를 필드로 추가
+
+  const WriteChangeScreen({
+    super.key,
+    required this.extra,
+  });
 
   @override
   Widget build(BuildContext context) {
+//     return Scaffold(
+//       resizeToAvoidBottomInset: false, // 키보드 오버플로우
+//       appBar: AppBar(
+//         title: const Row(
+//           children: [
+//             Icon(Icons.mode_edit, color: Colors.white, size: 30),
+//             SizedBox(width: 15), // 아이콘과 텍스트 사이의 간격 조절
+//             Text(
+//               '글 수정',
+//               style: TextStyle(
+//                   color: Colors.white,
+//                   fontSize: 35,
+//                   fontWeight: FontWeight.bold),
+//             ),
+//           ],
+//         ),
+//         backgroundColor: const Color.fromARGB(255, 185, 215, 224), // 앱바 배경색
+//         elevation: 3, // 그림자 깊이
+//         shadowColor: Colors.black, // 앱바 그림자
+//       ),
+//       backgroundColor: Colors.white, // 전체 화면 배경색
+//       body: const Column(
+//         children: [
+//           WriteForm(),
+//         ],
+//       ),
+//     );
+//   }
+// }
     return Scaffold(
       resizeToAvoidBottomInset: false, // 키보드 오버플로우
       appBar: AppBar(
-        title: const Row(
-          children: [
-            Icon(Icons.mode_edit, color: Colors.white, size: 30),
-            SizedBox(width: 15), // 아이콘과 텍스트 사이의 간격 조절
-            Text(
-              '글 수정',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold),
-            ),
-          ],
+        centerTitle: true,
+        title: const Text(
+          '글 수정',
+          // extra == 'free' ? '자유글 작성' : '질문 작성',
+          // '글 쓰기',
+          style: TextStyle(
+              color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
         ),
         backgroundColor: const Color.fromARGB(255, 185, 215, 224), // 앱바 배경색
         elevation: 3, // 그림자 깊이
         shadowColor: Colors.black, // 앱바 그림자
       ),
       backgroundColor: Colors.white, // 전체 화면 배경색
-      body: const Column(
+      body: Column(
         children: [
-          WriteForm(),
+          WriteForm(extra: extra), // extra를 WriteForm에 전달
         ],
       ),
     );
@@ -38,7 +68,12 @@ class WriteChangeScreen extends StatelessWidget {
 }
 
 class WriteForm extends StatefulWidget {
-  const WriteForm({super.key});
+  final String extra;
+
+  const WriteForm({
+    super.key,
+    required this.extra,
+  });
 
   @override
   _WriteFormState createState() => _WriteFormState();
@@ -125,7 +160,7 @@ class _WriteFormState extends State<WriteForm> {
               ),
             ),
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.only(left: 20), // 여백 설정
             child: Row(
@@ -135,7 +170,9 @@ class _WriteFormState extends State<WriteForm> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      // 취소 버튼 클릭 시 처리할 로직 추가
+                      final String board =
+                          widget.extra == 'free Write' ? 'free' : 'q&a';
+                      context.go('/board', extra: board);
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -153,7 +190,7 @@ class _WriteFormState extends State<WriteForm> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      // 로그아웃 버튼 클릭 시 처리할 로직 추가
+                      context.go('/board', extra: 'free');
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,

@@ -7,8 +7,9 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_1/provider/user_provider.dart';
+import 'package:test_1/screen/bottom_navi_bar.dart';
+
 import 'package:test_1/service/freeboard_service.dart';
-import 'bottom_navi_bar.dart';
 
 // 자유&질문 게시판
 class BoardScreen extends ConsumerWidget {
@@ -69,15 +70,15 @@ class BoardScreen extends ConsumerWidget {
                               extra: boardWrite); // boardWrite 변수 자체를 전달
                         },
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.delete,
-                            color: Color.fromARGB(255, 255, 255, 255),
-                            size: 20),
-                        onPressed: () {
-                          // context.go('/board'); // 선택된 글이 삭제된 후, 게시판 화면으로 전환
-                          context.go('/comment');
-                        },
-                      ),
+                      // IconButton(
+                      //   icon: const Icon(Icons.delete,
+                      //       color: Color.fromARGB(255, 255, 255, 255),
+                      //       size: 20),
+                      //   onPressed: () {
+                      //     // context.go('/board'); // 선택된 글이 삭제된 후, 게시판 화면으로 전환
+                      //     context.go('/comment');
+                      //   },
+                      // ),
                     ],
                   );
                 }
@@ -242,65 +243,82 @@ class _BoardContentState extends State<BoardContent> {
                     final board = data[index];
                     DateTime date = DateTime.parse(board['createdAt']);
                     final createAt = DateFormat('yy.MM.dd').format(date);
-                    return Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    board['title'],
-                                    style: const TextStyle(
-                                      fontSize: 20,
+                    return InkWell(
+                      onTap: () {
+                        context.go('/boardcontent', extra: 'free');
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      board['title'],
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        color: Color.fromARGB(255, 95, 95, 95),
+                                      ),
                                     ),
+                                    const SizedBox(
+                                      width: 30,
+                                    ),
+                                    // ElevatedButton(
+                                    //     onPressed: () {
+                                    //       context.go('/boardcontent',
+                                    //           extra: 'free');
+                                    //     },
+                                    //     child: const Text('게시물보기')),
+                                    const SizedBox(width: 10),
+                                    if (board['commentCount'] > 0)
+                                      Text(
+                                        '[${board['commentCount']}]',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color.fromARGB(
+                                              255, 137, 190, 197),
+                                        ),
+                                      ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  createAt,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
                                   ),
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    '${board['commentCount']}',
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        color:
-                                            Color.fromARGB(255, 137, 190, 197)),
+                                ),
+                                const SizedBox(width: 10),
+                                const Text(
+                                  '|',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
                                   ),
-                                ],
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 5),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                createAt,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
                                 ),
-                              ),
-                              const SizedBox(width: 10),
-                              const Text(
-                                '|',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
+                                const SizedBox(width: 10),
+                                Text(
+                                  board['nick'],
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                board['nick'],
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },

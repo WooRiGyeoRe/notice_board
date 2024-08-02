@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +10,9 @@ import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_1/provider/user_provider.dart';
-import 'package:test_1/screen/profile_screen.dart';
-import '../service/user_service.dart';
-import 'bottom_navi_bar.dart';
-import 'home_screen.dart';
+import 'package:test_1/screen/bottom_navi_bar.dart';
+import 'package:test_1/screen/user/profile_screen.dart';
+import 'package:test_1/service/user_service.dart';
 
 class MyLoginPage extends ConsumerStatefulWidget {
   const MyLoginPage({super.key});

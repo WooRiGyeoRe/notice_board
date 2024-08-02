@@ -9,8 +9,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_1/provider/user_provider.dart';
-import '../service/user_service.dart';
-import 'bottom_navi_bar.dart';
+import 'package:test_1/screen/bottom_navi_bar.dart';
+import 'package:test_1/service/user_service.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});

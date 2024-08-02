@@ -7,14 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'router.dart';
 import 'dart:convert'; // JSON Encode, Decode를 위한 패키지
 import 'screen/bottom_navi_bar.dart';
-import 'screen/board_screen.dart';
-import 'screen/comment_screen.dart';
+import 'screen/comment/comment_screen.dart';
 import 'screen/home_screen.dart';
-import 'screen/join_screen.dart';
-import 'screen/login_screen.dart';
-import 'screen/profile_screen.dart';
-import 'screen/write_change_screen.dart';
-import 'screen/write_screen.dart';
 
 void main() async {
   // 상태바 스타일 설정
