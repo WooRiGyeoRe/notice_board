@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import 'package:test_1/provider/user_provider.dart';
 import 'package:test_1/screen/bottom_navi_bar.dart';
+import 'package:test_1/service/freeboard_service.dart';
 
 class BoardContentScreen extends StatefulWidget {
   final Object extra;
@@ -15,7 +18,24 @@ class BoardContentScreen extends StatefulWidget {
 
 class _BoardContentScreenState extends State<BoardContentScreen> {
   @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  Future<void> getData() async {
+    final boardInfo = widget.extra as Map<String, dynamic>;
+    final service = FreeBoardListService();
+    try {
+      service.getFreeboardContent(boardInfo['no']);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final boardInfo = widget.extra as Map<String, dynamic>;
     print('======boardContent');
     print(widget.extra);
     print('======');
@@ -29,7 +49,7 @@ class _BoardContentScreenState extends State<BoardContentScreen> {
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            widget.extra == 'free' ? '자유 게시판' : '질문 게시판',
+            boardInfo['board'] == 'free' ? '자유 게시판' : '질문 게시판',
             style: const TextStyle(
               fontFamily: "jeongianjeon-Regular",
               color: Colors.white,
@@ -71,8 +91,36 @@ class BoardContentDetail extends StatefulWidget {
 }
 
 class _BoardContentDetailState extends State<BoardContentDetail> {
+  Map<String, dynamic>? postData;
+// List<Map<String, dynamic>> data = [];
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  Future<void> getData() async {
+    final service = FreeBoardListService();
+    try {
+      final data = await service.freeboardList(1);
+      if (data.isNotEmpty) {
+        postData = data[0]; // 첫 번째 게시물을 선택
+      }
+      setState(() {});
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (postData == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    final DateTime createdAt = DateTime.parse(postData!['createdAt']);
+    final String formattedDate = DateFormat('yyyy-MM-dd').format(createdAt);
+
     return Padding(
       padding: const EdgeInsets.only(top: 30),
       // 리스트뷰??
@@ -86,9 +134,9 @@ class _BoardContentDetailState extends State<BoardContentDetail> {
               children: [
                 Row(
                   children: [
-                    const Text(
-                      '글 제목',
-                      style: TextStyle(
+                    Text(
+                      postData!['title'],
+                      style: const TextStyle(
                         fontSize: 30,
                         color: Color.fromARGB(255, 95, 95, 95),
                       ),
@@ -156,28 +204,29 @@ class _BoardContentDetailState extends State<BoardContentDetail> {
                     ),
                   ],
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      '작성날짜',
-                      style: TextStyle(
+                      //'작성날짜',
+                      formattedDate,
+                      style: const TextStyle(
                         fontSize: 15,
                         color: Colors.grey,
                       ),
                     ),
-                    SizedBox(width: 10),
-                    Text(
+                    const SizedBox(width: 10),
+                    const Text(
                       '|',
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.grey,
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Text(
-                      '닉네임',
-                      style: TextStyle(
+                      postData!['nick'],
+                      style: const TextStyle(
                         fontSize: 15,
                         color: Colors.grey,
                       ),
@@ -185,21 +234,21 @@ class _BoardContentDetailState extends State<BoardContentDetail> {
                   ],
                 ),
                 const SizedBox(height: 40),
-                const SizedBox(
+                SizedBox(
                   width: double.infinity, // 전체 너비 사용
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '글 내용~~~~~~~~~~~~~~~~~~~~~~~~ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzㅋㅋㅋ',
-                        style: TextStyle(
+                        postData!['content'],
+                        style: const TextStyle(
                           fontSize: 18,
                           color: Color.fromARGB(255, 95, 95, 95),
                         ),
                         softWrap: true, // 자동으로 줄 바꿈
                         overflow: TextOverflow.visible, // 텍스트가 넘치지 않게
                       ),
-                      SizedBox(height: 50),
+                      const SizedBox(height: 50),
                     ],
                   ),
                 ),

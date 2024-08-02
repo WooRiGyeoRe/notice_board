@@ -89,6 +89,8 @@ class FreeBoardListService {
     //   );
 
     // 로그인 여부에 관계없이 데이터 요청
+
+    // 'http://10.0.2.2:4000/api/board/free/게시글 번호',
     try {
       final response = await _dio.get(
         'http://10.0.2.2:4000/api/board/free?page=$no',
@@ -119,6 +121,49 @@ class FreeBoardListService {
         };
       }).toList();
       return formattedPosts;
+    } catch (e) {
+      if (e is DioException) {
+        final statusCode = e.response?.statusCode;
+        if (statusCode == 400) {
+          throw Exception('잘못된 요청: ${e.message}');
+        } else if (statusCode == 404) {
+          throw Exception('페이지를 찾을 수 없습니다: ${e.message}');
+        } else if (statusCode == 500) {
+          throw Exception('서버 오류: ${e.message}');
+        } else {
+          throw Exception('네트워크 오류: ${e.message}');
+        }
+      } else {
+        throw Exception('자유게시판 글 불러오기 실패: ${e.toString()}');
+      }
+    }
+  }
+
+  // 특정 게시물 가져오기
+  Future<List<Map<String, dynamic>>> getFreeboardContent(
+    int no,
+    // int boardCount, int allCounts
+  ) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    // 'http://10.0.2.2:4000/api/board/free/게시글 번호',
+    try {
+      final response = await _dio.get(
+        'http://10.0.2.2:4000/api/board/free/$no',
+        options: token != null
+            ? Options(
+                headers: {'authorization': token},
+              )
+            : null,
+      );
+
+      final data = response.data['data'];
+      print('=============');
+      print(response.data);
+      print('=============');
+
+      return [];
     } catch (e) {
       if (e is DioException) {
         final statusCode = e.response?.statusCode;

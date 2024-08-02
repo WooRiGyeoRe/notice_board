@@ -70,15 +70,6 @@ class BoardScreen extends ConsumerWidget {
                               extra: boardWrite); // boardWrite 변수 자체를 전달
                         },
                       ),
-                      // IconButton(
-                      //   icon: const Icon(Icons.delete,
-                      //       color: Color.fromARGB(255, 255, 255, 255),
-                      //       size: 20),
-                      //   onPressed: () {
-                      //     // context.go('/board'); // 선택된 글이 삭제된 후, 게시판 화면으로 전환
-                      //     context.go('/comment');
-                      //   },
-                      // ),
                     ],
                   );
                 }
@@ -169,6 +160,7 @@ class _SearchState extends State<Search> {
   }
 }
 
+// 데이터 가져오기가 살짝 느림...!
 class BoardContent extends StatefulWidget {
   const BoardContent({super.key});
 
@@ -180,10 +172,10 @@ class _BoardContentState extends State<BoardContent> {
   // final FreeBoardListService _freeBoardListService = FreeBoardListService();
 
   List<Map<String, dynamic>> data = [];
+
   @override
   void initState() {
     super.initState();
-
     getData();
   }
 
@@ -248,7 +240,13 @@ class _BoardContentState extends State<BoardContent> {
                     final createAt = DateFormat('yy.MM.dd').format(date);
                     return InkWell(
                       onTap: () {
-                        context.go('/boardcontent', extra: 'free');
+                        context.go(
+                          '/boardcontent',
+                          extra: {
+                            'board': 'free',
+                            'no': board['no'],
+                          },
+                        );
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(20),
