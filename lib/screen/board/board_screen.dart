@@ -191,6 +191,7 @@ class _BoardContentState extends State<BoardContent> {
     final service = FreeBoardListService();
     try {
       data = await service.freeboardList(1);
+      print('Data loaded: $data');
       for (final el in data) {
         print(el);
       }
@@ -202,6 +203,8 @@ class _BoardContentState extends State<BoardContent> {
 
   @override
   Widget build(BuildContext context) {
+    print('Building BoardContent');
+    print('Data count: ${data.length}');
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.only(top: 30),

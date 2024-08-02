@@ -77,15 +77,26 @@ class FreeBoardListService {
   ) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
-    if (token == null) {
-      throw Exception('토큰이 없습니다.');
-    }
+    // if (token == null) {
+    //   throw Exception('토큰이 없습니다.');
+    // }
+    // try {
+    //   final response = await _dio.get(
+    //     'http://10.0.2.2:4000/api/board/free?page=$no',
+    //     options: Options(
+    //       headers: {'authorization': token},
+    //     ),
+    //   );
+
+    // 로그인 여부에 관계없이 데이터 요청
     try {
       final response = await _dio.get(
         'http://10.0.2.2:4000/api/board/free?page=$no',
-        options: Options(
-          headers: {'authorization': token},
-        ),
+        options: token != null
+            ? Options(
+                headers: {'authorization': token},
+              )
+            : null,
       );
 
       final data = response.data['data'] as List<dynamic>;
