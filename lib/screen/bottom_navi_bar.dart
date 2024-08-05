@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// 초기 상태를 0 => BottomNavigationBar의 기본 선택된 인덱스
 final selectedIndexProvider = StateProvider<int>((ref) => 0);
 // final exampleProvider = StateProvider<String>((ref) => '예제');
 

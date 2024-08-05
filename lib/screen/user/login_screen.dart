@@ -14,35 +14,35 @@ import 'package:test_1/screen/bottom_navi_bar.dart';
 import 'package:test_1/screen/user/profile_screen.dart';
 import 'package:test_1/service/user_service.dart';
 
-class MyLoginPage extends ConsumerStatefulWidget {
-  const MyLoginPage({super.key});
+// class MyLoginPage extends ConsumerStatefulWidget {
+//   const MyLoginPage({super.key});
 
-  @override
-  ConsumerState<MyLoginPage> createState() => _MyLoginPageState();
-}
+//   @override
+//   ConsumerState<MyLoginPage> createState() => _MyLoginPageState();
+// }
 
-class _MyLoginPageState extends ConsumerState<MyLoginPage> {
-  // 로그인 버튼 누르면 실행
-  loginAction(String id, String password, String nick) async {
-    try {
-      print('로그인 액션');
-      final loginService = LoginService();
-      await loginService.login(id, password);
+// class _MyLoginPageState extends ConsumerState<MyLoginPage> {
+//   // 로그인 버튼 누르면 실행
+//   loginAction(String id, String password, String nick) async {
+//     try {
+//       print('로그인 액션');
+//       final loginService = LoginService();
+//       await loginService.login(id, password);
 
-      // 로그인 후 프로필 화면으로 이동
-      // 상태를 업데이트하여 프로필 화면으로 이동
-      context.go('/profile');
-    } catch (e) {
-      return false;
-    }
-  }
+//       // 로그인 후 프로필 화면으로 이동
+//       // 상태를 업데이트하여 프로필 화면으로 이동
+//       context.go('/profile');
+//     } catch (e) {
+//       return false;
+//     }
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    // return const LoginScreen();
-    return const ProfileScreen();
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     // return const LoginScreen();
+//     return const ProfileScreen();
+//   }
+// }
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
